@@ -3,11 +3,15 @@
   "description": "Expression builder for AWS.DynamoDB.DocumentClient",
   "version": "0.0.0-development",
   "repository": "git@github.com:tuplo/dynoexpr.git",
-  "author": "Tuplo <dev@tuplo.co.uk>",
+  "author": "Rui Costa",
   "license": "MIT",
   "keywords": [
     "aws",
-    "dynamodb"
+    "amazon",
+    "dynamodb",
+    "database",
+    "nosql",
+    "DocumentClient"
   ],
   "files": [
     "lib/**/*"

@@ -29,15 +29,16 @@ $ yarn add @tuplo/dynoexpr
 
 ## Usage
 
-Provide one or more of the known expression builders and `dynoexpr` will replace all attribute names with safe _expression attribute names_ and values with _expression attribute values_ placeholders and construct the correct expression to use on `AWS.DynamoDB.DocumentClient` requests.
+Converts a plain object to a DynamoDB expression with all variables and names replaced with safe placeholders. It supports `Condition`, `KeyCondition`, `Filter`, `Projection` and `Update` expressions. The resulting expressions can then be used with `AWS.DynamoDB.DocumentClient` requests.
 
 ### Condition expressions
 
-If the _condition expression_ evaluates to `true`, the operation succeeds; otherwise, the operation fails. [docs](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.ConditionExpressions.html)
+If the [_condition expression_](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.ConditionExpressions.html) evaluates to `true`, the operation succeeds; otherwise, the operation fails.
 
 ```ts
-// only deletes item if color is yellow
+import dynoexpr from '@tuplo/dynoexpr';
 
+// only deletes item if color is yellow
 const params = dynoexpr({
   Condition: {
     color: 'yellow',
@@ -63,11 +64,10 @@ await docClient
 
 ### KeyCondition expressions
 
-To specify the search criteria, you use a `key condition expression` — a string that determines the items to be read from the table or index. [docs](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html#Query.KeyConditionExpressions)
+To specify the search criteria, you use a [_key condition expression_](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html#Query.KeyConditionExpressions) — a string that determines the items to be read from the table or index.
 
 ```ts
 // searches for items between 2015 and 2019
-
 const params = dynoexpr({
   KeyCondition: {
     HashKey: 'key',
@@ -94,11 +94,10 @@ await docClient.query({ TableName: 'Table', ...params }).promise();
 
 ### Filter expressions
 
-A _filter expression_ determines which items within the `Query` or `Scan` results should be returned to you. [docs](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html#Query.FilterExpression)
+A [_filter expression_](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html#Query.FilterExpression) determines which items within the `Query` or `Scan` results should be returned to you.
 
 ```ts
 // only return items from year 2015 or with color yellow
-
 const params = dynoexpr({
   Filter: {
     year: 2015,
@@ -126,11 +125,10 @@ await docClient.scan({ TableName: 'Table', ...params }).promise();
 
 ### Projection expressions
 
-A _projection expression_ is a string that identifies the attributes that you want. [docs](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.ProjectionExpressions.html)
+A [_projection expression_](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.ProjectionExpressions.html) is a string that identifies the attributes that you want.
 
 ```ts
 // only returns attributes `color` and `year` for item
-
 const params = dynoexpr({
   Projection: ['year', 'color'],
 });
@@ -152,13 +150,12 @@ await docClient
 
 ### Update expressions
 
-An _update expression_ specifies how `UpdateItem` will modify the attributes of an item. [docs](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.UpdateExpressions.html)
+An [_update expression_](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.UpdateExpressions.html) specifies how `UpdateItem` will modify the attributes of an item.
 
 **Update the value of an attribute**
 
 ```ts
 // set color to `blue` on existing item
-
 const params = dynoexpr({
   Update: { color: 'blue' },
 });
@@ -209,7 +206,7 @@ const params = dynoexpr({
 */
 ```
 
-**Adds to a numeric attribute on an item**
+**Adds to a numeric attribute**
 
 ```ts
 const params = dynoexpr({
@@ -268,6 +265,47 @@ const params = dynoexpr({
 
 ### General use
 
+**Using functions**
+
+`DynamoDB` supports a number of [functions](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.OperatorsAndFunctions.html#Expressions.OperatorsAndFunctions.Functions) to be evaluated when parsing expressions. You don't need to reference the `path` argument because that's identified by the object's key.
+
+```ts
+const params = dynoexpr({
+  Condition: {
+    docs: 'attribute_exists',
+    brand: 'attribute_not_exists',
+    extra: 'attribute_type(NULL)',
+    color: 'begins_with dark',
+    address: 'contains(Seattle)',
+    description: 'size < 20',
+  },
+});
+
+/*
+{
+  ConditionExpression: '(attribute_exists(#nd286)) \
+    AND (attribute_not_exists(#n0ed7)) \
+    AND (attribute_type(#na4d6,:vec29)) \
+    AND (begins_with(#n9bfd,:vbe37)) \
+    AND (contains(#n536a,:v7bff)) \
+    AND (size(#n2786) < :v3b84)',
+  ExpressionAttributeNames: {
+    '#nd286': 'docs',
+    '#n0ed7': 'brand',
+    '#na4d6': 'extra',
+    '#n9bfd': 'color',
+    '#n536a': 'address',
+    '#n2786': 'description'
+  },
+  ExpressionAttributeValues: {
+    ':vec29': 'NULL',
+    ':vbe37': 'dark',
+    ':v7bff': 'Seattle',
+    ':v3b84': 20
+  }
+}
+```
+
 **Using multiple expressions on the same request**
 
 ```ts
@@ -319,6 +357,8 @@ const params = dynoexpr({
 
 **Only changes known expression parameters**
 
+You can pass the whole request parameters to `dynoexpr` - only the expression builders will be replaced.
+
 ```ts
 const params = dynoexpr({
   TableName: 'Table',
@@ -345,13 +385,25 @@ const params = dynoexpr({
 */
 ```
 
+**Type the resulting parameters**
+
+The resulting object is type-compatible with all `DocumentClient` requests, but if you want to be specific, `dynoexpr` accepts a generic type to be applied to the return value.
+
+```ts
+const params = dynoexpr<AWS.DocumentClient.ScanInput>({
+  TableName: 'Table',
+  Filter: { year: 2015 },
+  Projection: ['color', 'brand'],
+});
+```
+
 ## API
 
 ### dynoexpr&lt;T&gt;(params)
 
 #### `params`
 
-Expression builders parameters
+Expression builder parameters
 
 ```ts
 type DynamoDbPrimitive = string | number | boolean | object;
@@ -360,20 +412,21 @@ type DynamoDbValue =
   | DynamoDbPrimitive[]
   | Set<DynamoDbPrimitive>;
 
+// all attributes are optional, depending on what expression(s) are to be built
 {
-  Condition?: { [key: string]: DynamoDbValue },
-  ConditionLogicalOperator?: 'AND' | 'OR',
+  Condition: { [key: string]: DynamoDbValue },
+  ConditionLogicalOperator: 'AND' | 'OR',
 
-  KeyCondition?: { [key: string]: DynamoDbValue },
-  KeyConditionLogicalOperator?: 'AND' | 'OR',
+  KeyCondition: { [key: string]: DynamoDbValue },
+  KeyConditionLogicalOperator: 'AND' | 'OR',
 
-  FilterCondition?: { [key: string]: DynamoDbValue },
-  FilterLogicalOperator?: 'AND' | 'OR',
+  FilterCondition: { [key: string]: DynamoDbValue },
+  FilterLogicalOperator: 'AND' | 'OR',
 
-  Projection?: string[],
+  Projection: string[],
 
-  Update?: { [key: string]: DynamoDbValue },
-  UpdateAction?: 'SET' | 'ADD' | 'DELETE' | 'REMOVE';
+  Update: { [key: string]: DynamoDbValue },
+  UpdateAction: 'SET' | 'ADD' | 'DELETE' | 'REMOVE';
 }
 ```
 
@@ -382,16 +435,17 @@ type DynamoDbValue =
 Parameters accepted by `AWS.DynamoDB.DocumentClient`
 
 ```ts
+// all attributes are optional depending on the expression(s) being built
 {
-  ConditionExpression?: string,
+  ConditionExpression: string,
 
-  KeyConditionExpression?: string,
+  KeyConditionExpression: string,
 
-  FilterConditionExpression?: string,
+  FilterConditionExpression: string,
 
-  ProjectionExpression?: string,
+  ProjectionExpression: string,
 
-  UpdateExpression?: string,
+  UpdateExpression: string,
 
   ExpressionAttributeNames: { [key: string]: string },
   ExpressionAtributeValues: { [key: string]: string },
