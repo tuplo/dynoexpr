@@ -1,19 +1,8 @@
 # dynoexpr
 
 <p>
-  <a href="https://github.com/tuplo/dynoexpr/actions">
-    <img src="https://github.com/tuplo/dynoexpr/workflows/Build/badge.svg" alt="Build">
-  </a>
-  <a href="https://npmjs.org/package/@tuplo/dynoexpr">
-    <img src="https://img.shields.io/npm/v/@tuplo/dynoexpr.svg" alt="NPM Version">
-  </a>
+  <img src="https://packagephobia.now.sh/result?p=@tuplo/dynoexpr">
   <img src="https://david-dm.org/tuplo/dynoexpr.svg">
-  <a href="http://commitizen.github.io/cz-cli/">
-      <img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg" alt="Commitizen Friendly">
-  </a>
-  <a href="https://github.com/semantic-release/semantic-release">
-    <img src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg" alt="semantic-release">
-  </a>
 </p>
 
 Expression builder for `AWS.DynamoDB.DocumentClient`.
