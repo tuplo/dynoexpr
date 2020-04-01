@@ -1,7 +1,7 @@
 # dynoexpr
 
 <p>
-  <img src="https://packagephobia.now.sh/result?p=@tuplo/dynoexpr">
+  <img src="https://packagephobia.now.sh/badge?p=@tuplo/dynoexpr">
   <img src="https://david-dm.org/tuplo/dynoexpr.svg">
 </p>
 
