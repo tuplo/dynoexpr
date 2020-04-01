@@ -17,7 +17,7 @@
     "lib/**/*"
   ],
   "main": "lib/index.js",
-  "module": "lib/index.esm.js",
+  "module": "lib/index.modern.js",
   "source": "src/index.ts",
   "types": "lib/index.d.ts",
   "devDependencies": {
@@ -41,7 +41,7 @@
     "typescript": "3.8.3"
   },
   "scripts": {
-    "build": "microbundle --sourcemap false --compress false",
+    "build": "microbundle --sourcemap false --format cjs,modern",
     "lint": "eslint 'src/**'",
     "test:watch": "jest --watch",
     "test": "jest"

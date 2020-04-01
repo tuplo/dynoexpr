@@ -1,16 +1,10 @@
 {
   "compilerOptions": {
-    "allowJs": true,
     "baseUrl": "./",
     "declaration": true,
-    "downlevelIteration": true,
     "esModuleInterop": true,
-    "lib": ["ES2020"],
     "module": "ES6",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
     "outDir": "./lib",
-    "target": "es5",
     "strict": true
   },
   "include": ["src/**/*"],
