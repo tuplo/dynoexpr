@@ -16,19 +16,25 @@ import {
   KeyConditionOutput,
 } from './key-condition';
 
+export { ConditionInput, ConditionOutput } from './condition';
+export { FilterInput, FilterOutput } from './filter';
+export { KeyConditionInput, KeyConditionOutput } from './key-condition';
+export { ProjectionInput, ProjectionOutput } from './projection';
+export { UpdateInput, UpdateOutput } from './update';
+
 export type DynoexprInput = Partial<
-  KeyConditionInput &
-    ConditionInput &
+  ConditionInput &
     FilterInput &
+    KeyConditionInput &
     ProjectionInput &
     UpdateInput
 > &
   unknown;
 
 export type DynoexprOutput = Partial<
-  KeyConditionOutput &
-    ConditionOutput &
+  ConditionOutput &
     FilterOutput &
+    KeyConditionOutput &
     ProjectionOutput &
     UpdateOutput
 > &
