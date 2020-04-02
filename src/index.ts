@@ -22,24 +22,29 @@ export { KeyConditionInput, KeyConditionOutput } from './key-condition';
 export { ProjectionInput, ProjectionOutput } from './projection';
 export { UpdateInput, UpdateOutput } from './update';
 
-export type DynoexprInput = Partial<
-  ConditionInput &
-    FilterInput &
-    KeyConditionInput &
-    ProjectionInput &
-    UpdateInput
-> &
+export type DynoexprInput = ConditionInput &
+  FilterInput &
+  KeyConditionInput &
+  ProjectionInput &
+  UpdateInput &
   unknown;
 
-export type DynoexprOutput = Partial<
-  ConditionOutput &
-    FilterOutput &
-    KeyConditionOutput &
-    ProjectionOutput &
-    UpdateOutput
-> &
+export type DynoexprOutput = ConditionOutput &
+  FilterOutput &
+  KeyConditionOutput &
+  ProjectionOutput &
+  UpdateOutput &
   unknown;
 
+/**
+ * Converts a plain object to a AWS.DynamoDB.DocumentClient expression.
+ *
+ * @example
+ * const params = dynoexpr({
+ *  Filter: { color: 'blue' },
+ *  Projection: ['weight', 'quantity']
+ * })
+ */
 export default function dynoexpr<T extends DynoexprOutput = DynoexprOutput>(
   params: DynoexprInput = {}
 ): T {

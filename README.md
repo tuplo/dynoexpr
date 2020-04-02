@@ -20,13 +20,42 @@ $ yarn add @tuplo/dynoexpr
 
 Converts a plain object to a DynamoDB expression with all variables and names replaced with safe placeholders. It supports `Condition`, `KeyCondition`, `Filter`, `Projection` and `Update` expressions. The resulting expressions can then be used with `AWS.DynamoDB.DocumentClient` requests.
 
-### Condition expressions
+```ts
+import dynoexpr from '@tuplo/dynoexpr';
+
+const params = dynoexpr({
+  KeyCondition: { HashKey: 'key' },
+  Filter: { color: 'blue' },
+  Projection: ['weight', 'size'],
+});
+
+/*
+{
+  KeyConditionExpression: '(#n3141 = :v531d)',
+  ExpressionAttributeValues: { ':v531d': 'key', ':v0c8f': 'blue' },
+  FilterExpression: '(#n9bfd = :v0c8f)',
+  ProjectionExpression: '#ndb8f,#n1a24',
+  ExpressionAttributeNames: {
+    '#n3141': 'HashKey',
+    '#n9bfd': 'color',
+    '#ndb8f': 'weight',
+    '#n1a24': 'size'
+  }
+}
+*/
+
+const results = await docClient
+  .query({ TableName: 'Table', ...params })
+  .promise();
+```
+
+###
+
+### Condition Expressions
 
 If the [_condition expression_](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.ConditionExpressions.html) evaluates to `true`, the operation succeeds; otherwise, the operation fails.
 
 ```ts
-import dynoexpr from '@tuplo/dynoexpr';
-
 // only deletes item if color is yellow
 const params = dynoexpr({
   Condition: {
@@ -51,7 +80,7 @@ await docClient
   .promise();
 ```
 
-### KeyCondition expressions
+### KeyCondition Expressions
 
 To specify the search criteria, you use a [_key condition expression_](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html#Query.KeyConditionExpressions) — a string that determines the items to be read from the table or index.
 
@@ -81,7 +110,7 @@ const params = dynoexpr({
 await docClient.query({ TableName: 'Table', ...params }).promise();
 ```
 
-### Filter expressions
+### Filter Expressions
 
 A [_filter expression_](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html#Query.FilterExpression) determines which items within the `Query` or `Scan` results should be returned to you.
 
@@ -112,7 +141,7 @@ const params = dynoexpr({
 await docClient.scan({ TableName: 'Table', ...params }).promise();
 ```
 
-### Projection expressions
+### Projection Expressions
 
 A [_projection expression_](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.ProjectionExpressions.html) is a string that identifies the attributes that you want.
 
@@ -137,7 +166,7 @@ await docClient
   .promise();
 ```
 
-### Update expressions
+### Update Expressions
 
 An [_update expression_](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.UpdateExpressions.html) specifies how `UpdateItem` will modify the attributes of an item.
 
@@ -252,7 +281,7 @@ const params = dynoexpr({
 // the color would become Set(1) { 'black' }
 ```
 
-### General use
+### General Use
 
 **Using functions**
 

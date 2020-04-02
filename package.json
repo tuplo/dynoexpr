@@ -11,7 +11,7 @@
     "dynamodb",
     "database",
     "nosql",
-    "DocumentClient"
+    "documentclient"
   ],
   "files": [
     "lib/**/*"
@@ -21,8 +21,8 @@
   "source": "src/index.ts",
   "types": "lib/index.d.ts",
   "devDependencies": {
-    "@types/jest": "25.1.4",
-    "@types/node": "13.9.8",
+    "@types/jest": "25.1.5",
+    "@types/node": "13.11.0",
     "@typescript-eslint/eslint-plugin": "2.26.0",
     "@typescript-eslint/parser": "2.26.0",
     "commitizen": "4.0.3",
@@ -33,8 +33,7 @@
     "eslint-plugin-import": "2.20.2",
     "eslint-plugin-jest": "23.8.2",
     "husky": "4.2.3",
-    "jest": "25.2.4",
-    "jest-dynalite": "1.1.9",
+    "jest": "25.2.6",
     "microbundle": "0.12.0-next.8",
     "prettier": "2.0.2",
     "ts-jest": "25.3.0",
