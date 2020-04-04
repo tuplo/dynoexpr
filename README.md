@@ -43,49 +43,13 @@ const params = dynoexpr({
   }
 }
 */
-
-const results = await docClient
-  .query({ TableName: 'Table', ...params })
-  .promise();
 ```
 
-###
-
-### Condition Expressions
-
-If the [_condition expression_](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.ConditionExpressions.html) evaluates to `true`, the operation succeeds; otherwise, the operation fails.
+**Passing parameters to DocumentClient**
 
 ```ts
-// only deletes item if color is yellow
-const params = dynoexpr({
-  Condition: {
-    color: 'yellow',
-  },
-});
+const docClient = new AWS.DynamoDB.DocumentClient();
 
-/*
-{
-  ConditionExpression: '(#n9bfd = :va351)',
-  ExpressionAttributeNames: {
-    '#n9bfd': 'color'
-  },
-  ExpressionAttributeValues: {
-    ':va351': 'yellow'
-  }
-}
-*/
-
-await docClient
-  .delete({ TableName: 'Table', Key: { HashKey: 'key' }, ...params })
-  .promise();
-```
-
-### KeyCondition Expressions
-
-To specify the search criteria, you use a [_key condition expression_](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html#Query.KeyConditionExpressions) — a string that determines the items to be read from the table or index.
-
-```ts
-// searches for items between 2015 and 2019
 const params = dynoexpr({
   KeyCondition: {
     HashKey: 'key',
@@ -93,195 +57,10 @@ const params = dynoexpr({
   },
 });
 
-/*
-{
-  KeyConditionExpression: '(#n3141 = :v531d) AND (#ne93d between :v5dbb and :v58f4)',
-  ExpressionAttributeNames: {
-    '#n3141': 'HashKey',
-    '#ne93d': 'RangeKey'
-  },
-  ExpressionAttributeValues: {
-    ':v531d': 'key',
-    ':v5dbb': 2015,
-    ':v58f4': 2019
-  }}
-*/
-
-await docClient.query({ TableName: 'Table', ...params }).promise();
-```
-
-### Filter Expressions
-
-A [_filter expression_](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Query.html#Query.FilterExpression) determines which items within the `Query` or `Scan` results should be returned to you.
-
-```ts
-// only return items from year 2015 or with color yellow
-const params = dynoexpr({
-  Filter: {
-    year: 2015,
-    color: 'yellow',
-  },
-  FilterLogicalOperator: 'OR',
-});
-
-/*
-{
-  FilterExpression: '(#n17d8 = :v5dbb) OR (#n9bfd = :va351)',
-  ExpressionAttributeNames: {
-    '#n17d8': 'year',
-    '#n9bfd': 'color'
-  },
-  ExpressionAttributeValues: {
-    ':v5dbb': 2015,
-    ':va351': 'yellow'
-  }
-}
-*/
-
-await docClient.scan({ TableName: 'Table', ...params }).promise();
-```
-
-### Projection Expressions
-
-A [_projection expression_](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.ProjectionExpressions.html) is a string that identifies the attributes that you want.
-
-```ts
-// only returns attributes `color` and `year` for item
-const params = dynoexpr({
-  Projection: ['year', 'color'],
-});
-
-/*
-{
-  ProjectionExpression: '#n17d8,#n9bfd',
-  ExpressionAttributeNames: {
-    '#n17d8': 'year',
-    '#n9bfd': 'color'
-  }
-}
-*/
-
-await docClient
-  .get({ TableName: 'Table', Key: { HashKey: 'key' }, ...params })
+const results = await docClient
+  .query({ TableName: 'table', ...params })
   .promise();
 ```
-
-### Update Expressions
-
-An [_update expression_](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.UpdateExpressions.html) specifies how `UpdateItem` will modify the attributes of an item.
-
-**Update the value of an attribute**
-
-```ts
-// set color to `blue` on existing item
-const params = dynoexpr({
-  Update: { color: 'blue' },
-});
-
-/*
-{
-  UpdateExpression: 'SET #n9bfd = :v0c8f',
-  ExpressionAttributeNames: { '#n9bfd': 'color' },
-  ExpressionAttributeValues: { ':v0c8f': 'blue' }
-}
-*/
-
-await docClient
-  .update({ TableName: 'Table', Key: { HashKey: 'key' }, ...params })
-  .promise();
-```
-
-**Performs mathematical operations on an attribute**
-
-```ts
-const params = dynoexpr({
-  Update: { quantity: `quantity - 5` },
-  UpdateAction: 'SET',
-});
-
-/*
-{
-  UpdateExpression: 'SET #nb8c1 = #nb8c1 - :v18d5',
-  ExpressionAttributeNames: { '#nb8c1': 'quantity' },
-  ExpressionAttributeValues: { ':v18d5': 5 }
-}
-*/
-```
-
-**Deletes an attribute from an item**
-
-```ts
-const params = dynoexpr({
-  Update: { color: true },
-  UpdateAction: 'REMOVE',
-});
-
-/*
-{
-  UpdateExpression: 'REMOVE #n9bfd',
-  ExpressionAttributeNames: { '#n9bfd': 'color' }
-}
-*/
-```
-
-**Adds to a numeric attribute**
-
-```ts
-const params = dynoexpr({
-  Update: { quantity: 10 },
-  UpdateAction: 'ADD',
-});
-
-/*
-{
-  UpdateExpression: 'ADD #nb8c1 :ve820',
-  ExpressionAttributeNames: { '#nb8c1': 'quantity' },
-  ExpressionAttributeValues: { ':ve820': 10 }
-}
-*/
-
-// the `quantity` attribute would become `quantity` + 10
-```
-
-**Adds to a `Set<unknown>` attribute on an item**
-
-```ts
-const params = dynoexpr({
-  Update: { color: new Set(['blue', 'yellow']) },
-  UpdateAction: 'ADD',
-});
-
-/*
-{
-  UpdateExpression: 'ADD #n9bfd :ve93b',
-  ExpressionAttributeNames: { '#n9bfd': 'color' },
-  ExpressionAttributeValues: { ':ve93b': Set(2) { 'blue', 'yellow' } }
-}
-*/
-
-// the color would become Set(3) { 'black', 'blue', 'yellow' }
-```
-
-**Removes from a `Set<unknown>` attribute on an item**
-
-```ts
-const params = dynoexpr({
-  Update: { color: new Set(['blue', 'yellow']) },
-  UpdateAction: 'DELETE',
-});
-
-/*
-{
-  UpdateExpression: 'DELETE #n9bfd :ve93b',
-  ExpressionAttributeNames: { '#n9bfd': 'color' },
-  ExpressionAttributeValues: { ':ve93b': Set(2) { 'blue', 'yellow' } }
-}
-*/
-
-// the color would become Set(1) { 'black' }
-```
-
-### General Use
 
 **Using functions**
 
