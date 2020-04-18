@@ -38,7 +38,6 @@ export type DynoexprOutput = ConditionOutput &
 
 /**
  * Converts a plain object to a AWS.DynamoDB.DocumentClient expression.
- *
  * @example
  * const params = dynoexpr({
  *  Filter: { color: 'blue' },

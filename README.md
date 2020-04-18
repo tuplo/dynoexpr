@@ -20,7 +20,7 @@ $ yarn add @tuplo/dynoexpr
 
 Converts a plain object to a DynamoDB expression with all variables and names replaced with safe placeholders. It supports `Condition`, `KeyCondition`, `Filter`, `Projection` and `Update` expressions. The resulting expressions can then be used with `AWS.DynamoDB.DocumentClient` requests.
 
-```ts
+```typescript
 import dynoexpr from '@tuplo/dynoexpr';
 
 const params = dynoexpr({
@@ -47,7 +47,7 @@ const params = dynoexpr({
 
 **Passing parameters to DocumentClient**
 
-```ts
+```typescript
 const docClient = new AWS.DynamoDB.DocumentClient();
 
 const params = dynoexpr({
@@ -66,7 +66,7 @@ const results = await docClient
 
 `DynamoDB` supports a number of [functions](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.OperatorsAndFunctions.html#Expressions.OperatorsAndFunctions.Functions) to be evaluated when parsing expressions. You don't need to reference the `path` argument because that's identified by the object's key.
 
-```ts
+```typescript
 const params = dynoexpr({
   Condition: {
     docs: 'attribute_exists',
@@ -105,7 +105,7 @@ const params = dynoexpr({
 
 **Using multiple expressions on the same request**
 
-```ts
+```typescript
 const params = dynoexpr({
   Update: { Sum: 'Sum + 20' },
   Condition: { Sum: `< 100` },
@@ -128,7 +128,7 @@ const params = dynoexpr({
 
 **Keep existing Expressions, AttributeNames and AttributeValues**
 
-```ts
+```typescript
 const params = dynoexpr({
   Filter: { color: 'blue' },
   ProjectionExpression: '#year',
@@ -156,7 +156,7 @@ const params = dynoexpr({
 
 You can pass the whole request parameters to `dynoexpr` - only the expression builders will be replaced.
 
-```ts
+```typescript
 const params = dynoexpr({
   TableName: 'Table',
   Key: { HashKey: 'key' },
@@ -186,7 +186,7 @@ const params = dynoexpr({
 
 The resulting object is type-compatible with all `DocumentClient` requests, but if you want to be specific, `dynoexpr` accepts a generic type to be applied to the return value.
 
-```ts
+```typescript
 const params = dynoexpr<AWS.DocumentClient.ScanInput>({
   TableName: 'Table',
   Filter: { year: 2015 },
@@ -202,7 +202,7 @@ const params = dynoexpr<AWS.DocumentClient.ScanInput>({
 
 Expression builder parameters
 
-```ts
+```typescript
 type DynamoDbPrimitive = string | number | boolean | object;
 type DynamoDbValue =
   | DynamoDbPrimitive
@@ -231,7 +231,7 @@ type DynamoDbValue =
 
 Parameters accepted by `AWS.DynamoDB.DocumentClient`
 
-```ts
+```typescript
 // all attributes are optional depending on the expression(s) being built
 {
   ConditionExpression: string,
