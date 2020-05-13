@@ -25,7 +25,7 @@ export const getConditionExpression: GetConditionExpressionFn = (
 ) => {
   if (!params.Condition) return params;
   const { Condition, ConditionLogicalOperator, ...restOfParams } = params;
-  return {
+  const paramsWithConditions = {
     ...restOfParams,
     ConditionExpression: buildConditionExpression({
       Condition,
@@ -34,4 +34,7 @@ export const getConditionExpression: GetConditionExpressionFn = (
     ExpressionAttributeNames: buildConditionAttributeNames(Condition, params),
     ExpressionAttributeValues: buildConditionAttributeValues(Condition, params),
   };
+  
+  if(Object.keys(paramsWithConditions.ExpressionAttributeValues).length === 0) delete paramsWithConditions.ExpressionAttributeValues;
+  return paramsWithConditions;
 };
