@@ -34,7 +34,9 @@ export const getConditionExpression: GetConditionExpressionFn = (
     ExpressionAttributeNames: buildConditionAttributeNames(Condition, params),
     ExpressionAttributeValues: buildConditionAttributeValues(Condition, params),
   };
-  
-  if(Object.keys(paramsWithConditions.ExpressionAttributeValues).length === 0) delete paramsWithConditions.ExpressionAttributeValues;
+
+  if (Object.keys(paramsWithConditions.ExpressionAttributeValues).length === 0)
+    delete paramsWithConditions.ExpressionAttributeValues;
+
   return paramsWithConditions;
 };

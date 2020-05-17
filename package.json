@@ -36,6 +36,7 @@
     "jest": "26.0.1",
     "microbundle": "0.12.0-next.8",
     "prettier": "2.0.5",
+    "pretty-quick": "2.0.1",
     "ts-jest": "26.0.0",
     "typescript": "3.9.2"
   },
@@ -52,7 +53,8 @@
   },
   "husky": {
     "hooks": {
-      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true"
+      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true",
+      "pre-commit": "pretty-quick --staged"
     }
   }
 }
