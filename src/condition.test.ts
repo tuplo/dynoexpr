@@ -127,4 +127,27 @@ describe(`condition expression`, () => {
     };
     expect(result).toStrictEqual(expected);
   });
+  
+  it(`builds the ConditionExpression and NameValueMaps - avoid erroring values map`, () => {
+    expect.assertions(1);
+    const Condition = {
+      a: `attribute_exists`,
+      b: `attribute_not_exists`
+    };
+    const params: ConditionInput = { Condition };
+    const result = getConditionExpression(params);
+    const expected = {
+      ConditionExpression: [
+        `attribute_exists(#n2661)`,
+        `attribute_not_exists(#n578f)`
+      ]
+        .map((exp) => `(${exp})`)
+        .join(` AND `),
+      ExpressionAttributeNames: {
+        '#n2661': `a`,
+        '#n578f': `b`
+      }
+    };
+    expect(result).toStrictEqual(expected);
+  });
 });
