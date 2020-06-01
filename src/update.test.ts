@@ -4,6 +4,7 @@ import {
   getUpdateExpression,
   parseOperationValue,
   UpdateInput,
+  isMathExpression,
 } from './update';
 
 describe(`update expression`, () => {
@@ -98,7 +99,24 @@ describe(`update expression`, () => {
     expect(result).toStrictEqual(expected);
   });
 
-  it(`updates numberic value math operations - SET`, () => {
+  it(`identifies an expression as being a math expression`, () => {
+    expect.assertions(6);
+    const expressions = [
+      [`foo`, `foo - 2`],
+      [`foo`, `foo-2`],
+      [`foo`, `10-20-001`],
+      [`foo`, `foobar - 2`],
+      [`foo`, `2-foobar`],
+      [`foo`, `Mon Jun 01 2020 20:54:50 GMT+0100 (British Summer Time)`],
+    ];
+    const expected = [true, true, false, false, false, false];
+    expressions.forEach((expression, i) => {
+      const result = isMathExpression(expression[0], expression[1]);
+      expect(result).toStrictEqual(expected[i]);
+    });
+  });
+
+  it(`updates numeric value math operations - SET`, () => {
     expect.assertions(1);
     const params: UpdateInput = {
       Update: {
@@ -118,6 +136,32 @@ describe(`update expression`, () => {
       ExpressionAttributeValues: {
         ':v862c': 2,
         ':vad26': 9,
+      },
+    };
+    expect(result).toStrictEqual(expected);
+  });
+
+  it(`updates expression with -/+ but it's not a math expression`, () => {
+    expect.assertions(1);
+    const params: UpdateInput = {
+      Update: {
+        foo: `10-20-001`,
+        bar: `2020-06-01T19:53:52.457Z`,
+        baz: `Mon Jun 01 2020 20:54:50 GMT+0100 (British Summer Time)`,
+      },
+    };
+    const result = getUpdateExpression(params);
+    const expected = {
+      UpdateExpression: 'SET #na4d8 = :vc40c, #n51f2 = :v4416, #n6e88 = :vdeb4',
+      ExpressionAttributeNames: {
+        '#na4d8': 'foo',
+        '#n51f2': 'bar',
+        '#n6e88': 'baz',
+      },
+      ExpressionAttributeValues: {
+        ':vc40c': '10-20-001',
+        ':v4416': '2020-06-01T19:53:52.457Z',
+        ':vdeb4': 'Mon Jun 01 2020 20:54:50 GMT+0100 (British Summer Time)',
       },
     };
     expect(result).toStrictEqual(expected);
