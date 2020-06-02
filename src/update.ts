@@ -20,6 +20,13 @@ export const parseOperationValue: ParseOperationValueFn = (expr, key) => {
   return Number(v.trim());
 };
 
+type IsMathExpressionFn = (name: string, value: DynamoDbValue) => boolean;
+export const isMathExpression: IsMathExpressionFn = (name, value) => {
+  if (typeof name !== `string`) return false;
+  const rgName = new RegExp(`\\b${name}\\b`);
+  return rgName.test(`${value}`) && /[+-]/.test(`${value}`);
+};
+
 type ExpressionAttributesMap = {
   ExpressionAttributeNames: { [key: string]: string };
   ExpressionAttributeValues: { [key: string]: DynamoDbValue };
@@ -31,7 +38,7 @@ export const getExpressionAttributes: GetExpressionAttributesFn = (params) => {
     if (!acc.ExpressionAttributeNames) acc.ExpressionAttributeNames = {};
     if (!acc.ExpressionAttributeValues) acc.ExpressionAttributeValues = {};
     acc.ExpressionAttributeNames[getAttrName(key)] = key;
-    const v = /[+-]/.test(value as string)
+    const v = isMathExpression(key, value)
       ? parseOperationValue(value as string, key)
       : value;
     acc.ExpressionAttributeValues[getAttrValue(v)] = v;
@@ -52,9 +59,8 @@ export const getUpdateExpression: GetUpdateExpressionFn = (params = {}) => {
     case 'SET':
       entries = Object.entries(Update)
         .map(([name, value]) => {
-          // foo: `foo + 2`
-          const [, operator] = /([+-])/.exec(value as string) || [];
-          if (operator) {
+          if (isMathExpression(name, value)) {
+            const [, operator] = /([+-])/.exec(value as string) || [];
             const expr = (value as string)
               .split(/[+-]/)
               .map((operand: string) => operand.trim())
