@@ -248,6 +248,8 @@ describe(`helpers for condition helpers`, () => {
       d: `begins_with(foo)`,
       e: `contains(foo)`,
       f: `size > 10`,
+      g: `attribute_exists `,
+      h: ` attribute_not_exists `,
     };
 
     it(`builds a condition expression`, () => {
@@ -260,6 +262,8 @@ describe(`helpers for condition helpers`, () => {
         `begins_with(#n91ad,:va4d8)`,
         `contains(#nec32,:va4d8)`,
         `size(#ncce7) > :ve820`,
+        `attribute_exists(#n845d)`,
+        `attribute_not_exists(#n5e91)`,
       ]
         .map((exp) => `(${exp})`)
         .join(` AND `);
@@ -272,7 +276,9 @@ describe(`helpers for condition helpers`, () => {
       const expected = {
         '#n2661': `a`,
         '#n578f': `b`,
+        '#n5e91': 'h',
         '#n5f33': `c`,
+        '#n845d': 'g',
         '#n91ad': `d`,
         '#nec32': `e`,
         '#ncce7': `f`,
@@ -290,5 +296,63 @@ describe(`helpers for condition helpers`, () => {
       };
       expect(result).toStrictEqual(expected);
     });
+  });
+
+  it(`handles comparators look-alikes`, () => {
+    expect.assertions(1);
+    const Condition = {
+      a: `attribute_type_number`,
+      b: `begins_without`,
+      c: `between you and me`,
+      d: `< ten`,
+      e: `inspector`,
+      f: `sizeable`,
+      g: `contains sugar`,
+      i: `attribute_exists_there`,
+      j: `attribute_not_exists_here`,
+    };
+    const result = {
+      Expression: buildConditionExpression({ Condition }),
+      ExpressionAttributeNames: buildConditionAttributeNames(Condition),
+      ExpressionAttributeValues: buildConditionAttributeValues(Condition),
+    };
+    const expected = {
+      Expression: [
+        `#n2661 = :vad1e`,
+        `#n578f = :vd2e5`,
+        `#n5f33 = :v9003`,
+        `#n91ad = :v97c1`,
+        `#nec32 = :v0428`,
+        `#ncce7 = :v322b`,
+        `#n845d = :v9c1a`,
+        `#n8741 = :vd5d5`,
+        `#n5515 = :v4118`,
+      ]
+        .map((exp) => `(${exp})`)
+        .join(` AND `),
+      ExpressionAttributeNames: {
+        '#n2661': 'a',
+        '#n5515': 'j',
+        '#n578f': 'b',
+        '#n5f33': 'c',
+        '#n845d': 'g',
+        '#n8741': 'i',
+        '#n91ad': 'd',
+        '#ncce7': 'f',
+        '#nec32': 'e',
+      },
+      ExpressionAttributeValues: {
+        ':v0428': 'inspector',
+        ':v322b': 'sizeable',
+        ':v4118': 'attribute_not_exists_here',
+        ':v9003': 'between you and me',
+        ':v97c1': '< ten',
+        ':v9c1a': 'contains sugar',
+        ':vad1e': 'attribute_type_number',
+        ':vd2e5': 'begins_without',
+        ':vd5d5': 'attribute_exists_there',
+      },
+    };
+    expect(result).toStrictEqual(expected);
   });
 });

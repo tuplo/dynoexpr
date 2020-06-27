@@ -1,52 +1,62 @@
 import { getAttrName, getAttrValue, DynamoDbValue } from './helpers';
 
+const REGEX_ATTRIBUTE_TYPE = /^attribute_type\s*\(([^)]+)/i;
 type ParseAttributeTypeValue = (exp: string) => string;
 export const parseAttributeTypeValue: ParseAttributeTypeValue = (exp) => {
-  const [, v] = /^attribute_type\s*\(([^)]+)/i.exec(exp) || [];
+  const [, v] = REGEX_ATTRIBUTE_TYPE.exec(exp) || [];
   return v.trim();
 };
 
+const REGEX_BEGINS_WITH = /^begins_with[ |(]+([^)]+)/i;
 type ParseBeginsWithValueFn = (exp: string) => string;
 export const parseBeginsWithValue: ParseBeginsWithValueFn = (exp) => {
-  const [, v] = /^begins_with\s*\(?([^)]+)/i.exec(exp) || [];
+  const [, v] = REGEX_BEGINS_WITH.exec(exp) || [];
   return v.trim();
 };
 
+const REGEX_BETWEEN = /^between\s+(\d+)\s+and\s+(\d+)/i;
 type ParseBetweenValueFn = (exp: string) => number[];
 export const parseBetweenValue: ParseBetweenValueFn = (exp) => {
-  const vs = /^between\s+(\d+)\s+and\s+(\d+)/i.exec(exp) || [];
+  const vs = REGEX_BETWEEN.exec(exp) || [];
   return vs
     .slice(1, 3)
     .map((val) => val.trim())
     .map((val) => Number(val));
 };
 
+const REGEX_COMPARISON = /^[>=<]+\s*(\d+)/;
 type ParseComparisonValueFn = (exp: string) => number;
 export const parseComparisonValue: ParseComparisonValueFn = (exp) => {
-  const [, v] = /^[>=<]+\s*(\d+)/.exec(exp) || [];
+  const [, v] = REGEX_COMPARISON.exec(exp) || [];
   return Number(v.trim());
 };
 
+const REGEX_PARSE_IN = /^in\s*\(([^)]+)/i;
 type ParseInValueFn = (exp: string) => (string | number)[];
 export const parseInValue: ParseInValueFn = (exp) => {
-  const [, list] = /^in\s*\(([^)]+)/i.exec(exp) || [];
+  const [, list] = REGEX_PARSE_IN.exec(exp) || [];
   return list
     .split(`,`)
     .map((el) => el.trim())
     .map((el) => (/^\d+$/.test(el) ? Number(el) : el));
 };
 
+const REGEX_SIZE = /^size\s*[<=>]+\s*(\d+)/i;
 type ParseSizeValueFn = (exp: string) => number;
 export const parseSizeValue: ParseSizeValueFn = (exp) => {
-  const [, v] = /[<=>]+\s*(\d+)/.exec(exp) || [];
+  const [, v] = REGEX_SIZE.exec(exp) || [];
   return Number(v.trim());
 };
 
+const REGEX_CONTAINS = /^contains\s*\(([^)]+)\)/i;
 type ParseContainsValueFn = (exp: string) => string;
 export const parseContainsValue: ParseContainsValueFn = (exp) => {
-  const [, v] = /^contains\s*\(([^)]+)\)/i.exec(exp) || [];
+  const [, v] = REGEX_CONTAINS.exec(exp) || [];
   return v.trim();
 };
+
+const REGEX_ATTRIBUTE_EXISTS = /^attribute_exists$/i;
+const REGEX_ATTRIBUTE_NOT_EXISTS = /^attribute_not_exists$/i;
 
 export type LogicalOperator = 'AND' | 'OR';
 type BuildConditionExpressionInput = {
@@ -64,36 +74,37 @@ export const buildConditionExpression: BuildConditionExpressionFn = ({
     .map(([key, value]) => {
       let expr: string;
       if (typeof value === `string`) {
-        if (/^[>=<]/.test(value)) {
-          const [, operator] = /([<=>]+)/.exec(value) || [];
-          const v = parseComparisonValue(value);
+        const strValue = value.trim();
+        if (REGEX_COMPARISON.test(strValue)) {
+          const [, operator] = /([<=>]+)/.exec(strValue) || [];
+          const v = parseComparisonValue(strValue);
           expr = `${getAttrName(key)} ${operator} ${getAttrValue(v)}`;
-        } else if (/^between/i.test(value)) {
-          const v = parseBetweenValue(value);
+        } else if (REGEX_BETWEEN.test(strValue)) {
+          const v = parseBetweenValue(strValue);
           const exp = `between ${getAttrValue(v[0])} and ${getAttrValue(v[1])}`;
           expr = `${getAttrName(key)} ${exp}`;
-        } else if (/^in/i.test(value)) {
-          const v = parseInValue(value);
+        } else if (REGEX_PARSE_IN.test(strValue)) {
+          const v = parseInValue(strValue);
           expr = `${getAttrName(key)} in (${v.map(getAttrValue).join(`,`)})`;
-        } else if (/^attribute_exists/i.test(value)) {
+        } else if (REGEX_ATTRIBUTE_EXISTS.test(strValue)) {
           expr = `attribute_exists(${getAttrName(key)})`;
-        } else if (/^attribute_not_exists/i.test(value)) {
+        } else if (REGEX_ATTRIBUTE_NOT_EXISTS.test(strValue)) {
           expr = `attribute_not_exists(${getAttrName(key)})`;
-        } else if (/^attribute_type/i.test(value)) {
-          const v = parseAttributeTypeValue(value);
+        } else if (REGEX_ATTRIBUTE_TYPE.test(strValue)) {
+          const v = parseAttributeTypeValue(strValue);
           expr = `attribute_type(${getAttrName(key)},${getAttrValue(v)})`;
-        } else if (/^begins_with/i.test(value)) {
-          const v = parseBeginsWithValue(value);
+        } else if (REGEX_BEGINS_WITH.test(strValue)) {
+          const v = parseBeginsWithValue(strValue);
           expr = `begins_with(${getAttrName(key)},${getAttrValue(v)})`;
-        } else if (/^contains/i.test(value)) {
-          const v = parseContainsValue(value);
+        } else if (REGEX_CONTAINS.test(strValue)) {
+          const v = parseContainsValue(strValue);
           expr = `contains(${getAttrName(key)},${getAttrValue(v)})`;
-        } else if (/^size/i.test(value)) {
-          const [, operator] = /([<=>]+)/.exec(value) || [];
-          const v = parseSizeValue(value);
+        } else if (REGEX_SIZE.test(strValue)) {
+          const [, operator] = /([<=>]+)/.exec(strValue) || [];
+          const v = parseSizeValue(strValue);
           expr = `size(${getAttrName(key)}) ${operator} ${getAttrValue(v)}`;
         } else {
-          expr = `${getAttrName(key)} = ${getAttrValue(value)}`;
+          expr = `${getAttrName(key)} = ${getAttrValue(strValue)}`;
         }
       } else {
         expr = `${getAttrName(key)} = ${getAttrValue(value)}`;
@@ -133,22 +144,26 @@ export const buildConditionAttributeValues: BuildConditionAttributeValuesFn = (
   Object.entries(condition).reduce((acc, [, value]) => {
     let v: DynamoDbValue | undefined;
     if (typeof value === `string`) {
-      if (/^[>=<]/.test(value)) {
-        v = parseComparisonValue(value);
-      } else if (/^between/i.test(value)) {
-        v = parseBetweenValue(value);
-      } else if (/^in/i.test(value)) {
-        v = parseInValue(value);
-      } else if (/^attribute_type/i.test(value)) {
-        v = parseAttributeTypeValue(value);
-      } else if (/^begins_with/i.test(value)) {
-        v = parseBeginsWithValue(value);
-      } else if (/^contains/i.test(value)) {
-        v = parseContainsValue(value);
-      } else if (/^size/i.test(value)) {
-        v = parseSizeValue(value);
-      } else if (!/^attribute_exists|^attribute_not_exists/.test(value)) {
-        v = value;
+      const strValue = value.trim();
+      if (REGEX_COMPARISON.test(strValue)) {
+        v = parseComparisonValue(strValue);
+      } else if (REGEX_BETWEEN.test(strValue)) {
+        v = parseBetweenValue(strValue);
+      } else if (REGEX_PARSE_IN.test(strValue)) {
+        v = parseInValue(strValue);
+      } else if (REGEX_ATTRIBUTE_TYPE.test(strValue)) {
+        v = parseAttributeTypeValue(strValue);
+      } else if (REGEX_BEGINS_WITH.test(strValue)) {
+        v = parseBeginsWithValue(strValue);
+      } else if (REGEX_CONTAINS.test(strValue)) {
+        v = parseContainsValue(strValue);
+      } else if (REGEX_SIZE.test(strValue)) {
+        v = parseSizeValue(strValue);
+      } else if (
+        !REGEX_ATTRIBUTE_EXISTS.test(strValue) &&
+        !REGEX_ATTRIBUTE_NOT_EXISTS.test(strValue)
+      ) {
+        v = strValue;
       }
     } else {
       v = value;
