@@ -1,7 +1,8 @@
 # dynoexpr
 
 <p>
-  <img src="https://packagephobia.now.sh/badge?p=@tuplo/dynoexpr">
+  <img src="https://img.shields.io/npm/v/@tuplo/dynoexpr">
+  <img src="https://github.com/tuplo/dynoexpr/workflows/Build/badge.svg">
   <img src="https://david-dm.org/tuplo/dynoexpr.svg">
 </p>
 
@@ -24,23 +25,30 @@ Converts a plain object to a DynamoDB expression with all variables and names re
 import dynoexpr from '@tuplo/dynoexpr';
 
 const params = dynoexpr({
-  KeyCondition: { HashKey: 'key' },
+  KeyCondition: { id: '567' },
+  Condition: { rating: '> 4.5' },
   Filter: { color: 'blue' },
   Projection: ['weight', 'size'],
 });
 
 /*
 {
-  KeyConditionExpression: '(#n3141 = :v531d)',
-  ExpressionAttributeValues: { ':v531d': 'key', ':v0c8f': 'blue' },
+  KeyConditionExpression: '(#n0c8f = :vaa3d)',
+  ConditionExpression: '(#n843d > :v122c)',
   FilterExpression: '(#n9bfd = :v0c8f)',
   ProjectionExpression: '#ndb8f,#n1a24',
   ExpressionAttributeNames: {
-    '#n3141': 'HashKey',
+    '#n0c8f': 'id',
+    '#n843d': 'rating',
     '#n9bfd': 'color',
     '#ndb8f': 'weight',
     '#n1a24': 'size'
   }
+  ExpressionAttributeValues: {
+    ':vaa3d': '567',
+    ':v122c': 4,
+    ':v0c8f': 'blue'
+  },
 }
 */
 ```
