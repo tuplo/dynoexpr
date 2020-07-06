@@ -3,9 +3,11 @@
     "baseUrl": "./",
     "declaration": true,
     "esModuleInterop": true,
+    "lib": ["es2015", "es2017"],
     "module": "ES6",
     "outDir": "./lib",
-    "strict": true
+    "strict": true,
+    "typeRoots": ["src/@types", "./node_modules/@types"]
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules/**/*"]
