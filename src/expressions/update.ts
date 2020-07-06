@@ -1,18 +1,5 @@
-import { DynamoDbValue, getAttrName, getAttrValue } from './helpers';
-
-export type Update = Record<string, DynamoDbValue>;
-export type UpdateAction = 'SET' | 'ADD' | 'DELETE' | 'REMOVE';
-export type UpdateInput = Partial<{
-  Update: Update;
-  UpdateAction: UpdateAction;
-  ExpressionAttributeNames: { [key: string]: string };
-  ExpressionAttributeValues: { [key: string]: DynamoDbValue };
-}>;
-export type UpdateOutput = Partial<{
-  UpdateExpression: string;
-  ExpressionAttributeNames: { [key: string]: string };
-  ExpressionAttributeValues: { [key: string]: DynamoDbValue };
-}>;
+import { DynamoDbValue, UpdateInput, UpdateOutput } from 'dynoexpr';
+import { getAttrName, getAttrValue } from '../utils';
 
 type ParseOperationValueFn = (expr: string, key: string) => number;
 export const parseOperationValue: ParseOperationValueFn = (expr, key) => {

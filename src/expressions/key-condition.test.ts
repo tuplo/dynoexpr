@@ -1,4 +1,5 @@
-import { getKeyConditionExpression, KeyConditionInput } from './key-condition';
+import { KeyConditionInput } from 'dynoexpr';
+import { getKeyConditionExpression } from './key-condition';
 
 describe(`key condition expression`, () => {
   it(`builds the ConditionExpression and NameValueMaps - comparison operators`, () => {

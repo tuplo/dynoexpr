@@ -11,7 +11,7 @@ import {
   parseContainsValue,
   parseInValue,
   parseSizeValue,
-} from './condition-helpers';
+} from './helpers';
 
 describe(`helpers for condition helpers`, () => {
   describe(`parse expression values`, () => {

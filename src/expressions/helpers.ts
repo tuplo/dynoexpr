@@ -1,4 +1,5 @@
-import { getAttrName, getAttrValue, DynamoDbValue } from './helpers';
+import { DynamoDbValue, LogicalOperatorType } from 'dynoexpr';
+import { getAttrName, getAttrValue } from '../utils';
 
 const REGEX_ATTRIBUTE_TYPE = /^attribute_type\s*\(([^)]+)/i;
 type ParseAttributeTypeValue = (exp: string) => string;
@@ -58,10 +59,9 @@ export const parseContainsValue: ParseContainsValueFn = (exp) => {
 const REGEX_ATTRIBUTE_EXISTS = /^attribute_exists$/i;
 const REGEX_ATTRIBUTE_NOT_EXISTS = /^attribute_not_exists$/i;
 
-export type LogicalOperator = 'AND' | 'OR';
 type BuildConditionExpressionInput = {
   Condition: Record<string, DynamoDbValue>;
-  LogicalOperator?: LogicalOperator;
+  LogicalOperator?: LogicalOperatorType;
 };
 type BuildConditionExpressionFn = (
   params: BuildConditionExpressionInput

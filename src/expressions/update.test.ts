@@ -1,9 +1,9 @@
 /* eslint @typescript-eslint/camelcase:off */
+import { UpdateInput } from 'dynoexpr';
 import {
   getExpressionAttributes,
   getUpdateExpression,
   parseOperationValue,
-  UpdateInput,
   isMathExpression,
 } from './update';
 
