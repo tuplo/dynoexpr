@@ -1,23 +1,10 @@
+import { KeyConditionInput, KeyConditionOutput } from 'dynoexpr';
 import {
   buildConditionAttributeNames,
   buildConditionAttributeValues,
   buildConditionExpression,
-  LogicalOperator,
-} from './condition-helpers';
-import { DynamoDbValue } from './helpers';
+} from './helpers';
 
-export type KeyCondition = Record<string, DynamoDbValue>;
-export type KeyConditionInput = Partial<{
-  KeyCondition: KeyCondition;
-  KeyConditionLogicalOperator: LogicalOperator;
-  ExpressionAttributeNames: Record<string, string>;
-  ExpressionAttributeValues: { [key: string]: DynamoDbValue };
-}>;
-export type KeyConditionOutput = Partial<{
-  KeyConditionExpression: string;
-  ExpressionAttributeNames: Record<string, string>;
-  ExpressionAttributeValues: { [key: string]: DynamoDbValue };
-}>;
 type GetKeyConditionExpressionFn = (
   params?: KeyConditionInput
 ) => KeyConditionOutput;

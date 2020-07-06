@@ -1,4 +1,5 @@
-import { getProjectionExpression, ProjectionInput } from './projection';
+import { ProjectionInput } from 'dynoexpr';
+import { getProjectionExpression } from './projection';
 
 describe(`projection expression`, () => {
   it(`converts a ProjectionExpression to ExpressionAttributesMap`, () => {

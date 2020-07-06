@@ -1,40 +1,17 @@
 import {
-  ConditionInput,
-  ConditionOutput,
-  getConditionExpression,
-} from './condition';
-import { getFilterExpression, FilterInput, FilterOutput } from './filter';
+  DynoexprInput,
+  DynoexprOutput,
+  BatchRequestInput,
+  BatchRequestOutput,
+  TransactRequestInput,
+  TransactRequestOutput,
+} from 'dynoexpr';
+import { getSingleTableExpressions } from './operations/single';
+import { isBatchRequest, getBatchExpressions } from './operations/batch';
 import {
-  getProjectionExpression,
-  ProjectionInput,
-  ProjectionOutput,
-} from './projection';
-import { getUpdateExpression, UpdateInput, UpdateOutput } from './update';
-import {
-  getKeyConditionExpression,
-  KeyConditionInput,
-  KeyConditionOutput,
-} from './key-condition';
-
-export { ConditionInput, ConditionOutput } from './condition';
-export { FilterInput, FilterOutput } from './filter';
-export { KeyConditionInput, KeyConditionOutput } from './key-condition';
-export { ProjectionInput, ProjectionOutput } from './projection';
-export { UpdateInput, UpdateOutput } from './update';
-
-export type DynoexprInput = ConditionInput &
-  FilterInput &
-  KeyConditionInput &
-  ProjectionInput &
-  UpdateInput &
-  unknown;
-
-export type DynoexprOutput = ConditionOutput &
-  FilterOutput &
-  KeyConditionOutput &
-  ProjectionOutput &
-  UpdateOutput &
-  unknown;
+  isTransactRequest,
+  getTransactExpressions,
+} from './operations/transact';
 
 /**
  * Converts a plain object to a AWS.DynamoDB.DocumentClient expression.
@@ -44,14 +21,17 @@ export type DynoexprOutput = ConditionOutput &
  *  Projection: ['weight', 'quantity']
  * })
  */
-export default function dynoexpr<T extends DynoexprOutput = DynoexprOutput>(
-  params: DynoexprInput = {}
-): T {
-  return [
-    getKeyConditionExpression,
-    getConditionExpression,
-    getFilterExpression,
-    getProjectionExpression,
-    getUpdateExpression,
-  ].reduce((acc, getExpressionFn) => getExpressionFn(acc), params) as T;
+export default function dynoexpr<
+  T extends
+    | DynoexprOutput
+    | BatchRequestOutput
+    | TransactRequestOutput = DynoexprOutput
+>(params: DynoexprInput | BatchRequestInput | TransactRequestInput = {}): T {
+  if (isBatchRequest(params)) {
+    return getBatchExpressions(params) as T;
+  }
+  if (isTransactRequest(params)) {
+    return getTransactExpressions(params) as T;
+  }
+  return getSingleTableExpressions(params);
 }

@@ -1,14 +1,5 @@
-import { getAttrName } from './helpers';
-
-export type Projection = string[];
-export type ProjectionInput = Partial<{
-  Projection: Projection;
-  ExpressionAttributeNames: Record<string, string>;
-}>;
-export type ProjectionOutput = Partial<{
-  ProjectionExpression: string;
-  ExpressionAttributeNames: Record<string, string>;
-}>;
+import { ProjectionInput, ProjectionOutput } from 'dynoexpr';
+import { getAttrName } from '../utils';
 
 type GetProjectionExpressionFn = (params?: ProjectionInput) => ProjectionOutput;
 export const getProjectionExpression: GetProjectionExpressionFn = (

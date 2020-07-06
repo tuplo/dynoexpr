@@ -1,23 +1,9 @@
+import { FilterInput, FilterOutput } from 'dynoexpr';
 import {
   buildConditionAttributeNames,
   buildConditionAttributeValues,
   buildConditionExpression,
-  LogicalOperator,
-} from './condition-helpers';
-import { DynamoDbValue } from './helpers';
-
-export type Filter = Record<string, DynamoDbValue>;
-export type FilterInput = Partial<{
-  Filter: Filter;
-  FilterLogicalOperator: LogicalOperator;
-  ExpressionAttributeNames: { [key: string]: string };
-  ExpressionAttributeValues: { [key: string]: DynamoDbValue };
-}>;
-export type FilterOutput = Partial<{
-  FilterExpression: string;
-  ExpressionAttributeNames: { [key: string]: string };
-  ExpressionAttributeValues: { [key: string]: DynamoDbValue };
-}>;
+} from './helpers';
 
 type GetFilterExpressionFn = (params?: FilterInput) => FilterOutput;
 export const getFilterExpression: GetFilterExpressionFn = (params = {}) => {
