@@ -109,6 +109,7 @@ const params = dynoexpr({
     ':v3b84': 20
   }
 }
+*/
 ```
 
 **Using multiple expressions on the same request**
@@ -160,7 +161,7 @@ const params = dynoexpr({
 */
 ```
 
-**Only changes known expression parameters**
+**Parsing atomic requests, only expressions will be replaced**
 
 You can pass the whole request parameters to `dynoexpr` - only the expression builders will be replaced.
 
@@ -186,6 +187,72 @@ const params = dynoexpr({
   ExpressionAttributeValues: {
     ':vbe37': 'dark'
   }
+}
+*/
+```
+
+**Parsing Batch requests**
+
+```typescript
+const params = dynoexpr({
+  RequestItems: {
+    'Table-1': {
+      Keys: [{ foo: 'bar' }],
+      Projection: [`a`, `b`],
+    },
+  },
+  ReturnConsumedCapacity: 'TOTAL',
+});
+
+/*
+{
+  RequestItems: {
+    'Table-1': {
+      Keys: [{ foo: 'bar' }],
+      ProjectionExpression: `#n2661,#n578f`,
+      ExpressionAttributeNames: {
+        '#n2661': `a`,
+        '#n578f': `b`,
+      },
+    },
+  },
+  ReturnConsumedCapacity: 'TOTAL',
+}
+*/
+```
+
+**Parsing Transact requests**
+
+```typescript
+const params = dynoexpr({
+  TransactItems: [
+    {
+      Get: {
+        TableName: 'Table-1',
+        Key: { id: 'foo' },
+        Projection: ['a', 'b'],
+      },
+    },
+  ],
+  ReturnConsumedCapacity: 'INDEXES',
+});
+
+/*
+{
+  TransactItems: [
+    {
+      Get: {
+        TableName: `Table-1`,
+        Key: { id: `foo` },
+        ProjectionExpression: `#n2661,#n578f`,
+        ExpressionAttributeNames: {
+          '#n2661': `a`,
+          '#n578f': `b`,
+        },
+      },
+    },
+  ],
+  ReturnConsumedCapacity: 'INDEXES',
 }
 */
 ```
