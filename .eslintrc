@@ -17,8 +17,9 @@
     "jest": true
   },
   "rules": {
-    "import/extensions": 0,
-    "import/prefer-default-export": 0,
+    "import/extensions": "off",
+    "import/prefer-default-export": "off",
+    "import/no-unresolved": "off",
     "jest/no-hooks": "off"
   },
   "overrides": [
