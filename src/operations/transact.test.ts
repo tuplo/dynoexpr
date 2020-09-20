@@ -1,25 +1,25 @@
 import { TransactRequestInput } from 'dynoexpr';
 import { getTransactExpressions } from './transact';
 
-describe(`transact requests`, () => {
-  it(`accepts transact operations - transactGet`, () => {
+describe('transact requests', () => {
+  it('accepts transact operations - transactGet', () => {
     expect.assertions(1);
     const params = {
       TransactItems: [
         {
           Get: {
-            TableName: `Table-1`,
-            Key: { id: `foo` },
-            Projection: [`a`, `b`],
+            TableName: 'Table-1',
+            Key: { id: 'foo' },
+            Projection: ['a', 'b'],
           },
         },
         {
           Get: {
-            TableName: `Table-2`,
-            Key: { id: `bar` },
-            Projection: [`foo`, `cast`, `year`, `baz`],
+            TableName: 'Table-2',
+            Key: { id: 'bar' },
+            Projection: ['foo', 'cast', 'year', 'baz'],
             ExpressionAttributeNames: {
-              '#quz': `quz`,
+              '#quz': 'quz',
             },
           },
         },
@@ -31,26 +31,26 @@ describe(`transact requests`, () => {
       TransactItems: [
         {
           Get: {
-            TableName: `Table-1`,
-            Key: { id: `foo` },
-            ProjectionExpression: `#n2661,#n578f`,
+            TableName: 'Table-1',
+            Key: { id: 'foo' },
+            ProjectionExpression: '#n2661,#n578f',
             ExpressionAttributeNames: {
-              '#n2661': `a`,
-              '#n578f': `b`,
+              '#n2661': 'a',
+              '#n578f': 'b',
             },
           },
         },
         {
           Get: {
-            TableName: `Table-2`,
-            Key: { id: `bar` },
-            ProjectionExpression: `#na4d8,#nc464,#n17d8,#n6e88`,
+            TableName: 'Table-2',
+            Key: { id: 'bar' },
+            ProjectionExpression: '#na4d8,#nc464,#n17d8,#n6e88',
             ExpressionAttributeNames: {
-              '#quz': `quz`,
-              '#na4d8': `foo`,
-              '#nc464': `cast`,
-              '#n17d8': `year`,
-              '#n6e88': `baz`,
+              '#quz': 'quz',
+              '#na4d8': 'foo',
+              '#nc464': 'cast',
+              '#n17d8': 'year',
+              '#n6e88': 'baz',
             },
           },
         },
@@ -60,31 +60,31 @@ describe(`transact requests`, () => {
     expect(result).toStrictEqual(expected);
   });
 
-  it(`accepts transact operations - transactWrite`, () => {
+  it('accepts transact operations - transactWrite', () => {
     expect.assertions(1);
     const params = {
       TransactItems: [
         {
           ConditionCheck: {
-            TableName: `Table-1`,
-            Condition: { a: `foo` },
+            TableName: 'Table-1',
+            Condition: { a: 'foo' },
           },
         },
         {
           Put: {
-            TableName: `Table-1`,
-            Condition: { b: `> 1` },
+            TableName: 'Table-1',
+            Condition: { b: '> 1' },
           },
         },
         {
           Delete: {
-            TableName: `Table-2`,
-            Condition: { c: `>= 2` },
+            TableName: 'Table-2',
+            Condition: { c: '>= 2' },
           },
         },
         {
           Update: {
-            TableName: `Table-3`,
+            TableName: 'Table-3',
             Update: { foo: 'bar' },
           },
         },

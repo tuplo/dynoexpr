@@ -3,13 +3,13 @@ import { getAttrName, getAttrValue } from '../utils';
 
 type ParseOperationValueFn = (expr: string, key: string) => number;
 export const parseOperationValue: ParseOperationValueFn = (expr, key) => {
-  const v = expr.replace(key, ``).replace(/[+-]/, ``);
+  const v = expr.replace(key, '').replace(/[+-]/, '');
   return Number(v.trim());
 };
 
 type IsMathExpressionFn = (name: string, value: DynamoDbValue) => boolean;
 export const isMathExpression: IsMathExpressionFn = (name, value) => {
-  if (typeof name !== `string`) return false;
+  if (typeof name !== 'string') return false;
   const rgName = new RegExp(`\\b${name}\\b`);
   return rgName.test(`${value}`) && /[+-]/.test(`${value}`);
 };
@@ -36,12 +36,12 @@ export const getExpressionAttributes: GetExpressionAttributesFn = (params) => {
 type GetUpdateExpressionFn = (params?: UpdateInput) => UpdateOutput;
 export const getUpdateExpression: GetUpdateExpressionFn = (params = {}) => {
   if (!params.Update) return params;
-  const { Update, UpdateAction = `SET`, ...restOfParams } = params;
+  const { Update, UpdateAction = 'SET', ...restOfParams } = params;
   const {
     ExpressionAttributeNames = {},
     ExpressionAttributeValues = {},
   } = getExpressionAttributes(params);
-  let entries = ``;
+  let entries = '';
   switch (UpdateAction) {
     case 'SET':
       entries = Object.entries(Update)
@@ -61,30 +61,30 @@ export const getUpdateExpression: GetUpdateExpressionFn = (params = {}) => {
           }
           return `${getAttrName(name)} = ${getAttrValue(value)}`;
         })
-        .join(`, `);
+        .join(', ');
       break;
     case 'ADD':
     case 'DELETE':
       entries = Object.entries(Update)
         .map(([name, value]) => [getAttrName(name), getAttrValue(value)])
         .map(([name, value]) => `${name} ${value}`)
-        .join(`, `);
+        .join(', ');
       break;
     case 'REMOVE':
-      entries = Object.keys(ExpressionAttributeNames).join(`, `);
+      entries = Object.keys(ExpressionAttributeNames).join(', ');
       break;
     default:
       break;
   }
 
-  const parameters = {
+  const parameters: UpdateOutput = {
     ...restOfParams,
-    UpdateExpression: [UpdateAction, entries].join(` `),
+    UpdateExpression: [UpdateAction, entries].join(' '),
     ExpressionAttributeNames,
     ExpressionAttributeValues,
   };
 
-  if (UpdateAction === `REMOVE`) {
+  if (UpdateAction === 'REMOVE') {
     delete parameters.ExpressionAttributeValues;
   }
 

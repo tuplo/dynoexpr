@@ -1,62 +1,62 @@
 import { ProjectionInput } from 'dynoexpr';
 import { getProjectionExpression } from './projection';
 
-describe(`projection expression`, () => {
-  it(`converts a ProjectionExpression to ExpressionAttributesMap`, () => {
+describe('projection expression', () => {
+  it('converts a ProjectionExpression to ExpressionAttributesMap', () => {
     expect.assertions(1);
     const params: ProjectionInput = {
-      Projection: [`foo`, `cast`, `year`, `baz`],
+      Projection: ['foo', 'cast', 'year', 'baz'],
     };
     const result = getProjectionExpression(params);
     const expected = {
-      ProjectionExpression: `#na4d8,#nc464,#n17d8,#n6e88`,
+      ProjectionExpression: '#na4d8,#nc464,#n17d8,#n6e88',
       ExpressionAttributeNames: {
-        '#na4d8': `foo`,
-        '#nc464': `cast`,
-        '#n17d8': `year`,
-        '#n6e88': `baz`,
+        '#na4d8': 'foo',
+        '#nc464': 'cast',
+        '#n17d8': 'year',
+        '#n6e88': 'baz',
       },
     };
     expect(result).toStrictEqual(expected);
   });
 
-  it(`adds new names to an existing ExpressionAttributesMap`, () => {
+  it('adds new names to an existing ExpressionAttributesMap', () => {
     expect.assertions(1);
     const params: ProjectionInput = {
-      Projection: [`foo`, `cast`, `year`, `baz`],
+      Projection: ['foo', 'cast', 'year', 'baz'],
       ExpressionAttributeNames: {
-        '#quz': `quz`,
+        '#quz': 'quz',
       },
     };
     const result = getProjectionExpression(params);
     const expected = {
-      ProjectionExpression: `#na4d8,#nc464,#n17d8,#n6e88`,
+      ProjectionExpression: '#na4d8,#nc464,#n17d8,#n6e88',
       ExpressionAttributeNames: {
-        '#quz': `quz`,
-        '#na4d8': `foo`,
-        '#nc464': `cast`,
-        '#n17d8': `year`,
-        '#n6e88': `baz`,
+        '#quz': 'quz',
+        '#na4d8': 'foo',
+        '#nc464': 'cast',
+        '#n17d8': 'year',
+        '#n6e88': 'baz',
       },
     };
     expect(result).toStrictEqual(expected);
   });
 
-  it(`maintains existing ProjectionExpression names`, () => {
+  it('maintains existing ProjectionExpression names', () => {
     expect.assertions(1);
     const params: ProjectionInput = {
-      Projection: [`foo`, `baz`],
+      Projection: ['foo', 'baz'],
       ExpressionAttributeNames: {
-        '#foo': `foo`,
+        '#foo': 'foo',
       },
     };
     const result = getProjectionExpression(params);
     const expected = {
-      ProjectionExpression: `#na4d8,#n6e88`,
+      ProjectionExpression: '#na4d8,#n6e88',
       ExpressionAttributeNames: {
-        '#foo': `foo`,
-        '#na4d8': `foo`,
-        '#n6e88': `baz`,
+        '#foo': 'foo',
+        '#na4d8': 'foo',
+        '#n6e88': 'baz',
       },
     };
     expect(result).toStrictEqual(expected);

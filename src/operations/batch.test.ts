@@ -1,19 +1,19 @@
 import { getBatchExpressions } from './batch';
 
-describe(`batch requests`, () => {
-  it(`accepts batch operations - batchGet`, () => {
+describe('batch requests', () => {
+  it('accepts batch operations - batchGet', () => {
     expect.assertions(1);
     const params = {
       RequestItems: {
         'Table-1': {
           Keys: [{ foo: 'bar' }],
-          Projection: [`a`, `b`],
+          Projection: ['a', 'b'],
         },
         'Table-2': {
           Keys: [{ foo: 'bar' }],
-          Projection: [`foo`, `cast`, `year`, `baz`],
+          Projection: ['foo', 'cast', 'year', 'baz'],
           ExpressionAttributeNames: {
-            '#quz': `quz`,
+            '#quz': 'quz',
           },
         },
       },
@@ -23,21 +23,21 @@ describe(`batch requests`, () => {
       RequestItems: {
         'Table-1': {
           Keys: [{ foo: 'bar' }],
-          ProjectionExpression: `#n2661,#n578f`,
+          ProjectionExpression: '#n2661,#n578f',
           ExpressionAttributeNames: {
-            '#n2661': `a`,
-            '#n578f': `b`,
+            '#n2661': 'a',
+            '#n578f': 'b',
           },
         },
         'Table-2': {
           Keys: [{ foo: 'bar' }],
-          ProjectionExpression: `#na4d8,#nc464,#n17d8,#n6e88`,
+          ProjectionExpression: '#na4d8,#nc464,#n17d8,#n6e88',
           ExpressionAttributeNames: {
-            '#quz': `quz`,
-            '#na4d8': `foo`,
-            '#nc464': `cast`,
-            '#n17d8': `year`,
-            '#n6e88': `baz`,
+            '#quz': 'quz',
+            '#na4d8': 'foo',
+            '#nc464': 'cast',
+            '#n17d8': 'year',
+            '#n6e88': 'baz',
           },
         },
       },
@@ -45,7 +45,7 @@ describe(`batch requests`, () => {
     expect(result).toStrictEqual(expected);
   });
 
-  it(`accepts batch operations - batchWrite`, () => {
+  it('accepts batch operations - batchWrite', () => {
     expect.assertions(1);
     const params = {
       RequestItems: {

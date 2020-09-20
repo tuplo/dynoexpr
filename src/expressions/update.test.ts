@@ -1,4 +1,3 @@
-/* eslint @typescript-eslint/camelcase:off */
 import { UpdateInput } from 'dynoexpr';
 import {
   getExpressionAttributes,
@@ -7,25 +6,25 @@ import {
   isMathExpression,
 } from './update';
 
-describe(`update expression`, () => {
-  it(`parses the number on a math operation update`, () => {
+describe('update expression', () => {
+  it('parses the number on a math operation update', () => {
     expect.assertions(6);
     const exprs = [
-      `foo + 2`,
-      `foo - 2`,
-      `2 - foo`,
-      `2 + foo`,
-      `foo  +  2`,
-      `foo+2`,
+      'foo + 2',
+      'foo - 2',
+      '2 - foo',
+      '2 + foo',
+      'foo  +  2',
+      'foo+2',
     ];
     const expected = 2;
     exprs.forEach((exp) => {
-      const result = parseOperationValue(exp, `foo`);
+      const result = parseOperationValue(exp, 'foo');
       expect(result).toBe(expected);
     });
   });
 
-  it(`converts from an obj to ExpressionAttributes`, () => {
+  it('converts from an obj to ExpressionAttributes', () => {
     expect.assertions(1);
     const Update = {
       foo: 'bar',
@@ -59,24 +58,24 @@ describe(`update expression`, () => {
     expect(result).toStrictEqual(expected);
   });
 
-  it(`builds ExpressionAttributesMap with existing maps`, () => {
+  it('builds ExpressionAttributesMap with existing maps', () => {
     expect.assertions(1);
     const Update = { a: 1 };
     const params = {
       Update,
-      ExpressionAttributeNames: { '#b': `b` },
+      ExpressionAttributeNames: { '#b': 'b' },
       ExpressionAttributeValues: { ':b': 2 },
     };
     const result = getExpressionAttributes(params);
     const expected = {
       Update,
-      ExpressionAttributeNames: { '#b': `b`, '#n2661': `a` },
+      ExpressionAttributeNames: { '#b': 'b', '#n2661': 'a' },
       ExpressionAttributeValues: { ':b': 2, ':v849b': 1 },
     };
     expect(result).toStrictEqual(expected);
   });
 
-  it(`updates attributes - SET`, () => {
+  it('updates attributes - SET', () => {
     expect.assertions(1);
     const params = {
       Update: {
@@ -86,7 +85,7 @@ describe(`update expression`, () => {
     };
     const result = getUpdateExpression(params);
     const expected = {
-      UpdateExpression: `SET #na4d8 = :v51f2, #n6e88 = :v862c`,
+      UpdateExpression: 'SET #na4d8 = :v51f2, #n6e88 = :v862c',
       ExpressionAttributeNames: {
         '#na4d8': 'foo',
         '#n6e88': 'baz',
@@ -99,15 +98,15 @@ describe(`update expression`, () => {
     expect(result).toStrictEqual(expected);
   });
 
-  it(`identifies an expression as being a math expression`, () => {
+  it('identifies an expression as being a math expression', () => {
     expect.assertions(6);
     const expressions = [
-      [`foo`, `foo - 2`],
-      [`foo`, `foo-2`],
-      [`foo`, `10-20-001`],
-      [`foo`, `foobar - 2`],
-      [`foo`, `2-foobar`],
-      [`foo`, `Mon Jun 01 2020 20:54:50 GMT+0100 (British Summer Time)`],
+      ['foo', 'foo - 2'],
+      ['foo', 'foo-2'],
+      ['foo', '10-20-001'],
+      ['foo', 'foobar - 2'],
+      ['foo', '2-foobar'],
+      ['foo', 'Mon Jun 01 2020 20:54:50 GMT+0100 (British Summer Time)'],
     ];
     const expected = [true, true, false, false, false, false];
     expressions.forEach((expression, i) => {
@@ -116,18 +115,19 @@ describe(`update expression`, () => {
     });
   });
 
-  it(`updates numeric value math operations - SET`, () => {
+  it('updates numeric value math operations - SET', () => {
     expect.assertions(1);
     const params: UpdateInput = {
       Update: {
-        foo: `foo - 2`,
-        bar: `2 - bar`,
-        baz: `baz + 9`,
+        foo: 'foo - 2',
+        bar: '2 - bar',
+        baz: 'baz + 9',
       },
     };
     const result = getUpdateExpression(params);
     const expected = {
-      UpdateExpression: `SET #na4d8 = #na4d8 - :v862c, #n51f2 = :v862c - #n51f2, #n6e88 = #n6e88 + :vad26`,
+      UpdateExpression:
+        'SET #na4d8 = #na4d8 - :v862c, #n51f2 = :v862c - #n51f2, #n6e88 = #n6e88 + :vad26',
       ExpressionAttributeNames: {
         '#na4d8': 'foo',
         '#n51f2': 'bar',
@@ -141,13 +141,13 @@ describe(`update expression`, () => {
     expect(result).toStrictEqual(expected);
   });
 
-  it(`updates expression with -/+ but it's not a math expression`, () => {
+  it("updates expression with -/+ but it's not a math expression", () => {
     expect.assertions(1);
     const params: UpdateInput = {
       Update: {
-        foo: `10-20-001`,
-        bar: `2020-06-01T19:53:52.457Z`,
-        baz: `Mon Jun 01 2020 20:54:50 GMT+0100 (British Summer Time)`,
+        foo: '10-20-001',
+        bar: '2020-06-01T19:53:52.457Z',
+        baz: 'Mon Jun 01 2020 20:54:50 GMT+0100 (British Summer Time)',
       },
     };
     const result = getUpdateExpression(params);
@@ -167,7 +167,7 @@ describe(`update expression`, () => {
     expect(result).toStrictEqual(expected);
   });
 
-  it(`removes attributes - REMOVE`, () => {
+  it('removes attributes - REMOVE', () => {
     expect.assertions(1);
     const params: UpdateInput = {
       Update: {
@@ -178,7 +178,7 @@ describe(`update expression`, () => {
     };
     const result = getUpdateExpression(params);
     const expected = {
-      UpdateExpression: `REMOVE #na4d8, #n6e88`,
+      UpdateExpression: 'REMOVE #na4d8, #n6e88',
       ExpressionAttributeNames: {
         '#na4d8': 'foo',
         '#n6e88': 'baz',
@@ -187,18 +187,18 @@ describe(`update expression`, () => {
     expect(result).toStrictEqual(expected);
   });
 
-  it(`updates numeric values or sets - ADD`, () => {
+  it('updates numeric values or sets - ADD', () => {
     expect.assertions(1);
     const params: UpdateInput = {
       Update: {
         foo: 'bar',
         baz: 2,
       },
-      UpdateAction: `ADD`,
+      UpdateAction: 'ADD',
     };
     const result = getUpdateExpression(params);
     const expected = {
-      UpdateExpression: `ADD #na4d8 :v51f2, #n6e88 :v862c`,
+      UpdateExpression: 'ADD #na4d8 :v51f2, #n6e88 :v862c',
       ExpressionAttributeNames: {
         '#na4d8': 'foo',
         '#n6e88': 'baz',
@@ -211,18 +211,18 @@ describe(`update expression`, () => {
     expect(result).toStrictEqual(expected);
   });
 
-  it(`deletes items from sets - DELETE`, () => {
+  it('deletes items from sets - DELETE', () => {
     expect.assertions(1);
     const params: UpdateInput = {
       Update: {
         foo: 'bar',
         baz: 2,
       },
-      UpdateAction: `DELETE`,
+      UpdateAction: 'DELETE',
     };
     const result = getUpdateExpression(params);
     const expected = {
-      UpdateExpression: `DELETE #na4d8 :v51f2, #n6e88 :v862c`,
+      UpdateExpression: 'DELETE #na4d8 :v51f2, #n6e88 :v862c',
       ExpressionAttributeNames: {
         '#na4d8': 'foo',
         '#n6e88': 'baz',

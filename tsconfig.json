@@ -5,6 +5,7 @@
     "esModuleInterop": true,
     "lib": ["es2015", "es2017"],
     "module": "ES6",
+    "moduleResolution": "node",
     "outDir": "./lib",
     "strict": true,
     "typeRoots": ["src/@types", "./node_modules/@types"]

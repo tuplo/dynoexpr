@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 declare module 'dynoexpr' {
   export type LogicalOperatorType = 'AND' | 'OR';
 

@@ -37,7 +37,7 @@ type ParseInValueFn = (exp: string) => (string | number)[];
 export const parseInValue: ParseInValueFn = (exp) => {
   const [, list] = REGEX_PARSE_IN.exec(exp) || [];
   return list
-    .split(`,`)
+    .split(',')
     .map((el) => el.trim())
     .map((el) => (/^\d+$/.test(el) ? Number(el) : el));
 };
@@ -73,7 +73,7 @@ export const buildConditionExpression: BuildConditionExpressionFn = ({
   Object.entries(Condition)
     .map(([key, value]) => {
       let expr: string;
-      if (typeof value === `string`) {
+      if (typeof value === 'string') {
         const strValue = value.trim();
         if (REGEX_COMPARISON.test(strValue)) {
           const [, operator] = /([<=>]+)/.exec(strValue) || [];
@@ -85,7 +85,7 @@ export const buildConditionExpression: BuildConditionExpressionFn = ({
           expr = `${getAttrName(key)} ${exp}`;
         } else if (REGEX_PARSE_IN.test(strValue)) {
           const v = parseInValue(strValue);
-          expr = `${getAttrName(key)} in (${v.map(getAttrValue).join(`,`)})`;
+          expr = `${getAttrName(key)} in (${v.map(getAttrValue).join(',')})`;
         } else if (REGEX_ATTRIBUTE_EXISTS.test(strValue)) {
           expr = `attribute_exists(${getAttrName(key)})`;
         } else if (REGEX_ATTRIBUTE_NOT_EXISTS.test(strValue)) {
@@ -143,7 +143,7 @@ export const buildConditionAttributeValues: BuildConditionAttributeValuesFn = (
 ) =>
   Object.entries(condition).reduce((acc, [, value]) => {
     let v: DynamoDbValue | undefined;
-    if (typeof value === `string`) {
+    if (typeof value === 'string') {
       const strValue = value.trim();
       if (REGEX_COMPARISON.test(strValue)) {
         v = parseComparisonValue(strValue);
@@ -169,7 +169,7 @@ export const buildConditionAttributeValues: BuildConditionAttributeValuesFn = (
       v = value;
     }
 
-    if (typeof v === `undefined`) {
+    if (typeof v === 'undefined') {
       return acc;
     }
 

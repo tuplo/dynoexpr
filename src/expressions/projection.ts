@@ -10,7 +10,7 @@ export const getProjectionExpression: GetProjectionExpressionFn = (
   const fields = Projection.map((field) => field.trim());
   return {
     ...restOfParams,
-    ProjectionExpression: fields.map(getAttrName).join(`,`),
+    ProjectionExpression: fields.map(getAttrName).join(','),
     ExpressionAttributeNames: fields.reduce((acc, field) => {
       const attrName = getAttrName(field);
       if (attrName in acc) return acc;

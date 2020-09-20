@@ -1,11 +1,11 @@
 import { DynoexprInput } from 'dynoexpr';
 import dynoexpr from './index';
 
-describe(`get expressions`, () => {
-  it(`accepts a generic type`, () => {
+describe('get expressions', () => {
+  it('accepts a generic type', () => {
     expect.assertions(1);
     const params: DynoexprInput = {
-      Projection: [`a`],
+      Projection: ['a'],
     };
     type QueryInput = {
       ProjectionExpression: string;
@@ -13,9 +13,9 @@ describe(`get expressions`, () => {
     };
     const result = dynoexpr<QueryInput>(params);
     const expected = {
-      ProjectionExpression: `#n2661`,
+      ProjectionExpression: '#n2661',
       ExpressionAttributeNames: {
-        '#n2661': `a`,
+        '#n2661': 'a',
       },
     };
     expect(result).toStrictEqual(expected);
