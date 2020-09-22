@@ -107,8 +107,12 @@ declare module 'dynoexpr' {
   export type Update = Record<string, DynamoDbValue>;
   export type UpdateAction = 'SET' | 'ADD' | 'DELETE' | 'REMOVE';
   export type UpdateInput = Partial<{
-    Update: Update;
-    UpdateAction: UpdateAction;
+    Update?: Update;
+    UpdateAction?: UpdateAction;
+    UpdateRemove?: Update;
+    UpdateAdd?: Update;
+    UpdateSet?: Update;
+    UpdateDelete?: Update;
     ExpressionAttributeNames: { [key: string]: string };
     ExpressionAttributeValues: { [key: string]: DynamoDbValue };
   }>;
