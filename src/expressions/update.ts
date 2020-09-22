@@ -84,9 +84,5 @@ export const getUpdateExpression: GetUpdateExpressionFn = (params = {}) => {
     ExpressionAttributeValues,
   };
 
-  if (UpdateAction === 'REMOVE') {
-    delete parameters.ExpressionAttributeValues;
-  }
-
   return parameters;
 };

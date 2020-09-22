@@ -49,6 +49,10 @@ describe('update operations - SET/REMOVE/ADD/DELETE', () => {
         '#na4d8': 'foo',
         '#n6e88': 'baz',
       },
+      ExpressionAttributeValues: {
+        ':v51f2': 'bar',
+        ':v862c': 2,
+      },
     };
     expect(result).toStrictEqual(expected);
   });
@@ -118,7 +122,9 @@ describe('update operations - SET/REMOVE/ADD/DELETE', () => {
         '#nff12': 'ufoo',
       },
       ExpressionAttributeValues: {
+        ':v0e91': 'rbar',
         ':v45cc': 'dbar',
+        ':v862c': 2,
         ':ve948': 'abar',
       },
     };

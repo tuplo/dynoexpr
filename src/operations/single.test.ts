@@ -1,5 +1,5 @@
 import { DynoexprInput, DynoexprOutput } from 'dynoexpr';
-import { getSingleTableExpressions } from './single';
+import { getSingleTableExpressions, isUpdateRemoveOnlyPresent } from './single';
 
 describe('single table operations', () => {
   it('applies consecutive expression getters to a parameters object', () => {
@@ -9,6 +9,10 @@ describe('single table operations', () => {
       Condition: { b: '> 10' },
       Filter: { a: 'foo' },
       Projection: ['a', 'b'],
+      UpdateSet: { d: 7 },
+      UpdateAdd: { e: 8 },
+      UpdateDelete: { f: 9 },
+      UpdateRemove: { g: 'g' },
     };
     const result = getSingleTableExpressions(params);
     const expected: DynoexprOutput = {
@@ -16,19 +20,82 @@ describe('single table operations', () => {
       ConditionExpression: '(#n578f > :ve820)',
       FilterExpression: '(#n2661 = :va4d8)',
       ProjectionExpression: '#n2661,#n578f',
+      UpdateExpression:
+        'SET #n91ad = :v2543 REMOVE #n5f33, #n578f, #n2661, #n91ad, #n845d ADD #nec32 :v236d DELETE #ncce7 :vad26',
       ExpressionAttributeNames: {
         '#n2661': 'a',
         '#n578f': 'b',
         '#n5f33': 'c',
+        '#n845d': 'g',
+        '#n91ad': 'd',
+        '#ncce7': 'f',
+        '#nec32': 'e',
       },
       ExpressionAttributeValues: {
-        ':va4d8': 'foo',
-        ':ve820': 10,
         ':v18d5': 5,
+        ':v236d': 8,
+        ':v2543': 7,
+        ':v845d': 'g',
+        ':va4d8': 'foo',
+        ':vad26': 9,
+        ':ve820': 10,
       },
     };
     expect(result).toStrictEqual(expected);
   });
+
+  it.each<[string, DynoexprInput, boolean]>([
+    ['no update remove', { Filter: { foo: 2 } }, false],
+    ['UpdateRemove only', { UpdateRemove: { foo: 1 } }, true],
+    [
+      'UpdateAction: REMOVE',
+      { Update: { foo: 1 }, UpdateAction: 'REMOVE' },
+      true,
+    ],
+    [
+      'other expressions',
+      { UpdateRemove: { foo: 1 }, Filter: { bar: 2 } },
+      false,
+    ],
+    [
+      "don't include Projection",
+      { UpdateRemove: { foo: 1 }, Projection: ['bar'] },
+      true,
+    ],
+  ])('checks if only UpdateRemove is present - %s', (_, params, expected) => {
+    const result = isUpdateRemoveOnlyPresent(params);
+    expect(result).toBe(expected);
+  });
+
+  it.each<[string, DynoexprInput, DynoexprOutput]>([
+    [
+      'UpdateRemove',
+      { UpdateRemove: { a: '' } },
+      {
+        UpdateExpression: 'REMOVE #n2661',
+        ExpressionAttributeNames: {
+          '#n2661': 'a',
+        },
+      },
+    ],
+    [
+      "UpdateAction: 'REMOVE'",
+      { Update: { a: '' }, UpdateAction: 'REMOVE' },
+      {
+        UpdateExpression: 'REMOVE #n2661',
+        ExpressionAttributeNames: {
+          '#n2661': 'a',
+        },
+      },
+    ],
+  ])(
+    "doesn't include ExpressionAttributeValues - %s",
+    (_, params, expected) => {
+      expect.assertions(1);
+      const result = getSingleTableExpressions(params);
+      expect(result).toStrictEqual(expected);
+    }
+  );
 
   it("doesn't clash values for different expressions", () => {
     expect.assertions(1);
@@ -37,6 +104,7 @@ describe('single table operations', () => {
       Condition: { a: '> 10' },
       Filter: { a: 2 },
       Projection: ['a', 'b'],
+      UpdateSet: { a: 2 },
     };
     const result = getSingleTableExpressions(params);
     const expected: DynoexprOutput = {
@@ -44,6 +112,7 @@ describe('single table operations', () => {
       ConditionExpression: '(#n2661 > :ve820)',
       FilterExpression: '(#n2661 = :v862c)',
       ProjectionExpression: '#n2661,#n578f',
+      UpdateExpression: 'SET #n2661 = :v862c',
       ExpressionAttributeNames: {
         '#n2661': 'a',
         '#n578f': 'b',
@@ -64,6 +133,7 @@ describe('single table operations', () => {
       Condition: { a: '> 10' },
       Filter: { a: 2 },
       Projection: ['a', 'b'],
+      UpdateSet: { a: 2 },
       ExpressionAttributeNames: {
         '#foo': 'foo',
       },
@@ -77,6 +147,7 @@ describe('single table operations', () => {
       ConditionExpression: '(#n2661 > :ve820)',
       FilterExpression: '(#n2661 = :v862c)',
       ProjectionExpression: '#n2661,#n578f',
+      UpdateExpression: 'SET #n2661 = :v862c',
       ExpressionAttributeNames: {
         '#n2661': 'a',
         '#n578f': 'b',
