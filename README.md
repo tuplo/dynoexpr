@@ -299,6 +299,11 @@ type DynamoDbValue =
 
   Update: { [key: string]: DynamoDbValue },
   UpdateAction: 'SET' | 'ADD' | 'DELETE' | 'REMOVE';
+
+  UpdateSet: { [key: string]: DynamoDbValue },
+  UpdateAdd: { [key: string]: DynamoDbValue },
+  UpdateDelete: { [key: string]: DynamoDbValue },
+  UpdateRemove: { [key: string]: DynamoDbValue },
 }
 ```
 
