@@ -59,7 +59,13 @@ export const getUpdateOperationsExpression: GetUpdateExpressionFn = (
     return expr;
   }, params as UpdateOutput);
 
-  outputParams.UpdateExpression = updateExpressions.filter(Boolean).join(' ');
+  const aggUpdateExpression = updateExpressions
+    .filter(Boolean)
+    .filter((e, i, a) => a.indexOf(e) === i)
+    .join(' ');
+  if (aggUpdateExpression) {
+    outputParams.UpdateExpression = aggUpdateExpression;
+  }
 
   return outputParams;
 };

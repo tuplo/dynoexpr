@@ -167,26 +167,6 @@ describe('update expression', () => {
     expect(result).toStrictEqual(expected);
   });
 
-  it('removes attributes - REMOVE', () => {
-    expect.assertions(1);
-    const params: UpdateInput = {
-      Update: {
-        foo: 'bar',
-        baz: 2,
-      },
-      UpdateAction: 'REMOVE',
-    };
-    const result = getUpdateExpression(params);
-    const expected = {
-      UpdateExpression: 'REMOVE #na4d8, #n6e88',
-      ExpressionAttributeNames: {
-        '#na4d8': 'foo',
-        '#n6e88': 'baz',
-      },
-    };
-    expect(result).toStrictEqual(expected);
-  });
-
   it('updates numeric values or sets - ADD', () => {
     expect.assertions(1);
     const params: UpdateInput = {
