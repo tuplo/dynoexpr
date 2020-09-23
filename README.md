@@ -135,6 +135,52 @@ const params = dynoexpr({
 */
 ```
 
+**Working with Sets**
+
+If a value is provided as a Set, it will be converted to `DocumentClient.DynamoDbSet`.
+
+```typescript
+const params = dynoexpr({
+  Update: {
+    Color: new Set(['Orange', 'Purple']);
+  }
+})
+
+/*
+{
+  UpdateExpression: 'SET #n7295 = :v0a80',
+  ExpressionAttributeNames: {
+    '#n7295': 'Color',
+  },
+  ExpressionAttributeValues: {
+    ':v0a80': docClient.createSet(['Orange', 'Purple']),
+  },
+}
+*/
+```
+
+**When using UpdateAdd or UpdateDelete, arrays are converted to DynamoDbSet**
+
+```typescript
+const params = dynoexpr({
+  UpdateAdd: {
+    Color: ['Orange', 'Purple'];
+  }
+})
+
+/*
+{
+  UpdateExpression: 'ADD #n7295 :v0a80',
+  ExpressionAttributeNames: {
+    '#n7295': 'Color',
+  },
+  ExpressionAttributeValues: {
+    ':v0a80': docClient.createSet(['Orange', 'Purple']),
+  },
+}
+*/
+```
+
 **Keep existing Expressions, AttributeNames and AttributeValues**
 
 ```typescript
@@ -298,7 +344,7 @@ type DynamoDbValue =
   Projection: string[],
 
   Update: { [key: string]: DynamoDbValue },
-  UpdateAction: 'SET' | 'ADD' | 'DELETE' | 'REMOVE';
+  UpdateAction: 'SET' | 'ADD' | 'DELETE' | 'REMOVE',
 
   UpdateSet: { [key: string]: DynamoDbValue },
   UpdateAdd: { [key: string]: DynamoDbValue },
