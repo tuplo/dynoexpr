@@ -1,5 +1,13 @@
+import AWS from 'aws-sdk';
+
 import { DynoexprInput, DynoexprOutput } from 'dynoexpr';
-import { getSingleTableExpressions, isUpdateRemoveOnlyPresent } from './single';
+import {
+  getSingleTableExpressions,
+  isUpdateRemoveOnlyPresent,
+  convertValuesToDynamoDbSet,
+} from './single';
+
+const docClient = new AWS.DynamoDB.DocumentClient();
 
 describe('single table operations', () => {
   it('applies consecutive expression getters to a parameters object', () => {
@@ -159,6 +167,28 @@ describe('single table operations', () => {
         ':v862c': 2,
         ':foo': 'bar',
       },
+    };
+    expect(result).toStrictEqual(expected);
+  });
+
+  it('converts Sets to DynamoDbSet if present in ExpressionsAttributeValues', () => {
+    expect.assertions(1);
+    const values = {
+      a: 1,
+      b: 'foo',
+      c: [1, 2, 3],
+      d: { foo: 'bar' },
+      e: new Set([1, 2]),
+      f: new Set(['foo', 'bar']),
+    };
+    const result = convertValuesToDynamoDbSet(values);
+    const expected = {
+      a: 1,
+      b: 'foo',
+      c: [1, 2, 3],
+      d: { foo: 'bar' },
+      e: docClient.createSet([1, 2]),
+      f: docClient.createSet(['foo', 'bar']),
     };
     expect(result).toStrictEqual(expected);
   });

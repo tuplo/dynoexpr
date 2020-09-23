@@ -10,7 +10,8 @@ declare module 'dynoexpr' {
   export type DynamoDbValue =
     | DynamoDbPrimitive
     | DynamoDbPrimitive[]
-    | Set<DynamoDbPrimitive>;
+    | Set<DynamoDbPrimitive>
+    | unknown;
 
   // batch operations
   export type BatchGetInput = ProjectionInput & Record<string, unknown>;

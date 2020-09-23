@@ -167,49 +167,70 @@ describe('update expression', () => {
     expect(result).toStrictEqual(expected);
   });
 
-  it('updates numeric values or sets - ADD', () => {
+  it('adds a number - ADD', () => {
     expect.assertions(1);
     const params: UpdateInput = {
-      Update: {
-        foo: 'bar',
-        baz: 2,
-      },
       UpdateAction: 'ADD',
+      Update: {
+        foo: 5,
+      },
     };
     const result = getUpdateExpression(params);
     const expected = {
-      UpdateExpression: 'ADD #na4d8 :v51f2, #n6e88 :v862c',
+      UpdateExpression: 'ADD #na4d8 :v18d5',
       ExpressionAttributeNames: {
         '#na4d8': 'foo',
-        '#n6e88': 'baz',
       },
       ExpressionAttributeValues: {
-        ':v51f2': 'bar',
-        ':v862c': 2,
+        ':v18d5': 5,
       },
     };
     expect(result).toStrictEqual(expected);
   });
 
-  it('deletes items from sets - DELETE', () => {
+  it('adds elements to a set - SET', () => {
     expect.assertions(1);
     const params: UpdateInput = {
+      UpdateAction: 'ADD',
       Update: {
-        foo: 'bar',
-        baz: 2,
+        foo: [1, 2],
+        bar: ['bar', 'baz'],
       },
-      UpdateAction: 'DELETE',
     };
     const result = getUpdateExpression(params);
     const expected = {
-      UpdateExpression: 'DELETE #na4d8 :v51f2, #n6e88 :v862c',
+      UpdateExpression: 'ADD #na4d8 :vd26b, #n51f2 :v9ad1',
       ExpressionAttributeNames: {
+        '#n51f2': 'bar',
         '#na4d8': 'foo',
-        '#n6e88': 'baz',
       },
       ExpressionAttributeValues: {
-        ':v51f2': 'bar',
-        ':v862c': 2,
+        ':v649c': new Set(['bar', 'baz']),
+        ':veb45': new Set([1, 2]),
+      },
+    };
+    expect(result).toStrictEqual(expected);
+  });
+
+  it('removes element from a set - DELETE', () => {
+    expect.assertions(1);
+    const params: UpdateInput = {
+      UpdateAction: 'DELETE',
+      Update: {
+        foo: [1, 2],
+        bar: ['bar', 'baz'],
+      },
+    };
+    const result = getUpdateExpression(params);
+    const expected = {
+      UpdateExpression: 'DELETE #na4d8 :vd26b, #n51f2 :v9ad1',
+      ExpressionAttributeNames: {
+        '#n51f2': 'bar',
+        '#na4d8': 'foo',
+      },
+      ExpressionAttributeValues: {
+        ':v649c': new Set(['bar', 'baz']),
+        ':veb45': new Set([1, 2]),
       },
     };
     expect(result).toStrictEqual(expected);
