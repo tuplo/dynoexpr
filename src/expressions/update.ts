@@ -28,7 +28,9 @@ export const getExpressionAttributes: GetExpressionAttributesFn = (params) => {
     const v = isMathExpression(key, value)
       ? parseOperationValue(value as string, key)
       : value;
-    acc.ExpressionAttributeValues[getAttrValue(v)] = v;
+    acc.ExpressionAttributeValues[getAttrValue(v)] = Array.isArray(v)
+      ? new Set(v)
+      : v;
     return acc;
   }, params as ExpressionAttributesMap);
 };
@@ -66,8 +68,15 @@ export const getUpdateExpression: GetUpdateExpressionFn = (params = {}) => {
     case 'ADD':
     case 'DELETE':
       entries = Object.entries(Update)
+        .map(
+          ([name, value]) =>
+            [name, Array.isArray(value) ? new Set(value) : value] as [
+              string,
+              unknown
+            ]
+        )
         .map(([name, value]) => [getAttrName(name), getAttrValue(value)])
-        .map(([name, value]) => `${name} ${value}`)
+        .map(([exprName, exprValue]) => `${exprName} ${exprValue}`)
         .join(', ');
       break;
     case 'REMOVE':

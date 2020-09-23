@@ -20,6 +20,9 @@
   "module": "lib/index.modern.js",
   "source": "src/index.ts",
   "types": "lib/index.d.ts",
+  "peerDependencies": {
+    "aws-sdk": "^2.2.0"
+  },
   "devDependencies": {
     "@types/jest": "26.0.14",
     "@types/node": "14.11.1",
