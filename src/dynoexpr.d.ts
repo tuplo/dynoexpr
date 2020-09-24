@@ -13,7 +13,6 @@ type DynoexprInputValue =
   | Set<number>
   | Set<string>;
 
-type DynamoDbPrimitive = string | number | boolean | Record<string, unknown>;
 type DynamoDbValue =
   | string
   | string[]
@@ -138,3 +137,7 @@ type DynoexprOutput = ConditionOutput &
   ProjectionOutput &
   UpdateOutput &
   Record<string, unknown>;
+
+export type DynoexprFn = (
+  params: DynoexprInput | BatchRequestInput | TransactRequestInput
+) => DynoexprOutput;

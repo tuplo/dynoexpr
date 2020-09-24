@@ -1,3 +1,4 @@
+import type { UpdateInput, UpdateOutput } from '../dynoexpr';
 import { getUpdateExpression } from './update';
 
 type GetUpdateExpressionFn = (params?: UpdateInput) => UpdateOutput;

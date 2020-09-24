@@ -1,3 +1,8 @@
+import type {
+  DynoexprInputValue,
+  UpdateInput,
+  UpdateOutput,
+} from '../dynoexpr';
 import { getAttrName, getAttrValue } from '../utils';
 
 type ParseOperationValueFn = (expr: string, key: string) => number;
@@ -6,7 +11,7 @@ export const parseOperationValue: ParseOperationValueFn = (expr, key) => {
   return Number(v.trim());
 };
 
-type IsMathExpressionFn = (name: string, value: DynamoDbValue) => boolean;
+type IsMathExpressionFn = (name: string, value: DynoexprInputValue) => boolean;
 export const isMathExpression: IsMathExpressionFn = (name, value) => {
   if (typeof name !== 'string') return false;
   const rgName = new RegExp(`\\b${name}\\b`);
@@ -15,7 +20,7 @@ export const isMathExpression: IsMathExpressionFn = (name, value) => {
 
 type ExpressionAttributesMap = {
   ExpressionAttributeNames: { [key: string]: string };
-  ExpressionAttributeValues: { [key: string]: DynamoDbValue };
+  ExpressionAttributeValues: { [key: string]: DynoexprInputValue };
 };
 type GetExpressionAttributesFn = (params: UpdateInput) => UpdateOutput;
 export const getExpressionAttributes: GetExpressionAttributesFn = (params) => {
@@ -28,7 +33,7 @@ export const getExpressionAttributes: GetExpressionAttributesFn = (params) => {
       ? parseOperationValue(value as string, key)
       : value;
     acc.ExpressionAttributeValues[getAttrValue(v)] = Array.isArray(v)
-      ? new Set(v as unknown[])
+      ? new Set(v as string[])
       : v;
     return acc;
   }, params as ExpressionAttributesMap);

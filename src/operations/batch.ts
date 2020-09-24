@@ -1,4 +1,12 @@
 /* eslint-disable no-param-reassign */
+import type {
+  DynoexprInput,
+  BatchRequestInput,
+  BatchRequestOutput,
+  BatchRequestItemsInput,
+  BatchGetInput,
+  BatchWriteInput,
+} from '../dynoexpr';
 import { getSingleTableExpressions } from './single';
 
 export function isBatchRequest(
