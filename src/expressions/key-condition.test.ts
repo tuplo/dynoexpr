@@ -1,3 +1,4 @@
+import type { KeyConditionInput } from '../dynoexpr';
 import { getKeyConditionExpression } from './key-condition';
 
 describe('key condition expression', () => {

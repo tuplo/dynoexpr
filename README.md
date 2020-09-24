@@ -303,18 +303,6 @@ const params = dynoexpr({
 */
 ```
 
-**Type the resulting parameters**
-
-The resulting object is type-compatible with all `DocumentClient` requests, but if you want to be specific, `dynoexpr` accepts a generic type to be applied to the return value.
-
-```typescript
-const params = dynoexpr<AWS.DocumentClient.ScanInput>({
-  TableName: 'Table',
-  Filter: { year: 2015 },
-  Projection: ['color', 'brand'],
-});
-```
-
 ## API
 
 ### dynoexpr&lt;T&gt;(params)

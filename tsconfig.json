@@ -12,5 +12,5 @@
     "target": "es5"
   },
   "include": ["src/**/*", "src/dynoexpr.d.ts"],
-  "exclude": ["node_modules/**/*", "**/*.test.ts"]
+  "exclude": ["node_modules/**/*"]
 }

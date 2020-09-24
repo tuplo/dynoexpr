@@ -1,3 +1,4 @@
+import type { ProjectionInput } from '../dynoexpr';
 import { getProjectionExpression } from './projection';
 
 describe('projection expression', () => {
