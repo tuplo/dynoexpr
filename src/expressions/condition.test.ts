@@ -1,3 +1,4 @@
+import type { ConditionInput } from '../dynoexpr';
 import { getConditionExpression } from './condition';
 
 describe('condition expression', () => {
