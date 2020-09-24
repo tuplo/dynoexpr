@@ -20,7 +20,7 @@
   "module": "lib/index.modern.js",
   "source": "src/index.ts",
   "types": "lib/index.d.ts",
-  "peerDependencies": {
+  "dependencies": {
     "aws-sdk": "^2.2.0"
   },
   "devDependencies": {
