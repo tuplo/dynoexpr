@@ -1,6 +1,5 @@
 import AWS from 'aws-sdk';
 
-import { DynoexprInput, DynoexprOutput, DynamoDbValue } from 'dynoexpr';
 import { getConditionExpression } from '../expressions/condition';
 import { getFilterExpression } from '../expressions/filter';
 import { getProjectionExpression } from '../expressions/projection';

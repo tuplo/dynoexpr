@@ -1,4 +1,3 @@
-import { UpdateInput } from 'dynoexpr';
 import {
   getExpressionAttributes,
   getUpdateExpression,

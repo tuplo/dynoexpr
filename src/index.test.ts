@@ -1,4 +1,3 @@
-import { DynoexprInput } from 'dynoexpr';
 import dynoexpr from './index';
 
 describe('get expressions', () => {

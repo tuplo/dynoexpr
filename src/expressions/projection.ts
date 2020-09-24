@@ -1,4 +1,3 @@
-import { ProjectionInput, ProjectionOutput } from 'dynoexpr';
 import { getAttrName } from '../utils';
 
 type GetProjectionExpressionFn = (params?: ProjectionInput) => ProjectionOutput;

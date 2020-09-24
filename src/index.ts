@@ -1,12 +1,4 @@
 /* eslint-disable @typescript-eslint/indent */
-import {
-  DynoexprInput,
-  DynoexprOutput,
-  BatchRequestInput,
-  BatchRequestOutput,
-  TransactRequestInput,
-  TransactRequestOutput,
-} from 'dynoexpr';
 import { getSingleTableExpressions } from './operations/single';
 import { isBatchRequest, getBatchExpressions } from './operations/batch';
 import {

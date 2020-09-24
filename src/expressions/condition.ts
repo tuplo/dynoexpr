@@ -1,4 +1,3 @@
-import { ConditionInput, ConditionOutput } from 'dynoexpr';
 import {
   buildConditionAttributeNames,
   buildConditionAttributeValues,

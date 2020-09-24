@@ -1,4 +1,3 @@
-import { FilterInput } from 'dynoexpr';
 import { getFilterExpression } from './filter';
 
 describe('filter expression', () => {

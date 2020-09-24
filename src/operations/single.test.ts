@@ -1,6 +1,5 @@
 import AWS from 'aws-sdk';
 
-import { DynoexprInput, DynoexprOutput } from 'dynoexpr';
 import {
   getSingleTableExpressions,
   isUpdateRemoveOnlyPresent,

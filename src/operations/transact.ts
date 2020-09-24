@@ -1,9 +1,3 @@
-import {
-  TransactRequestInput,
-  TransactRequestOutput,
-  TransactOperation,
-  DynoexprInput,
-} from 'dynoexpr';
 import { getSingleTableExpressions } from './single';
 
 export function isTransactRequest(

@@ -1,4 +1,3 @@
-import { TransactRequestInput } from 'dynoexpr';
 import { getTransactExpressions } from './transact';
 
 describe('transact requests', () => {

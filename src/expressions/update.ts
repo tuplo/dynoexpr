@@ -1,4 +1,3 @@
-import { DynamoDbValue, UpdateInput, UpdateOutput } from 'dynoexpr';
 import { getAttrName, getAttrValue } from '../utils';
 
 type ParseOperationValueFn = (expr: string, key: string) => number;
@@ -29,7 +28,7 @@ export const getExpressionAttributes: GetExpressionAttributesFn = (params) => {
       ? parseOperationValue(value as string, key)
       : value;
     acc.ExpressionAttributeValues[getAttrValue(v)] = Array.isArray(v)
-      ? new Set(v)
+      ? new Set(v as unknown[])
       : v;
     return acc;
   }, params as ExpressionAttributesMap);
@@ -70,10 +69,10 @@ export const getUpdateExpression: GetUpdateExpressionFn = (params = {}) => {
       entries = Object.entries(Update)
         .map(
           ([name, value]) =>
-            [name, Array.isArray(value) ? new Set(value) : value] as [
-              string,
-              unknown
-            ]
+            [
+              name,
+              Array.isArray(value) ? new Set(value as unknown[]) : value,
+            ] as [string, unknown]
         )
         .map(([name, value]) => [getAttrName(name), getAttrValue(value)])
         .map(([exprName, exprValue]) => `${exprName} ${exprValue}`)

@@ -44,7 +44,7 @@
     "typescript": "4.0.3"
   },
   "scripts": {
-    "build": "microbundle --target node --sourcemap false --format cjs,modern",
+    "build": "microbundle --target node --sourcemap true --format cjs,modern",
     "lint": "eslint 'src/**'",
     "test:watch": "jest --watch",
     "test": "jest",

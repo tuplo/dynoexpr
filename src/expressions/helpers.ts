@@ -1,4 +1,3 @@
-import { DynamoDbValue, LogicalOperatorType } from 'dynoexpr';
 import { getAttrName, getAttrValue } from '../utils';
 
 const REGEX_ATTRIBUTE_TYPE = /^attribute_type\s*\(([^)]+)/i;
