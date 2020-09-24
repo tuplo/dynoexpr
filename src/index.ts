@@ -1,4 +1,5 @@
-/* eslint-disable @typescript-eslint/indent */
+import type { DynoexprFn } from './dynoexpr';
+
 import { getSingleTableExpressions } from './operations/single';
 import { isBatchRequest, getBatchExpressions } from './operations/batch';
 import {
@@ -6,25 +7,14 @@ import {
   getTransactExpressions,
 } from './operations/transact';
 
-/**
- * Converts a plain object to a AWS.DynamoDB.DocumentClient expression.
- * @example
- * const params = dynoexpr({
- *  Filter: { color: 'blue' },
- *  Projection: ['weight', 'quantity']
- * })
- */
-export default function dynoexpr<
-  T extends
-    | DynoexprOutput
-    | BatchRequestOutput
-    | TransactRequestOutput = DynoexprOutput
->(params: DynoexprInput | BatchRequestInput | TransactRequestInput = {}): T {
+const dynoexpr: DynoexprFn = (params) => {
   if (isBatchRequest(params)) {
-    return getBatchExpressions(params) as T;
+    return getBatchExpressions(params);
   }
   if (isTransactRequest(params)) {
-    return getTransactExpressions(params) as T;
+    return getTransactExpressions(params);
   }
   return getSingleTableExpressions(params);
-}
+};
+
+export default dynoexpr;

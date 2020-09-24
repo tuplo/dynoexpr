@@ -1,3 +1,4 @@
+import type { KeyConditionInput, KeyConditionOutput } from '../dynoexpr';
 import {
   buildConditionAttributeNames,
   buildConditionAttributeValues,

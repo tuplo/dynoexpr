@@ -1,3 +1,8 @@
+import type {
+  LogicalOperatorType,
+  DynoexprInputValue,
+  DynamoDbValue,
+} from '../dynoexpr';
 import { getAttrName, getAttrValue } from '../utils';
 
 const REGEX_ATTRIBUTE_TYPE = /^attribute_type\s*\(([^)]+)/i;
@@ -59,7 +64,7 @@ const REGEX_ATTRIBUTE_EXISTS = /^attribute_exists$/i;
 const REGEX_ATTRIBUTE_NOT_EXISTS = /^attribute_not_exists$/i;
 
 type BuildConditionExpressionInput = {
-  Condition: Record<string, DynamoDbValue>;
+  Condition: Record<string, DynoexprInputValue>;
   LogicalOperator?: LogicalOperatorType;
 };
 type BuildConditionExpressionFn = (
@@ -117,7 +122,7 @@ export type ConditionAttributeNamesParams = {
   ExpressionAttributeNames?: { [key: string]: string };
 };
 type BuildConditionAttributeNamesFn = (
-  condition: Record<string, DynamoDbValue>,
+  condition: Record<string, DynoexprInputValue>,
   params?: ConditionAttributeNamesParams
 ) => { [key: string]: string };
 export const buildConditionAttributeNames: BuildConditionAttributeNamesFn = (
@@ -133,7 +138,7 @@ export type ConditionAttributeValuesParams = {
   ExpressionAttributeValues?: { [key: string]: DynamoDbValue };
 };
 type BuildConditionAttributeValuesFn = (
-  condition: Record<string, DynamoDbValue>,
+  condition: Record<string, DynoexprInputValue>,
   params?: ConditionAttributeValuesParams
 ) => { [key: string]: DynamoDbValue };
 export const buildConditionAttributeValues: BuildConditionAttributeValuesFn = (
