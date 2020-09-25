@@ -1,4 +1,4 @@
-import AWS from 'aws-sdk';
+import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 
 import type { DynoexprInput, DynamoDbValue, DynoexprOutput } from '../dynoexpr';
 import { getConditionExpression } from '../expressions/condition';
@@ -8,7 +8,7 @@ import { getUpdateExpression } from '../expressions/update';
 import { getUpdateOperationsExpression } from '../expressions/update-ops';
 import { getKeyConditionExpression } from '../expressions/key-condition';
 
-const docClient = new AWS.DynamoDB.DocumentClient();
+const docClient = new DocumentClient();
 
 type IsUpdateRemoveOnlyPresentFn = (params: DynoexprInput) => boolean;
 export const isUpdateRemoveOnlyPresent: IsUpdateRemoveOnlyPresentFn = (
