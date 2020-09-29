@@ -31,7 +31,7 @@ type BatchWriteInput = {
   PutRequest?: unknown;
 };
 type BatchRequestItemsInput = Record<string, BatchGetInput | BatchWriteInput[]>;
-type BatchRequestInput = {
+export type BatchRequestInput = {
   RequestItems: BatchRequestItemsInput;
   [key: string]: unknown;
 };
@@ -43,7 +43,7 @@ type BatchRequestOutput = {
 // transact operations
 type TransactOperation = 'Get' | 'ConditionCheck' | 'Put' | 'Delete' | 'Update';
 type TransactRequestItems = Partial<Record<TransactOperation, DynoexprInput>>;
-type TransactRequestInput = {
+export type TransactRequestInput = {
   TransactItems: TransactRequestItems[];
   [key: string]: unknown;
 };
@@ -124,20 +124,16 @@ type UpdateOutput = Partial<{
   ExpressionAttributeValues: { [key: string]: DynamoDbValue };
 }>;
 
-type DynoexprInput = ConditionInput &
+export type DynoexprInput = ConditionInput &
   FilterInput &
   KeyConditionInput &
   ProjectionInput &
   UpdateInput &
   Record<string, unknown>;
 
-type DynoexprOutput = ConditionOutput &
+export type DynoexprOutput = ConditionOutput &
   FilterOutput &
   KeyConditionOutput &
   ProjectionOutput &
   UpdateOutput &
   Record<string, unknown>;
-
-export type DynoexprFn = (
-  params: DynoexprInput | BatchRequestInput | TransactRequestInput
-) => DynoexprOutput;

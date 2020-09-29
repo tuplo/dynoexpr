@@ -303,6 +303,18 @@ const params = dynoexpr({
 */
 ```
 
+**Type the resulting parameters**
+
+The resulting object is compatible with all `DocumentClient` requests, but if you want to be type-safe, `dynoexpr` accepts a generic type to be applied to the return value.
+
+```typescript
+const params = dynoexpr<AWS.DocumentClient.UpdateItemInput>({
+  TableName: 'Table',
+  Key: 1,
+  UpdateSet: { color: 'pink' },
+});
+```
+
 ## API
 
 ### dynoexpr&lt;T&gt;(params)
