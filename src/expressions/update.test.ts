@@ -81,18 +81,22 @@ describe('update expression', () => {
       Update: {
         foo: 'bar',
         baz: 2,
+        buz: { biz: 3 },
       },
     };
     const result = getUpdateExpression(params);
+
     const expected = {
-      UpdateExpression: 'SET #na4d8 = :v51f2, #n6e88 = :v862c',
+      UpdateExpression: 'SET #na4d8 = :v51f2, #n6e88 = :v862c, #n66e7 = :v2362',
       ExpressionAttributeNames: {
         '#na4d8': 'foo',
         '#n6e88': 'baz',
+        '#n66e7': 'buz',
       },
       ExpressionAttributeValues: {
         ':v51f2': 'bar',
         ':v862c': 2,
+        ':v2362': { biz: 3 },
       },
     };
     expect(result).toStrictEqual(expected);
