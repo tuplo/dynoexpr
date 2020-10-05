@@ -24,7 +24,7 @@ type ExpressionAttributesMap = {
 };
 type GetExpressionAttributesFn = (params: UpdateInput) => UpdateOutput;
 export const getExpressionAttributes: GetExpressionAttributesFn = (params) => {
-  const { Update = {} } = params;
+  const { Update = {}, UpdateAction = 'SET' } = params;
   return Object.entries(Update).reduce((acc, [key, value]) => {
     if (!acc.ExpressionAttributeNames) acc.ExpressionAttributeNames = {};
     if (!acc.ExpressionAttributeValues) acc.ExpressionAttributeValues = {};
@@ -32,9 +32,10 @@ export const getExpressionAttributes: GetExpressionAttributesFn = (params) => {
     const v = isMathExpression(key, value)
       ? parseOperationValue(value as string, key)
       : value;
-    acc.ExpressionAttributeValues[getAttrValue(v)] = Array.isArray(v)
-      ? new Set(v as string[])
-      : v;
+    acc.ExpressionAttributeValues[getAttrValue(v)] =
+      Array.isArray(v) && /ADD|DELETE/.test(UpdateAction)
+        ? new Set(v as string[])
+        : v;
     return acc;
   }, params as ExpressionAttributesMap);
 };
