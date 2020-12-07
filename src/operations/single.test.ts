@@ -29,7 +29,7 @@ describe('single table operations', () => {
       FilterExpression: '(#n2661 = :va4d8)',
       ProjectionExpression: '#n2661,#n578f',
       UpdateExpression:
-        'SET #n91ad = :v2543 REMOVE #n5f33, #n578f, #n2661, #n91ad, #n845d ADD #nec32 :v236d DELETE #ncce7 :vad26',
+        'SET #n91ad = :v2543 REMOVE #n845d ADD #nec32 :v236d DELETE #ncce7 :vad26',
       ExpressionAttributeNames: {
         '#n2661': 'a',
         '#n578f': 'b',
@@ -43,7 +43,6 @@ describe('single table operations', () => {
         ':v18d5': 5,
         ':v236d': 8,
         ':v2543': 7,
-        ':v845d': 'g',
         ':va4d8': 'foo',
         ':vad26': 9,
         ':ve820': 10,

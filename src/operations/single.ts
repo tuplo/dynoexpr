@@ -18,10 +18,22 @@ export const isUpdateRemoveOnlyPresent: IsUpdateRemoveOnlyPresentFn = (
   if (UpdateAction !== 'REMOVE' && typeof UpdateRemove === 'undefined')
     return false;
 
-  const { Condition, Filter, KeyCondition } = params;
-  const otherPresent = [Condition, Filter, KeyCondition].some(
-    (key) => typeof key !== 'undefined'
-  );
+  const {
+    Condition,
+    Filter,
+    KeyCondition,
+    UpdateSet,
+    UpdateAdd,
+    UpdateDelete,
+  } = params;
+  const otherPresent = [
+    Condition,
+    Filter,
+    KeyCondition,
+    UpdateSet,
+    UpdateAdd,
+    UpdateDelete,
+  ].some((key) => typeof key !== 'undefined');
   if (otherPresent) {
     return false;
   }
