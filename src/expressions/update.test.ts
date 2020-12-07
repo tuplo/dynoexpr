@@ -103,16 +103,29 @@ describe('update expression', () => {
   });
 
   it('identifies an expression as being a math expression', () => {
-    expect.assertions(6);
+    expect.assertions(9);
     const expressions = [
       ['foo', 'foo - 2'],
       ['foo', 'foo-2'],
       ['foo', '10-20-001'],
       ['foo', 'foobar - 2'],
       ['foo', '2-foobar'],
+      ['foo', 'foo - bar'],
       ['foo', 'Mon Jun 01 2020 20:54:50 GMT+0100 (British Summer Time)'],
+      ['foo', 'foo+bar@baz-buz.com'],
+      ['foo', 'http://baz-buz.com'],
     ];
-    const expected = [true, true, false, false, false, false];
+    const expected = [
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+    ];
     expressions.forEach((expression, i) => {
       const result = isMathExpression(expression[0], expression[1]);
       expect(result).toStrictEqual(expected[i]);
@@ -152,20 +165,24 @@ describe('update expression', () => {
         foo: '10-20-001',
         bar: '2020-06-01T19:53:52.457Z',
         baz: 'Mon Jun 01 2020 20:54:50 GMT+0100 (British Summer Time)',
+        buz: 'foo+bar@baz-buz.com',
       },
     };
     const result = getUpdateExpression(params);
     const expected = {
-      UpdateExpression: 'SET #na4d8 = :vc40c, #n51f2 = :v4416, #n6e88 = :vdeb4',
+      UpdateExpression:
+        'SET #na4d8 = :vc40c, #n51f2 = :v4416, #n6e88 = :vdeb4, #n66e7 = :v14ee',
       ExpressionAttributeNames: {
         '#na4d8': 'foo',
         '#n51f2': 'bar',
         '#n6e88': 'baz',
+        '#n66e7': 'buz',
       },
       ExpressionAttributeValues: {
         ':vc40c': '10-20-001',
         ':v4416': '2020-06-01T19:53:52.457Z',
         ':vdeb4': 'Mon Jun 01 2020 20:54:50 GMT+0100 (British Summer Time)',
+        ':v14ee': 'foo+bar@baz-buz.com',
       },
     };
     expect(result).toStrictEqual(expected);

@@ -14,8 +14,9 @@ export const parseOperationValue: ParseOperationValueFn = (expr, key) => {
 type IsMathExpressionFn = (name: string, value: DynoexprInputValue) => boolean;
 export const isMathExpression: IsMathExpressionFn = (name, value) => {
   if (typeof name !== 'string') return false;
-  const rgName = new RegExp(`\\b${name}\\b`);
-  return rgName.test(`${value}`) && /[+-]/.test(`${value}`);
+  const rgLh = new RegExp(`^${name}\\s*[+-]\\s*\\d+$`);
+  const rgRh = new RegExp(`^\\d+\\s*[+-]\\s*${name}$`);
+  return rgLh.test(`${value}`) || rgRh.test(`${value}`);
 };
 
 type ExpressionAttributesMap = {
