@@ -29,11 +29,12 @@ export const parseBetweenValue: ParseBetweenValueFn = (exp) => {
     .map((val) => Number(val));
 };
 
-const REGEX_COMPARISON = /^[>=<]+\s*(\d+)/;
-type ParseComparisonValueFn = (exp: string) => number;
+const REGEX_COMPARISON = /^[>=<]+\s*(.+)/;
+type ParseComparisonValueFn = (exp: string) => string | number;
 export const parseComparisonValue: ParseComparisonValueFn = (exp) => {
   const [, v] = REGEX_COMPARISON.exec(exp) || [];
-  return Number(v.trim());
+  const sv = v.trim();
+  return /^\d+$/.test(sv) ? Number(sv) : sv;
 };
 
 const REGEX_PARSE_IN = /^in\s*\(([^)]+)/i;
