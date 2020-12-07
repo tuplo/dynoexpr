@@ -58,10 +58,7 @@ describe('update operations - SET/REMOVE/ADD/DELETE', () => {
         '#na4d8': 'foo',
         '#n6e88': 'baz',
       },
-      ExpressionAttributeValues: {
-        ':v51f2': 'bar',
-        ':v862c': 2,
-      },
+      ExpressionAttributeValues: {},
     };
     expect(result).toStrictEqual(expected);
   });
@@ -143,7 +140,7 @@ describe('update operations - SET/REMOVE/ADD/DELETE', () => {
     const result = getUpdateOperationsExpression(params);
     const expected = {
       UpdateExpression:
-        'SET #nff12 = #nff12 - :v862c REMOVE #nff12, #n978b ADD #nb01c :ve948 DELETE #nd358 :v45cc',
+        'SET #nff12 = #nff12 - :v862c REMOVE #n978b ADD #nb01c :ve948 DELETE #nd358 :v45cc',
       ExpressionAttributeNames: {
         '#n978b': 'rfoo',
         '#nb01c': 'afoo',
@@ -151,7 +148,6 @@ describe('update operations - SET/REMOVE/ADD/DELETE', () => {
         '#nff12': 'ufoo',
       },
       ExpressionAttributeValues: {
-        ':v0e91': 'rbar',
         ':v45cc': 'dbar',
         ':v862c': 2,
         ':ve948': 'abar',
