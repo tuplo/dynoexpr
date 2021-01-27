@@ -9,9 +9,8 @@ export const toString: ToStringFn = (data) => {
 };
 
 type Md5Fn = (data: unknown) => string;
-export const md5: Md5Fn = (data) => {
-  return crypto.createHash('md5').update(toString(data).trim()).digest('hex');
-};
+export const md5: Md5Fn = (data) =>
+  crypto.createHash('md5').update(toString(data).trim()).digest('hex');
 
 type GetAttrNameFn = (attribute: string) => string;
 export const getAttrName: GetAttrNameFn = (attribute) => {

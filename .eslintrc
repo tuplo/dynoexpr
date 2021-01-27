@@ -20,7 +20,8 @@
     "import/extensions": "off",
     "import/prefer-default-export": "off",
     "import/no-unresolved": "off",
-    "jest/no-hooks": "off"
+    "jest/no-hooks": "off",
+    "@typescript-eslint/comma-dangle": "off"
   },
   "overrides": [
     {

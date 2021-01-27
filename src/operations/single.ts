@@ -46,8 +46,8 @@ type ConvertValuesToDynamoDbSetFn = (
 ) => Record<string, DynamoDbValue>;
 export const convertValuesToDynamoDbSet: ConvertValuesToDynamoDbSetFn = (
   attributeValues
-) => {
-  return Object.entries(attributeValues).reduce((acc, [key, value]) => {
+) =>
+  Object.entries(attributeValues).reduce((acc, [key, value]) => {
     if (value instanceof Set) {
       acc[key] = docClient.createSet(Array.from(value));
     } else {
@@ -55,7 +55,6 @@ export const convertValuesToDynamoDbSet: ConvertValuesToDynamoDbSetFn = (
     }
     return acc;
   }, {} as Record<string, DynamoDbValue>);
-};
 
 export function getSingleTableExpressions<
   T extends DynoexprOutput = DynoexprOutput
