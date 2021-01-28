@@ -17,7 +17,8 @@ describe('filter expression', () => {
       j: '<= nine',
       k: '<> ten',
       l: 'BETWEEN 6 AND 7',
-      m: 'IN (foo, bar)',
+      m: 'BETWEEN you AND me',
+      n: 'IN (foo, bar)',
     };
     const params: FilterInput = { Filter };
     const result = getFilterExpression(params);
@@ -35,7 +36,8 @@ describe('filter expression', () => {
         '#n5515 <= :v9a54',
         '#n9df3 <> :v7eb4',
         '#n3b33 between :vb2dc and :v2543',
-        '#n501b in (:va4d8,:v51f2)',
+        '#n501b between :v7b79 and :v5c24',
+        '#n63a1 in (:va4d8,:v51f2)',
       ]
         .map((exp) => `(${exp})`)
         .join(' AND '),
@@ -53,6 +55,7 @@ describe('filter expression', () => {
         '#n9df3': 'k',
         '#n3b33': 'l',
         '#n501b': 'm',
+        '#n63a1': 'n',
       },
       ExpressionAttributeValues: {
         ':v849b': 1,
@@ -67,6 +70,8 @@ describe('filter expression', () => {
         ':vaa5c': 'eight',
         ':v9a54': 'nine',
         ':v7eb4': 'ten',
+        ':v7b79': 'you',
+        ':v5c24': 'me',
         ':va4d8': 'foo',
         ':v51f2': 'bar',
       },

@@ -19,14 +19,14 @@ export const parseBeginsWithValue: ParseBeginsWithValueFn = (exp) => {
   return v.trim();
 };
 
-const REGEX_BETWEEN = /^between\s+(\d+)\s+and\s+(\d+)/i;
-type ParseBetweenValueFn = (exp: string) => number[];
+const REGEX_BETWEEN = /^between\s+(.+)\s+and\s+(.+)/i;
+type ParseBetweenValueFn = (exp: string) => (string | number)[];
 export const parseBetweenValue: ParseBetweenValueFn = (exp) => {
   const vs = REGEX_BETWEEN.exec(exp) || [];
   return vs
     .slice(1, 3)
     .map((val) => val.trim())
-    .map((val) => Number(val));
+    .map((val) => (/^\d+$/.test(val) ? Number(val) : val));
 };
 
 const REGEX_COMPARISON = /^[>=<]+\s*(.+)/;
