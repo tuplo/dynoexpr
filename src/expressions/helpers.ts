@@ -131,7 +131,9 @@ export const buildConditionAttributeNames: BuildConditionAttributeNamesFn = (
   params = {}
 ) =>
   Object.keys(condition).reduce((acc, key) => {
-    acc[getAttrName(key)] = key;
+    key.split('.').forEach((k) => {
+      acc[getAttrName(k)] = k;
+    });
     return acc;
   }, params.ExpressionAttributeNames || ({} as { [key: string]: string }));
 

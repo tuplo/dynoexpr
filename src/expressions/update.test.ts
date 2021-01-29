@@ -40,10 +40,10 @@ describe('update expression', () => {
       Update,
       ExpressionAttributeNames: {
         '#na4d8': 'foo',
+        '#n51f2': 'bar',
         '#n6e88': 'baz',
         '#n9cb1': 'foo-bar',
         '#n5dc0': 'fooBar',
-        '#ne022': 'foo.bar',
         '#n5a6e': 'foo_bar',
       },
       ExpressionAttributeValues: {
@@ -82,14 +82,18 @@ describe('update expression', () => {
         foo: 'bar',
         baz: 2,
         buz: { biz: 3 },
+        'foo.bar': 4,
+        'foo.bar.baz': 'buz',
       },
     };
     const result = getUpdateExpression(params);
 
     const expected = {
-      UpdateExpression: 'SET #na4d8 = :v51f2, #n6e88 = :v862c, #n66e7 = :v2362',
+      UpdateExpression:
+        'SET #na4d8 = :v51f2, #n6e88 = :v862c, #n66e7 = :v2362, #na4d8.#n51f2 = :v122c, #na4d8.#n51f2.#n6e88 = :v66e7',
       ExpressionAttributeNames: {
         '#na4d8': 'foo',
+        '#n51f2': 'bar',
         '#n6e88': 'baz',
         '#n66e7': 'buz',
       },
@@ -97,6 +101,8 @@ describe('update expression', () => {
         ':v51f2': 'bar',
         ':v862c': 2,
         ':v2362': { biz: 3 },
+        ':v122c': 4,
+        ':v66e7': 'buz',
       },
     };
     expect(result).toStrictEqual(expected);
