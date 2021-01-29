@@ -29,7 +29,9 @@ export const getExpressionAttributes: GetExpressionAttributesFn = (params) => {
   return Object.entries(Update).reduce((acc, [key, value]) => {
     if (!acc.ExpressionAttributeNames) acc.ExpressionAttributeNames = {};
     if (!acc.ExpressionAttributeValues) acc.ExpressionAttributeValues = {};
-    acc.ExpressionAttributeNames[getAttrName(key)] = key;
+    key.split('.').forEach((k) => {
+      acc.ExpressionAttributeNames[getAttrName(k)] = k;
+    });
     if (UpdateAction !== 'REMOVE') {
       const v = isMathExpression(key, value)
         ? parseOperationValue(value as string, key)

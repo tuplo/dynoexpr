@@ -15,7 +15,10 @@ export const md5: Md5Fn = (data) =>
 type GetAttrNameFn = (attribute: string) => string;
 export const getAttrName: GetAttrNameFn = (attribute) => {
   if (/^#/.test(attribute)) return attribute;
-  return `#n${md5(attribute).substr(28)}`;
+  return attribute
+    .split('.')
+    .map((attr) => `#n${md5(attr).substr(28)}`)
+    .join('.');
 };
 
 type GetAttrValueFn = (value: unknown) => string;
