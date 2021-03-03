@@ -36,10 +36,13 @@ export const getExpressionAttributes: GetExpressionAttributesFn = (params) => {
       const v = isMathExpression(key, value)
         ? parseOperationValue(value as string, key)
         : value;
-      acc.ExpressionAttributeValues[getAttrValue(v)] =
-        Array.isArray(v) && /ADD|DELETE/.test(UpdateAction)
-          ? new Set(v as string[])
-          : v;
+
+      if (Array.isArray(v) && /ADD|DELETE/.test(UpdateAction)) {
+        const s = new Set(v as string[]);
+        acc.ExpressionAttributeValues[getAttrValue(s)] = s;
+      } else {
+        acc.ExpressionAttributeValues[getAttrValue(v)] = v;
+      }
     }
     return acc;
   }, params as ExpressionAttributesMap);
