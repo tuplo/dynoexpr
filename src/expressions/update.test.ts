@@ -232,8 +232,8 @@ describe('update expression', () => {
         '#na4d8': 'foo',
       },
       ExpressionAttributeValues: {
-        ':v649c': new Set(['bar', 'baz']),
-        ':veb45': new Set([1, 2]),
+        ':v9ad1': new Set(['bar', 'baz']),
+        ':vd26b': new Set([1, 2]),
       },
     };
     expect(result).toStrictEqual(expected);
@@ -256,8 +256,8 @@ describe('update expression', () => {
         '#na4d8': 'foo',
       },
       ExpressionAttributeValues: {
-        ':v649c': new Set(['bar', 'baz']),
-        ':veb45': new Set([1, 2]),
+        ':v9ad1': new Set(['bar', 'baz']),
+        ':vd26b': new Set([1, 2]),
       },
     };
     expect(result).toStrictEqual(expected);

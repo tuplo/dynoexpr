@@ -89,8 +89,8 @@ describe('update operations - SET/REMOVE/ADD/DELETE', () => {
         ':v51f2': 'bar',
         ':v862c': 2,
         ':v2362': { biz: 3 },
-        ':v5650': new Set([{ qux: 2 }]),
-        ':vc2b7': new Set([1, 2, 3]),
+        ':v77e7': new Set([{ qux: 2 }]),
+        ':v646d': new Set([1, 2, 3]),
       },
     };
     expect(result).toStrictEqual(expected);
@@ -122,8 +122,8 @@ describe('update operations - SET/REMOVE/ADD/DELETE', () => {
         ':v2362': { biz: 3 },
         ':v51f2': 'bar',
         ':v862c': 2,
-        ':v5650': new Set([{ qux: 2 }]),
-        ':vc2b7': new Set([1, 2, 3]),
+        ':v77e7': new Set([{ qux: 2 }]),
+        ':v646d': new Set([1, 2, 3]),
       },
     };
     expect(result).toStrictEqual(expected);
