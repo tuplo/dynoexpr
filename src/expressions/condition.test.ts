@@ -16,6 +16,7 @@ describe('condition expression', () => {
     };
     const params: ConditionInput = { Condition };
     const result = getConditionExpression(params);
+
     const expected = {
       ConditionExpression: [
         '#n2661 = :va4d8',
@@ -66,6 +67,7 @@ describe('condition expression', () => {
     };
     const params: ConditionInput = { Condition };
     const result = getConditionExpression(params);
+
     const expected = {
       ConditionExpression: [
         'attribute_exists(#n2661)',
@@ -106,6 +108,7 @@ describe('condition expression', () => {
       ConditionLogicalOperator: 'OR',
     };
     const result = getConditionExpression(params);
+
     const expected = {
       ConditionExpression: [
         '#n2661 = :v849b',
@@ -137,6 +140,7 @@ describe('condition expression', () => {
     };
     const params: ConditionInput = { Condition };
     const result = getConditionExpression(params);
+
     const expected = {
       ConditionExpression: [
         'attribute_exists(#n2661)',
@@ -147,6 +151,30 @@ describe('condition expression', () => {
       ExpressionAttributeNames: {
         '#n2661': 'a',
         '#n578f': 'b',
+      },
+    };
+    expect(result).toStrictEqual(expected);
+  });
+
+  it('builds a ConditionalExpression with multiple expressions on the same field', () => {
+    expect.assertions(1);
+    const Condition = {
+      key: ['attribute_not_exists', 'foobar'],
+    };
+    const params: ConditionInput = {
+      Condition,
+      ConditionLogicalOperator: 'OR',
+    };
+    const result = getConditionExpression(params);
+
+    const expected = {
+      ConditionExpression:
+        '(attribute_not_exists(#n531d)) OR (#n531d = :vc63f)',
+      ExpressionAttributeNames: {
+        '#n531d': 'key',
+      },
+      ExpressionAttributeValues: {
+        ':vc63f': 'foobar',
       },
     };
     expect(result).toStrictEqual(expected);

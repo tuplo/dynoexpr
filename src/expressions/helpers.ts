@@ -64,6 +64,17 @@ export const parseContainsValue: ParseContainsValueFn = (exp) => {
 const REGEX_ATTRIBUTE_EXISTS = /^attribute_exists$/i;
 const REGEX_ATTRIBUTE_NOT_EXISTS = /^attribute_not_exists$/i;
 
+type FlattenExpressionsFn = (
+  Condition: Record<string, DynoexprInputValue>
+) => [string, DynoexprInputValue][];
+export const flattenExpressions: FlattenExpressionsFn = (Condition) =>
+  Object.entries(Condition).flatMap(([key, value]) => {
+    if (Array.isArray(value)) {
+      return value.map((v: DynoexprInputValue) => [key, v]);
+    }
+    return [[key, value]];
+  }) as [string, DynoexprInputValue][];
+
 type BuildConditionExpressionInput = {
   Condition: Record<string, DynoexprInputValue>;
   LogicalOperator?: LogicalOperatorType;
@@ -75,7 +86,7 @@ export const buildConditionExpression: BuildConditionExpressionFn = ({
   Condition = {},
   LogicalOperator = 'AND',
 }) =>
-  Object.entries(Condition)
+  flattenExpressions(Condition)
     .map(([key, value]) => {
       let expr: string;
       if (typeof value === 'string') {
@@ -148,7 +159,7 @@ export const buildConditionAttributeValues: BuildConditionAttributeValuesFn = (
   condition,
   params = {}
 ) =>
-  Object.entries(condition).reduce((acc, [, value]) => {
+  flattenExpressions(condition).reduce((acc, [, value]) => {
     let v: DynamoDbValue | undefined;
     if (typeof value === 'string') {
       const strValue = value.trim();
