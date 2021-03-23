@@ -178,6 +178,41 @@ describe('helpers for condition helpers', () => {
       expect(result).toStrictEqual(expected);
     });
 
+    it('builds a condition expression with a list of expressions for the same field', () => {
+      expect.assertions(1);
+      const result = buildConditionExpression({
+        Condition: {
+          a: [
+            'foo',
+            '> 1',
+            '>= 2',
+            '< 3',
+            '<= 4',
+            '<> 5',
+            'BETWEEN 6 AND 7',
+            'IN (foo, bar)',
+          ],
+          b: 'bar',
+        },
+        LogicalOperator: 'OR',
+      });
+
+      const expected = [
+        '#n2661 = :va4d8',
+        '#n2661 > :v849b',
+        '#n2661 >= :v862c',
+        '#n2661 < :vbaf3',
+        '#n2661 <= :v122c',
+        '#n2661 <> :v18d5',
+        '#n2661 between :vb2dc and :v2543',
+        '#n2661 in (:va4d8,:v51f2)',
+        '#n578f = :v51f2',
+      ]
+        .map((exp) => `(${exp})`)
+        .join(' OR ');
+      expect(result).toStrictEqual(expected);
+    });
+
     it('builds the ExpressionAttributeNameMap', () => {
       expect.assertions(1);
       const result = buildConditionAttributeNames(Condition);
@@ -234,6 +269,16 @@ describe('helpers for condition helpers', () => {
       const result = buildConditionAttributeValues(Condition2, params);
       const expected = {
         ':a': 'bar',
+        ':va4d8': 'foo',
+      };
+      expect(result).toStrictEqual(expected);
+    });
+
+    it('builds the ExpressionAttributesValueMap with multiple expressions for the same field', () => {
+      expect.assertions(1);
+      const Condition2 = { b: ['foo', 'attribute_exists'] };
+      const result = buildConditionAttributeValues(Condition2);
+      const expected = {
         ':va4d8': 'foo',
       };
       expect(result).toStrictEqual(expected);

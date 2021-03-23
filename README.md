@@ -70,6 +70,34 @@ const results = await docClient
   .promise();
 ```
 
+**Using multiple expressions on the same field**
+
+You can hide multiple expressions on the same field, by packing them into an array and assigning it to the key with the field's name.
+
+```typescript
+const params = dynoexpr({
+  Condition: {
+    color: ['attribute_not_exists', 'yellow', 'blue'],
+  },
+  logicalOperator: 'OR',
+});
+
+/*
+ {
+  ConditionExpression: '(attribute_not_exists(#n9bfd)) \
+    OR (#n9bfd = :va351) \
+    OR (#n9bfd = :v0c8f)',
+  ExpressionAttributeNames: {
+    '#n9bfd': 'color'
+  },
+  ExpressionAttributeValues: {
+    ':va351': 'yellow',
+    ':v0c8f': 'blue'
+  }
+}
+*/
+```
+
 **Using functions**
 
 `DynamoDB` supports a number of [functions](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.OperatorsAndFunctions.html#Expressions.OperatorsAndFunctions.Functions) to be evaluated when parsing expressions. You don't need to reference the `path` argument because that's identified by the object's key.
