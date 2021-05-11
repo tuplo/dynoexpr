@@ -70,6 +70,7 @@ describe('single table operations', () => {
       true,
     ],
   ])('checks if only UpdateRemove is present - %s', (_, params, expected) => {
+    expect.assertions(1);
     const result = isUpdateRemoveOnlyPresent(params);
     expect(result).toBe(expected);
   });
