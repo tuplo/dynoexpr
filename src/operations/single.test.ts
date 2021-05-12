@@ -1,4 +1,4 @@
-import { DocumentClient } from 'aws-sdk/clients/dynamodb';
+import AWS from 'aws-sdk';
 
 import type { DynoexprInput, DynoexprOutput } from '../dynoexpr';
 import {
@@ -7,7 +7,7 @@ import {
   convertValuesToDynamoDbSet,
 } from './single';
 
-const docClient = new DocumentClient();
+const docClient = new AWS.DynamoDB.DocumentClient();
 
 describe('single table operations', () => {
   it('applies consecutive expression getters to a parameters object', () => {

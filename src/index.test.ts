@@ -1,4 +1,4 @@
-import { DocumentClient } from 'aws-sdk/clients/dynamodb';
+import AWS from 'aws-sdk';
 
 import type { DynoexprOutput } from './dynoexpr';
 import dynoexpr from '.';
@@ -23,13 +23,13 @@ describe('high level API', () => {
 
   it('accepts a type to be applied to the output', () => {
     expect.assertions(1);
-    const params = dynoexpr<DocumentClient.UpdateItemInput>({
+    const params = dynoexpr<AWS.DynamoDB.DocumentClient.UpdateItemInput>({
       TableName: 'Table',
       Key: 123,
       UpdateSet: { color: 'pink' },
     });
 
-    assertType<DocumentClient.ScanInput, typeof params>();
+    assertType<AWS.DynamoDB.DocumentClient.ScanInput, typeof params>();
     expect(params.Key).toBe(123);
   });
 });
