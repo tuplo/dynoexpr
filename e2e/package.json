@@ -1,0 +1,21 @@
+{
+  "name": "dynoexpr-e2e-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test:js": "node main",
+    "test:ts": "tsc --noEmit main",
+    "test": "yarn test:js && yarn test:ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "4.2.4"
+  },
+  "dependencies": {
+    "@tuplo/dynoexpr": "^1.0.0"
+  }
+}
