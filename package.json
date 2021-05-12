@@ -14,20 +14,23 @@
     "documentclient"
   ],
   "files": [
-    "dist/**/*.js",
+    "dist/index.js",
     "dist/index.d.ts",
     "dist/dynoexpr.d.ts"
   ],
-  "main": "dist/index.js",
-  "module": "dist/index.modern.js",
+  "engines": {
+    "node": ">=12"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "exports": "./dist/index.js",
   "types": "dist/index.d.ts",
-  "source": "src/index.ts",
   "dependencies": {
     "aws-sdk": "^2.2.0"
   },
   "devDependencies": {
     "@types/jest": "26.0.23",
-    "@types/node": "15.0.2",
+    "@types/node": "15.0.3",
     "@typescript-eslint/eslint-plugin": "4.23.0",
     "@typescript-eslint/parser": "4.23.0",
     "esbuild": "0.11.20",
@@ -38,7 +41,6 @@
     "eslint-plugin-jest": "24.3.6",
     "jest": "26.6.3",
     "prettier": "2.3.0",
-    "pretty-quick": "3.1.0",
     "rimraf": "3.0.2",
     "ts-jest": "26.5.6",
     "typescript": "4.2.4"
@@ -49,5 +51,49 @@
     "lint": "eslint src/**/*.ts",
     "test": "jest --watch",
     "ts-check": "tsc --noEmit"
+  },
+  "eslintConfig": {
+    "extends": [
+      "airbnb-typescript/base",
+      "prettier",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:import/typescript",
+      "plugin:jest/all"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint",
+      "jest"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 9,
+      "project": "./tsconfig.json"
+    },
+    "env": {
+      "node": true,
+      "jest": true
+    },
+    "rules": {
+      "import/extensions": "off",
+      "import/prefer-default-export": "off",
+      "import/no-unresolved": "off",
+      "jest/no-hooks": "off",
+      "@typescript-eslint/comma-dangle": "off"
+    },
+    "overrides": [
+      {
+        "files": [
+          "**/*.ts"
+        ],
+        "rules": {
+          "no-undef": "off"
+        }
+      }
+    ]
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "printWidth": 80
   }
 }
