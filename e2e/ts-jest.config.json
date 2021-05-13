@@ -1,0 +1,6 @@
+{
+  "transform": {
+    "^.+\\.[jt]s$": "ts-jest"
+  },
+  "transformIgnorePatterns": ["/node_modules\\/(?!@tuplo\\/dynoexpr)/"]
+}
