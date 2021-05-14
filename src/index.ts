@@ -16,10 +16,10 @@ type DynoexprParams = DynoexprInput | BatchRequestInput | TransactRequestInput;
 
 function dynoexpr<T = DynoexprOutput>(params: DynoexprParams): T {
   if (isBatchRequest(params)) {
-    return (getBatchExpressions(params) as DynoexprOutput) as T;
+    return getBatchExpressions(params) as DynoexprOutput as T;
   }
   if (isTransactRequest(params)) {
-    return (getTransactExpressions(params) as DynoexprOutput) as T;
+    return getTransactExpressions(params) as DynoexprOutput as T;
   }
   return getSingleTableExpressions(params) as T;
 }
