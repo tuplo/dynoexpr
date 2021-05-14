@@ -18,10 +18,16 @@ $ yarn add @tuplo/dynoexpr
 ```
 
 ```javascript
-# ESM
+/* ESM */
 import dynoexpr from '@tuplo/dynoexpr';
 
-# CommonJS
+/* CommonJS (node >= 13.10) */
+const dynoexpr = require('@tuplo/dynoexpr');
+
+/* CommonJS (node >= 13.7), will issue a warning of experimental feature (conditional export) */
+const dynoexpr = require('@tuplo/dynoexpr');
+
+/* CommonJS (node >= 12) */
 const dynoexpr = require('@tuplo/dynoexpr/cjs');
 ```
 

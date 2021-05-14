@@ -17,7 +17,7 @@
     "dist/index.js",
     "dist/index.d.ts",
     "dist/dynoexpr.d.ts",
-    "dist/index.cjs"
+    "cjs/index.js"
   ],
   "engines": {
     "node": ">=12"
@@ -28,12 +28,12 @@
     ".": [
       {
         "import": "./dist/index.js",
-        "require": "./dist/index.cjs",
+        "require": "./cjs/index.js",
         "default": "./dist/index.js"
       },
       "./dist/index.js"
     ],
-    "./cjs": "./dist/index.cjs"
+    "./cjs": "./cjs/index.js"
   },
   "types": "dist/index.d.ts",
   "dependencies": {

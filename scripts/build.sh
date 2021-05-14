@@ -3,7 +3,7 @@
 rimraf dist
 tsc --build tsconfig.build.json
 
-esbuild src/index.cjs --bundle --platform=node --outfile=dist/index.cjs \
+esbuild src/index.cjs --bundle --platform=node --outfile=cjs/index.js \
   --external:aws-sdk
 esbuild src/index.ts --bundle --format=esm --outfile=dist/index.js \
   --external:aws-sdk --external:crypto
