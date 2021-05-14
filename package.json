@@ -15,12 +15,16 @@
   ],
   "files": [
     "dist/index.js",
-    "dist/index.modern.js",
     "dist/index.d.ts",
-    "dist/dynoexpr.d.ts"
+    "dist/dynoexpr.d.ts",
+    "cjs/index.js"
   ],
+  "engines": {
+    "node": ">=12"
+  },
+  "type": "module",
   "main": "./dist/index.js",
-  "module": "dist/index.modern.js",
+  "exports": "./dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
     "aws-sdk": "^2.2.0"

@@ -1,6 +1,5 @@
 const assert = require('assert/strict');
-// const dynoexpr = require('@tuplo/dynoexpr');
-const dynoexpr = require('../dist/index.js');
+const dynoexpr = require('@tuplo/dynoexpr/cjs');
 
 function getParams() {
   return dynoexpr({

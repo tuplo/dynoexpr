@@ -17,6 +17,14 @@ $ npm install @tuplo/dynoexpr
 $ yarn add @tuplo/dynoexpr
 ```
 
+```javascript
+# ESM
+import dynoexpr from '@tuplo/dynoexpr';
+
+# CommonJS
+import dynoexpr from '@tuplo/dynoexpr/cjs';
+```
+
 ## Usage
 
 Converts a plain object to a DynamoDB expression with all variables and names replaced with safe placeholders. It supports `Condition`, `KeyCondition`, `Filter`, `Projection` and `Update` expressions. The resulting expressions can then be used with `AWS.DynamoDB.DocumentClient` requests.
