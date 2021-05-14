@@ -12,6 +12,7 @@ describe('expression helpers', () => {
     ['set of numbers', new Set([1, 2]), 'Set([1,2]))'],
     ['set of strings', new Set(['foo', 'bar']), 'Set(["foo","bar"]))'],
   ])('converts to string - %s', (_, value, expected) => {
+    expect.assertions(1);
     const result = toString(value);
     expect(result).toBe(expected);
   });
@@ -27,6 +28,7 @@ describe('expression helpers', () => {
     ['set of numbers', new Set([1, 2]), '8c627cc9d533e8fa591e2687101cd26b'],
     ['set of strings', new Set(['foo']), 'a4c6dd1467761291b805998fe24e60df'],
   ])('hashes any value - %s', (_, value, expected) => {
+    expect.assertions(1);
     const result = md5(value);
     expect(result).toBe(expected);
   });
@@ -35,6 +37,7 @@ describe('expression helpers', () => {
     ['new attribute', 'foo', '#na4d8'],
     ['already encoded', '#foo', '#foo'],
   ])('creates expressions attributes names - %s', (_, attrib, expected) => {
+    expect.assertions(1);
     const result = getAttrName(attrib);
     expect(result).toBe(expected);
   });
@@ -43,6 +46,7 @@ describe('expression helpers', () => {
     ['new value', 'foo', ':va4d8'],
     ['already encoded', ':foo', ':foo'],
   ])('creates expressions attributes values - %s', (_, attrib, expected) => {
+    expect.assertions(1);
     const result = getAttrValue(attrib);
     expect(result).toBe(expected);
   });
