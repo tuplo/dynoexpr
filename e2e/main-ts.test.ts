@@ -1,12 +1,7 @@
-import dynoexpr from '@tuplo/dynoexpr';
+import { getParams } from './main-ts';
 
 it('is testable with Jest and TypeScript', async () => {
-  const result = dynoexpr({
-    KeyCondition: { id: '567' },
-    Condition: { rating: '> 4.5' },
-    Filter: { color: 'blue' },
-    Projection: ['weight', 'size'],
-  });
+  const result = getParams();
 
   const expected = {
     KeyConditionExpression: '(#n0c8f = :vaa3d)',

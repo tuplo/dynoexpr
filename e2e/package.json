@@ -5,11 +5,12 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test:js": "node main",
-    "test:ts": "tsc --noEmit main",
-    "test:jest:js": "NODE_OPTIONS=--experimental-vm-modules jest main.test.js",
-    "test:jest:ts": "jest -c ts-jest.config.json main.test.ts",
-    "test": "yarn test:js && yarn test:ts && yarn test:jest:js && yarn test:jest:ts"
+    "test:js": "node main-js",
+    "test:ts": "tsc --noEmit main-ts",
+    "test:cjs": "node main-cjs.cjs",
+    "test:jest:js": "NODE_OPTIONS=--experimental-vm-modules jest main-js.test.js",
+    "test:jest:ts": "jest -c ts-jest.config.json main-ts.test.ts",
+    "test": "yarn test:js && yarn test:ts && yarn test:cjs && yarn test:jest:js && yarn test:jest:ts"
   },
   "keywords": [],
   "author": "",

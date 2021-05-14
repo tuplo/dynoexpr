@@ -1,14 +1,18 @@
 import { strict as assert } from 'assert';
 import dynoexpr from '@tuplo/dynoexpr';
 
-const result = dynoexpr({
-  KeyCondition: { id: '567' },
-  Condition: { rating: '> 4.5' },
-  Filter: { color: 'blue' },
-  Projection: ['weight', 'size'],
-});
+export function getParams() {
+  return dynoexpr({
+    KeyCondition: { id: '567' },
+    Condition: { rating: '> 4.5' },
+    Filter: { color: 'blue' },
+    Projection: ['weight', 'size'],
+  });
+}
 
-assert.deepEqual(result, {
+const result = getParams();
+
+const expected = {
   KeyConditionExpression: '(#n0c8f = :vaa3d)',
   ConditionExpression: '(#n843d > :vf170)',
   FilterExpression: '(#n9bfd = :v0c8f)',
@@ -25,4 +29,6 @@ assert.deepEqual(result, {
     ':vf170': '4.5',
     ':v0c8f': 'blue',
   },
-});
+};
+
+assert.deepEqual(result, expected);
