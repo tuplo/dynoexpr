@@ -9,8 +9,9 @@
     "test:ts": "tsc --noEmit main-ts",
     "test:cjs": "node main-cjs.cjs",
     "test:jest:js": "NODE_OPTIONS=--experimental-vm-modules jest main-js.test.js",
+    "test:jest:cjs": "jest main-cjs.test.js",
     "test:jest:ts": "jest -c ts-jest.config.json main-ts.test.ts",
-    "test": "yarn test:js && yarn test:ts && yarn test:cjs && yarn test:jest:js && yarn test:jest:ts"
+    "test": "yarn test:js && yarn test:ts && yarn test:cjs && yarn test:jest:cjs && yarn test:jest:js && yarn test:jest:ts"
   },
   "keywords": [],
   "author": "",
