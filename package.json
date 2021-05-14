@@ -15,6 +15,7 @@
   ],
   "files": [
     "dist/index.js",
+    "dist/index.cjs",
     "dist/index.d.ts",
     "dist/dynoexpr.d.ts",
     "cjs/index.js"
@@ -28,12 +29,11 @@
     ".": [
       {
         "import": "./dist/index.js",
-        "require": "./cjs/index.js",
+        "require": "./dist/index.cjs",
         "default": "./dist/index.js"
       },
       "./dist/index.js"
-    ],
-    "./cjs": "./cjs/index.js"
+    ]
   },
   "types": "dist/index.d.ts",
   "dependencies": {
