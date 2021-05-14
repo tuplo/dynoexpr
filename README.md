@@ -22,7 +22,7 @@ $ yarn add @tuplo/dynoexpr
 import dynoexpr from '@tuplo/dynoexpr';
 
 # CommonJS
-import dynoexpr from '@tuplo/dynoexpr/cjs';
+const dynoexpr = require('@tuplo/dynoexpr/cjs');
 ```
 
 ## Usage
