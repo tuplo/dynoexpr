@@ -17,14 +17,17 @@
     "dist/index.js",
     "dist/index.d.ts",
     "dist/dynoexpr.d.ts",
-    "cjs/index.js"
+    "dist/index.cjs"
   ],
   "engines": {
     "node": ">=12"
   },
   "type": "module",
   "main": "./dist/index.js",
-  "exports": "./dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./cjs": "./dist/index.cjs"
+  },
   "types": "dist/index.d.ts",
   "dependencies": {
     "aws-sdk": "^2.2.0"
