@@ -9,7 +9,7 @@
     "outDir": "./dist",
     "removeComments": true,
     "strict": true,
-    "target": "es5"
+    "target": "es6"
   },
   "include": ["src/**/*", "src/dynoexpr.d.ts"],
   "exclude": ["node_modules/**/*"]
