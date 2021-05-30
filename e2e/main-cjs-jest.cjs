@@ -1,4 +1,4 @@
-const dynoexpr = require('@tuplo/dynoexpr/cjs');
+const dynoexpr = require('@tuplo/dynoexpr');
 
 function getParams() {
   return dynoexpr({
