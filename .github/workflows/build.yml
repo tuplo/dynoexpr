@@ -20,6 +20,27 @@ jobs:
       - run: yarn lint
       - run: yarn ci:test
 
+  test-coverage:
+    needs: test
+    name: test-coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@master
+        with:
+          node-version: 16
+      - uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
+      - run: yarn install --frozen-lockfile
+      - uses: paambaati/codeclimate-action@v2.7.2
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+          coverageCommand: yarn ci:test:coverage
+          debug: true
+
   publish-to-npm:
     needs: test
     runs-on: ubuntu-latest

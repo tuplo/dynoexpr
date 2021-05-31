@@ -2,6 +2,12 @@
 
 <p>
   <img src="https://img.shields.io/npm/v/@tuplo/dynoexpr">
+  <a href="https://codeclimate.com/github/tuplo/dynoexpr/maintainability">
+    <img src="https://api.codeclimate.com/v1/badges/3564497cf991d094e2eb/maintainability" />
+  </a>
+  <a href="https://codeclimate.com/github/tuplo/dynoexpr/test_coverage">
+    <img src="https://api.codeclimate.com/v1/badges/3564497cf991d094e2eb/test_coverage" />
+  </a>
   <img src="https://github.com/tuplo/dynoexpr/workflows/Build/badge.svg">
   <img src="https://david-dm.org/tuplo/dynoexpr.svg">
 </p>
