@@ -5,6 +5,13 @@ import type {
 } from '../dynoexpr';
 import { getAttrName, getAttrValue } from '../utils';
 
+const REGEX_NOT = /^not\s(.+)/i;
+type ParseNotConditionFn = (exp: string) => string;
+export const parseNotCondition: ParseNotConditionFn = (exp) => {
+  const [, v] = REGEX_NOT.exec(exp) || [];
+  return v.trim();
+};
+
 const REGEX_ATTRIBUTE_TYPE = /^attribute_type\s*\(([^)]+)/i;
 type ParseAttributeTypeValue = (exp: string) => string;
 export const parseAttributeTypeValue: ParseAttributeTypeValue = (exp) => {
@@ -90,7 +97,13 @@ export const buildConditionExpression: BuildConditionExpressionFn = ({
     .map(([key, value]) => {
       let expr: string;
       if (typeof value === 'string') {
-        const strValue = value.trim();
+        let strValue = value.trim();
+
+        const hasNotCondition = REGEX_NOT.test(strValue);
+        if (hasNotCondition) {
+          strValue = parseNotCondition(strValue);
+        }
+
         if (REGEX_COMPARISON.test(strValue)) {
           const [, operator] = /([<=>]+)/.exec(strValue) || [];
           const v = parseComparisonValue(strValue);
@@ -122,9 +135,13 @@ export const buildConditionExpression: BuildConditionExpressionFn = ({
         } else {
           expr = `${getAttrName(key)} = ${getAttrValue(strValue)}`;
         }
+
+        // adds NOT condition if it exists
+        expr = [hasNotCondition && 'not', expr].filter(Boolean).join(' ');
       } else {
         expr = `${getAttrName(key)} = ${getAttrValue(value)}`;
       }
+
       return expr;
     })
     .map((expr) => `(${expr})`)
@@ -162,7 +179,13 @@ export const buildConditionAttributeValues: BuildConditionAttributeValuesFn = (
   flattenExpressions(condition).reduce((acc, [, value]) => {
     let v: DynamoDbValue | undefined;
     if (typeof value === 'string') {
-      const strValue = value.trim();
+      let strValue = value.trim();
+
+      const hasNotCondition = REGEX_NOT.test(strValue);
+      if (hasNotCondition) {
+        strValue = parseNotCondition(strValue);
+      }
+
       if (REGEX_COMPARISON.test(strValue)) {
         v = parseComparisonValue(strValue);
       } else if (REGEX_BETWEEN.test(strValue)) {

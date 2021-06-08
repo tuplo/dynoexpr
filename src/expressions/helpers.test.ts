@@ -10,6 +10,7 @@ import {
   parseComparisonValue,
   parseContainsValue,
   parseInValue,
+  parseNotCondition,
   parseSizeValue,
 } from './helpers';
 
@@ -19,8 +20,9 @@ describe('helpers for condition helpers', () => {
       'comparison v: %s',
       (expr) => {
         expect.assertions(1);
-        const expected = 5;
         const result = parseComparisonValue(expr);
+
+        const expected = 5;
         expect(result).toBe(expected);
       }
     );
@@ -32,8 +34,9 @@ describe('helpers for condition helpers', () => {
       'attribute_type( foo )',
     ])('attribute_type(v): %s', (expr) => {
       expect.assertions(1);
-      const expected = 'foo';
       const result = parseAttributeTypeValue(expr);
+
+      const expected = 'foo';
       expect(result).toBe(expected);
     });
 
@@ -46,8 +49,9 @@ describe('helpers for condition helpers', () => {
       'begins_with  foo',
     ])('begins_with(v): %s', (expr) => {
       expect.assertions(1);
-      const expected = 'foo';
       const result = parseBeginsWithValue(expr);
+
+      const expected = 'foo';
       expect(result).toBe(expected);
     });
 
@@ -55,8 +59,9 @@ describe('helpers for condition helpers', () => {
       'between v1 and v2',
       (expr) => {
         expect.assertions(1);
-        const expected = [1, 2];
         const result = parseBetweenValue(expr);
+
+        const expected = [1, 2];
         expect(result).toStrictEqual(expected);
       }
     );
@@ -70,6 +75,7 @@ describe('helpers for condition helpers', () => {
     ])('contains(v): %s', (expr) => {
       expect.assertions(1);
       const result = parseContainsValue(expr);
+
       const expected = 'foo';
       expect(result).toBe(expected);
     });
@@ -97,9 +103,49 @@ describe('helpers for condition helpers', () => {
       'size  >  10',
     ])('size [op] v: %s', (expr) => {
       expect.assertions(1);
-      const expected = 10;
       const result = parseSizeValue(expr);
+
+      const expected = 10;
       expect(result).toBe(expected);
+    });
+
+    it.each([
+      ['not contains(foo)', 'contains(foo)'],
+      ['not begins_with(foo)', 'begins_with(foo)'],
+    ])('parse not conditions: %s', (expr, expected) => {
+      expect.assertions(1);
+      const result = parseNotCondition(expr);
+      expect(result).toBe(expected);
+    });
+  });
+
+  describe('not expressions', () => {
+    const Condition = {
+      a: 'not contains(foo)',
+      b: 'not begins_with(foo)',
+      c: 'not in(foo)',
+    };
+
+    it('builds not conditions (expression)', () => {
+      expect.assertions(1);
+      const result = buildConditionExpression({ Condition });
+
+      const expected = [
+        'not contains(#n2661,:va4d8)',
+        'not begins_with(#n578f,:va4d8)',
+        'not #n5f33 in (:va4d8)',
+      ]
+        .map((exp) => `(${exp})`)
+        .join(' AND ');
+      expect(result).toStrictEqual(expected);
+    });
+
+    it('builds not conditions (values)', () => {
+      expect.assertions(1);
+      const result = buildConditionAttributeValues(Condition);
+
+      const expected = { ':va4d8': 'foo' };
+      expect(result).toStrictEqual(expected);
     });
   });
 
@@ -118,6 +164,7 @@ describe('helpers for condition helpers', () => {
     it('builds a condition expression', () => {
       expect.assertions(1);
       const result = buildConditionExpression({ Condition });
+
       const expected = [
         '#n2661 = :va4d8',
         '#n578f > :v849b',
@@ -139,6 +186,7 @@ describe('helpers for condition helpers', () => {
         Condition,
         LogicalOperator: 'OR',
       });
+
       const expected = [
         '#n2661 = :va4d8',
         '#n578f > :v849b',
@@ -192,6 +240,7 @@ describe('helpers for condition helpers', () => {
     it('builds the ExpressionAttributeNameMap', () => {
       expect.assertions(1);
       const result = buildConditionAttributeNames(Condition);
+
       const expected = {
         '#n2661': 'a',
         '#n578f': 'b',
@@ -212,6 +261,7 @@ describe('helpers for condition helpers', () => {
         ExpressionAttributeNames: { '#a': 'a' },
       };
       const result = buildConditionAttributeNames(Condition2, params);
+
       const expected = {
         '#a': 'a',
         '#n578f': 'b',
@@ -222,6 +272,7 @@ describe('helpers for condition helpers', () => {
     it('builds the ExpressionAttributesValueMap', () => {
       expect.assertions(1);
       const result = buildConditionAttributeValues(Condition);
+
       const expected = {
         ':va4d8': 'foo',
         ':v849b': 1,
@@ -243,6 +294,7 @@ describe('helpers for condition helpers', () => {
         ExpressionAttributeValues: { ':a': 'bar' },
       };
       const result = buildConditionAttributeValues(Condition2, params);
+
       const expected = {
         ':a': 'bar',
         ':va4d8': 'foo',
@@ -254,9 +306,8 @@ describe('helpers for condition helpers', () => {
       expect.assertions(1);
       const Condition2 = { b: ['foo', 'attribute_exists'] };
       const result = buildConditionAttributeValues(Condition2);
-      const expected = {
-        ':va4d8': 'foo',
-      };
+
+      const expected = { ':va4d8': 'foo' };
       expect(result).toStrictEqual(expected);
     });
   });
@@ -276,6 +327,7 @@ describe('helpers for condition helpers', () => {
     it('builds a condition expression', () => {
       expect.assertions(1);
       const result = buildConditionExpression({ Condition });
+
       const expected = [
         'attribute_exists(#n2661)',
         'attribute_not_exists(#n578f)',
@@ -294,6 +346,7 @@ describe('helpers for condition helpers', () => {
     it('builds the ExpressionAttributeNameMap', () => {
       expect.assertions(1);
       const result = buildConditionAttributeNames(Condition);
+
       const expected = {
         '#n2661': 'a',
         '#n578f': 'b',
@@ -310,6 +363,7 @@ describe('helpers for condition helpers', () => {
     it('builds the ExpressionAttributesValueMap', () => {
       expect.assertions(1);
       const result = buildConditionAttributeValues(Condition);
+
       const expected = {
         ':v546e': 'S',
         ':va4d8': 'foo',
@@ -335,6 +389,7 @@ describe('helpers for condition helpers', () => {
       ExpressionAttributeNames: buildConditionAttributeNames(Condition),
       ExpressionAttributeValues: buildConditionAttributeValues(Condition),
     };
+
     const expected = {
       Expression: [
         '#n2661 = :vad1e',
