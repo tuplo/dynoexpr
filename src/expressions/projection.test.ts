@@ -8,6 +8,7 @@ describe('projection expression', () => {
       Projection: ['foo', 'cast', 'year', 'baz'],
     };
     const result = getProjectionExpression(params);
+
     const expected = {
       ProjectionExpression: '#na4d8,#nc464,#n17d8,#n6e88',
       ExpressionAttributeNames: {
@@ -29,6 +30,7 @@ describe('projection expression', () => {
       },
     };
     const result = getProjectionExpression(params);
+
     const expected = {
       ProjectionExpression: '#na4d8,#nc464,#n17d8,#n6e88',
       ExpressionAttributeNames: {
@@ -51,6 +53,7 @@ describe('projection expression', () => {
       },
     };
     const result = getProjectionExpression(params);
+
     const expected = {
       ProjectionExpression: '#na4d8,#n6e88',
       ExpressionAttributeNames: {

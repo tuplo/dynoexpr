@@ -16,6 +16,7 @@ describe('key condition expression', () => {
     };
     const params: KeyConditionInput = { KeyCondition };
     const result = getKeyConditionExpression(params);
+
     const expected = {
       KeyConditionExpression: [
         '#n2661 = :va4d8',
@@ -66,6 +67,7 @@ describe('key condition expression', () => {
     };
     const params: KeyConditionInput = { KeyCondition };
     const result = getKeyConditionExpression(params);
+
     const expected = {
       KeyConditionExpression: [
         'attribute_exists(#n2661)',
@@ -103,6 +105,7 @@ describe('key condition expression', () => {
     };
     const params: KeyConditionInput = { KeyCondition };
     const result = getKeyConditionExpression(params);
+
     const expected = {
       KeyConditionExpression: [
         '#n2661 = :v849b',

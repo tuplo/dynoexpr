@@ -22,6 +22,7 @@ describe('filter expression', () => {
     };
     const params: FilterInput = { Filter };
     const result = getFilterExpression(params);
+
     const expected = {
       FilterExpression: [
         '#n2661 = :va4d8',
@@ -91,6 +92,7 @@ describe('filter expression', () => {
     };
     const params: FilterInput = { Filter };
     const result = getFilterExpression(params);
+
     const expected = {
       FilterExpression: [
         'attribute_exists(#n2661)',
@@ -128,6 +130,7 @@ describe('filter expression', () => {
     };
     const params: FilterInput = { Filter };
     const result = getFilterExpression(params);
+
     const expected = {
       FilterExpression: [
         '#n2661 = :v849b',

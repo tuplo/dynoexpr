@@ -7,22 +7,15 @@ import {
 } from './update';
 
 describe('update expression', () => {
-  it('parses the number on a math operation update', () => {
-    expect.assertions(6);
-    const exprs = [
-      'foo + 2',
-      'foo - 2',
-      '2 - foo',
-      '2 + foo',
-      'foo  +  2',
-      'foo+2',
-    ];
-    const expected = 2;
-    exprs.forEach((exp) => {
-      const result = parseOperationValue(exp, 'foo');
+  it.each(['foo + 2', 'foo - 2', '2 - foo', '2 + foo', 'foo  +  2', 'foo+2'])(
+    'parses the number on a math operation update: %s',
+    (expr) => {
+      expect.assertions(1);
+      const expected = 2;
+      const result = parseOperationValue(expr, 'foo');
       expect(result).toBe(expected);
-    });
-  });
+    }
+  );
 
   it('converts from an obj to ExpressionAttributes', () => {
     expect.assertions(1);
@@ -36,6 +29,7 @@ describe('update expression', () => {
     };
     const params = { Update };
     const result = getExpressionAttributes(params);
+
     const expected = {
       Update,
       ExpressionAttributeNames: {
@@ -67,6 +61,7 @@ describe('update expression', () => {
       ExpressionAttributeValues: { ':b': 2 },
     };
     const result = getExpressionAttributes(params);
+
     const expected = {
       Update,
       ExpressionAttributeNames: { '#b': 'b', '#n2661': 'a' },
@@ -108,35 +103,24 @@ describe('update expression', () => {
     expect(result).toStrictEqual(expected);
   });
 
-  it('identifies an expression as being a math expression', () => {
-    expect.assertions(9);
-    const expressions = [
-      ['foo', 'foo - 2'],
-      ['foo', 'foo-2'],
-      ['foo', '10-20-001'],
-      ['foo', 'foobar - 2'],
-      ['foo', '2-foobar'],
-      ['foo', 'foo - bar'],
-      ['foo', 'Mon Jun 01 2020 20:54:50 GMT+0100 (British Summer Time)'],
-      ['foo', 'foo+bar@baz-buz.com'],
-      ['foo', 'http://baz-buz.com'],
-    ];
-    const expected = [
-      true,
-      true,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-    ];
-    expressions.forEach((expression, i) => {
-      const result = isMathExpression(expression[0], expression[1]);
-      expect(result).toStrictEqual(expected[i]);
-    });
-  });
+  it.each([
+    ['foo', 'foo - 2', true],
+    ['foo', 'foo-2', true],
+    ['foo', '10-20-001', false],
+    ['foo', 'foobar - 2', false],
+    ['foo', '2-foobar', false],
+    ['foo', 'foo - bar', false],
+    ['foo', 'Mon Jun 01 2020 20:54:50 GMT+0100 (British Summer Time)', false],
+    ['foo', 'foo+bar@baz-buz.com', false],
+    ['foo', 'http://baz-buz.com', false],
+  ])(
+    'identifies an expression as being a math expression',
+    (expr1, expr2, expected) => {
+      expect.assertions(1);
+      const result = isMathExpression(expr1, expr2);
+      expect(result).toStrictEqual(expected);
+    }
+  );
 
   it('updates numeric value math operations - SET', () => {
     expect.assertions(1);
@@ -148,6 +132,7 @@ describe('update expression', () => {
       },
     };
     const result = getUpdateExpression(params);
+
     const expected = {
       UpdateExpression:
         'SET #na4d8 = #na4d8 - :v862c, #n51f2 = :v862c - #n51f2, #n6e88 = #n6e88 + :vad26',
@@ -175,6 +160,7 @@ describe('update expression', () => {
       },
     };
     const result = getUpdateExpression(params);
+
     const expected = {
       UpdateExpression:
         'SET #na4d8 = :vc40c, #n51f2 = :v4416, #n6e88 = :vdeb4, #n66e7 = :v14ee',
@@ -203,6 +189,7 @@ describe('update expression', () => {
       },
     };
     const result = getUpdateExpression(params);
+
     const expected = {
       UpdateExpression: 'ADD #na4d8 :v18d5',
       ExpressionAttributeNames: {
@@ -249,6 +236,7 @@ describe('update expression', () => {
       },
     };
     const result = getUpdateExpression(params);
+
     const expected = {
       UpdateExpression: 'DELETE #na4d8 :vd26b, #n51f2 :v9ad1',
       ExpressionAttributeNames: {

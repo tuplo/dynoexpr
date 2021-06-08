@@ -28,6 +28,7 @@ describe('transact requests', () => {
       ReturnConsumedCapacity: 'INDEXES',
     } as TransactRequestInput;
     const result = getTransactExpressions(params);
+
     const expected = {
       TransactItems: [
         {
@@ -93,6 +94,7 @@ describe('transact requests', () => {
       ReturnConsumedCapacity: 'INDEXES',
     };
     const result = getTransactExpressions(params);
+
     const expected = {
       ReturnConsumedCapacity: 'INDEXES',
       TransactItems: [

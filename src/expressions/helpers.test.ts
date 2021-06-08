@@ -15,115 +15,91 @@ import {
 
 describe('helpers for condition helpers', () => {
   describe('parse expression values', () => {
-    it('comparison v', () => {
-      expect.assertions(6);
-      const exprs = ['> 5', '>5', '>  5', '>=5', '>= 5', '>=  5'];
-      const expected = 5;
-      exprs.forEach((exp) => {
-        const result = parseComparisonValue(exp);
+    it.each(['> 5', '>5', '>  5', '>=5', '>= 5', '>=  5'])(
+      'comparison v: %s',
+      (expr) => {
+        expect.assertions(1);
+        const expected = 5;
+        const result = parseComparisonValue(expr);
         expect(result).toBe(expected);
-      });
-    });
+      }
+    );
 
-    it('attribute_type(v)', () => {
-      expect.assertions(4);
-      const exprs = [
-        'attribute_type(foo)',
-        'attribute_type (foo)',
-        'attribute_type  (foo)',
-        'attribute_type( foo )',
-      ];
+    it.each([
+      'attribute_type(foo)',
+      'attribute_type (foo)',
+      'attribute_type  (foo)',
+      'attribute_type( foo )',
+    ])('attribute_type(v): %s', (expr) => {
+      expect.assertions(1);
       const expected = 'foo';
-      exprs.forEach((exp) => {
-        const result = parseAttributeTypeValue(exp);
-        expect(result).toBe(expected);
-      });
+      const result = parseAttributeTypeValue(expr);
+      expect(result).toBe(expected);
     });
 
-    it('begins_with(v)', () => {
-      expect.assertions(6);
-      const exprs = [
-        'begins_with(foo)',
-        'begins_with  (foo)',
-        'begins_with ( foo )',
-        'BEGINS_WITH (foo)',
-        'begins_with foo',
-        'begins_with  foo',
-      ];
+    it.each([
+      'begins_with(foo)',
+      'begins_with  (foo)',
+      'begins_with ( foo )',
+      'BEGINS_WITH (foo)',
+      'begins_with foo',
+      'begins_with  foo',
+    ])('begins_with(v): %s', (expr) => {
+      expect.assertions(1);
       const expected = 'foo';
-      exprs.forEach((expr) => {
-        const result = parseBeginsWithValue(expr);
-        expect(result).toBe(expected);
-      });
+      const result = parseBeginsWithValue(expr);
+      expect(result).toBe(expected);
     });
 
-    it('between v1 and v2', () => {
-      expect.assertions(2);
-      const exprs = ['between 1 and 2', 'between  1  and   2'];
-      const expected = [1, 2];
-      exprs.forEach((exp) => {
-        const result = parseBetweenValue(exp);
+    it.each(['between 1 and 2', 'between  1  and   2'])(
+      'between v1 and v2',
+      (expr) => {
+        expect.assertions(1);
+        const expected = [1, 2];
+        const result = parseBetweenValue(expr);
         expect(result).toStrictEqual(expected);
-      });
-    });
+      }
+    );
 
-    it('contains(v)', () => {
-      expect.assertions(5);
-      const exprs = [
-        'contains(foo)',
-        'contains (foo)',
-        'contains  (foo)',
-        'contains( foo )',
-        'CONTAINS(foo)',
-      ];
+    it.each([
+      'contains(foo)',
+      'contains (foo)',
+      'contains  (foo)',
+      'contains( foo )',
+      'CONTAINS(foo)',
+    ])('contains(v): %s', (expr) => {
+      expect.assertions(1);
+      const result = parseContainsValue(expr);
       const expected = 'foo';
-      exprs.forEach((expr) => {
-        const result = parseContainsValue(expr);
-        expect(result).toBe(expected);
-      });
+      expect(result).toBe(expected);
     });
 
-    it('in(v1,v2,v3)', () => {
-      expect.assertions(7);
-      const exprs = [
-        'in(foo)',
-        'in (foo)',
-        'in  (foo)',
-        'in( foo )',
-        'in(foo,bar,baz)',
-        'in(foo, bar, baz)',
-        'in(foo,  bar,  baz)',
-      ];
-      const expected = [
-        ['foo'],
-        ['foo'],
-        ['foo'],
-        ['foo'],
-        ['foo', 'bar', 'baz'],
-        ['foo', 'bar', 'baz'],
-        ['foo', 'bar', 'baz'],
-      ];
-      exprs.forEach((expr, i) => {
-        const result = parseInValue(expr);
-        expect(result).toStrictEqual(expected[i]);
-      });
+    it.each([
+      ['in(foo)', ['foo']],
+      ['in (foo)', ['foo']],
+      ['in  (foo)', ['foo']],
+      ['in( foo )', ['foo']],
+      ['in(foo,bar,baz)', ['foo', 'bar', 'baz']],
+      ['in(foo, bar, baz)', ['foo', 'bar', 'baz']],
+      ['in(foo,  bar,  baz)', ['foo', 'bar', 'baz']],
+    ])('in(v1,v2,v3): %s', (expr, expected) => {
+      expect.assertions(1);
+      const result = parseInValue(expr);
+      expect(result).toStrictEqual(expected);
     });
 
-    it('size [op] v', () => {
-      expect.assertions(6);
-      const exprs = [
-        'size > 10',
-        'size>10',
-        'size >10',
-        'size> 10',
-        'SIZE>10',
-        'size  >  10',
-      ];
+    it.each([
+      'size > 10',
+      'size>10',
+      'size >10',
+      'size> 10',
+      'SIZE>10',
+      'size  >  10',
+    ])('size [op] v: %s', (expr) => {
+      expect.assertions(1);
       const expected = 10;
-      exprs.forEach((expr) => {
-        const result = parseSizeValue(expr);
-        expect(result).toBe(expected);
-      });
+      const result = parseSizeValue(expr);
+      expect(result).toBe(expected);
     });
   });
 

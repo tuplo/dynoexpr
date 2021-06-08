@@ -23,6 +23,7 @@ describe('single table operations', () => {
       UpdateRemove: { g: 'g' },
     };
     const result = getSingleTableExpressions(params);
+
     const expected: DynoexprOutput = {
       KeyConditionExpression: '(#n5f33 = :v18d5)',
       ConditionExpression: '(#n578f > :ve820)',
@@ -115,6 +116,7 @@ describe('single table operations', () => {
       UpdateSet: { a: 2 },
     };
     const result = getSingleTableExpressions(params);
+
     const expected: DynoexprOutput = {
       KeyConditionExpression: '(#n2661 = :v18d5)',
       ConditionExpression: '(#n2661 > :ve820)',
@@ -150,6 +152,7 @@ describe('single table operations', () => {
       },
     };
     const result = getSingleTableExpressions(params);
+
     const expected = {
       KeyConditionExpression: '(#n2661 = :v18d5)',
       ConditionExpression: '(#n2661 > :ve820)',
@@ -182,6 +185,7 @@ describe('single table operations', () => {
       f: new Set(['foo', 'bar']),
     };
     const result = convertValuesToDynamoDbSet(values);
+
     const expected = {
       a: 1,
       b: 'foo',

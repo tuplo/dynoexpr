@@ -21,6 +21,7 @@ describe('update operations - SET/REMOVE/ADD/DELETE', () => {
       },
     };
     const result = getUpdateSetExpression(params);
+
     const expected = {
       UpdateExpression:
         'SET #na4d8 = #na4d8 - :v862c, #n51f2 = :v862c - #n51f2, #n6e88 = #n6e88 + :vad26, #n7aa0 = :vc2b7, #n66e7 = :v2362, #neeac = :v5650',
@@ -52,6 +53,7 @@ describe('update operations - SET/REMOVE/ADD/DELETE', () => {
       },
     };
     const result = getUpdateRemoveExpression(params);
+
     const expected = {
       UpdateExpression: 'REMOVE #na4d8, #n6e88',
       ExpressionAttributeNames: {
@@ -75,6 +77,7 @@ describe('update operations - SET/REMOVE/ADD/DELETE', () => {
       },
     };
     const result = getUpdateAddExpression(params);
+
     const expected = {
       UpdateExpression:
         'ADD #na4d8 :v51f2, #n6e88 :v862c, #n7aa0 :v646d, #n66e7 :v2362, #neeac :v77e7',
@@ -108,6 +111,7 @@ describe('update operations - SET/REMOVE/ADD/DELETE', () => {
       },
     };
     const result = getUpdateDeleteExpression(params);
+
     const expected = {
       UpdateExpression:
         'DELETE #na4d8 :v51f2, #n6e88 :v862c, #n7aa0 :v646d, #n66e7 :v2362, #neeac :v77e7',
@@ -138,6 +142,7 @@ describe('update operations - SET/REMOVE/ADD/DELETE', () => {
       UpdateDelete: { dfoo: 'dbar' },
     };
     const result = getUpdateOperationsExpression(params);
+
     const expected = {
       UpdateExpression:
         'SET #nff12 = #nff12 - :v862c REMOVE #n978b ADD #nb01c :ve948 DELETE #nd358 :v45cc',
