@@ -14,7 +14,7 @@
     "documentclient"
   ],
   "files": [
-    "dist/index.js",
+    "dist/index.mjs",
     "dist/index.cjs",
     "dist/index.d.ts",
     "dist/dynoexpr.d.ts",
@@ -23,16 +23,15 @@
   "engines": {
     "node": ">=12"
   },
-  "type": "module",
-  "main": "./dist/index.js",
+  "main": "./dist/index.mjs",
   "exports": {
     ".": [
       {
-        "import": "./dist/index.js",
+        "import": "./dist/index.mjs",
         "require": "./dist/index.cjs",
-        "default": "./dist/index.js"
+        "default": "./dist/index.mjs"
       },
-      "./dist/index.js"
+      "./dist/index.mjs"
     ]
   },
   "types": "dist/index.d.ts",
