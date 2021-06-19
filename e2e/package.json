@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test:js": "node main-js",
+    "test:js": "node main-js.mjs",
     "test:ts": "tsc --noEmit main-ts",
     "test:cjs": "node main-cjs.cjs",
     "test:jest:js": "NODE_OPTIONS=--experimental-vm-modules jest main-js.test.js",

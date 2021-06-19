@@ -1,4 +1,4 @@
-import { getParams } from './main-js';
+import { getParams } from './main-js.mjs';
 
 it('is testable with Jest and JavaScript', async () => {
   const result = getParams();
