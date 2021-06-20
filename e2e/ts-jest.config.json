@@ -1,8 +1,5 @@
 {
   "transform": {
     "^.+\\.[jt]s$": "ts-jest"
-  },
-  "moduleNameMapper": {
-    "dynoexpr$": "<rootDir>node_modules/@tuplo/dynoexpr/cjs"
   }
 }
