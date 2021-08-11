@@ -18,17 +18,19 @@ describe('update operations - SET/REMOVE/ADD/DELETE', () => {
         bez: [1, 2, 3],
         buz: { biz: 3 },
         boz: [{ qux: 2 }],
+        biz: null,
       },
     };
     const result = getUpdateSetExpression(params);
 
     const expected = {
       UpdateExpression:
-        'SET #na4d8 = #na4d8 - :v862c, #n51f2 = :v862c - #n51f2, #n6e88 = #n6e88 + :vad26, #n7aa0 = :vc2b7, #n66e7 = :v2362, #neeac = :v5650',
+        'SET #na4d8 = #na4d8 - :v862c, #n51f2 = :v862c - #n51f2, #n6e88 = #n6e88 + :vad26, #n7aa0 = :vc2b7, #n66e7 = :v2362, #neeac = :v5650, #n746d = :vf0bd',
       ExpressionAttributeNames: {
         '#na4d8': 'foo',
         '#n51f2': 'bar',
         '#n6e88': 'baz',
+        '#n746d': 'biz',
         '#n7aa0': 'bez',
         '#n66e7': 'buz',
         '#neeac': 'boz',
@@ -39,6 +41,7 @@ describe('update operations - SET/REMOVE/ADD/DELETE', () => {
         ':v2362': { biz: 3 },
         ':v5650': [{ qux: 2 }],
         ':vc2b7': [1, 2, 3],
+        ':vf0bd': null,
       },
     };
     expect(result).toStrictEqual(expected);
