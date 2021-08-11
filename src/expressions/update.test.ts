@@ -26,6 +26,7 @@ describe('update expression', () => {
       fooBar: 'buzz',
       'foo.bar': 'quz',
       foo_bar: 'qiz',
+      FooBaz: null,
     };
     const params = { Update };
     const result = getExpressionAttributes(params);
@@ -39,6 +40,7 @@ describe('update expression', () => {
         '#n9cb1': 'foo-bar',
         '#n5dc0': 'fooBar',
         '#n5a6e': 'foo_bar',
+        '#nf26a': 'FooBaz',
       },
       ExpressionAttributeValues: {
         ':v51f2': 'bar',
@@ -46,6 +48,7 @@ describe('update expression', () => {
         ':v66e7': 'buz',
         ':vfef0': 'buzz',
         ':v11cd': 'quz',
+        ':vf0bd': null,
         ':vc4ab': 'qiz',
       },
     };
@@ -79,13 +82,14 @@ describe('update expression', () => {
         buz: { biz: 3 },
         'foo.bar': 4,
         'foo.bar.baz': 'buz',
+        'foo.baz': null,
       },
     };
     const result = getUpdateExpression(params);
 
     const expected = {
       UpdateExpression:
-        'SET #na4d8 = :v51f2, #n6e88 = :v862c, #n66e7 = :v2362, #na4d8.#n51f2 = :v122c, #na4d8.#n51f2.#n6e88 = :v66e7',
+        'SET #na4d8 = :v51f2, #n6e88 = :v862c, #n66e7 = :v2362, #na4d8.#n51f2 = :v122c, #na4d8.#n51f2.#n6e88 = :v66e7, #na4d8.#n6e88 = :vf0bd',
       ExpressionAttributeNames: {
         '#na4d8': 'foo',
         '#n51f2': 'bar',
@@ -98,6 +102,7 @@ describe('update expression', () => {
         ':v2362': { biz: 3 },
         ':v122c': 4,
         ':v66e7': 'buz',
+        ':vf0bd': null,
       },
     };
     expect(result).toStrictEqual(expected);
@@ -113,6 +118,7 @@ describe('update expression', () => {
     ['foo', 'Mon Jun 01 2020 20:54:50 GMT+0100 (British Summer Time)', false],
     ['foo', 'foo+bar@baz-buz.com', false],
     ['foo', 'http://baz-buz.com', false],
+    ['foo', null, false],
   ])(
     'identifies an expression as being a math expression',
     (expr1, expr2, expected) => {

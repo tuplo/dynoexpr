@@ -11,7 +11,8 @@ type DynoexprInputValue =
   | Record<string, unknown>
   | Record<string, unknown>[]
   | Set<number>
-  | Set<string>;
+  | Set<string>
+  | null;
 
 type DynamoDbValue =
   | string
@@ -22,6 +23,7 @@ type DynamoDbValue =
   | boolean[]
   | Record<string, unknown>
   | Record<string, unknown>[]
+  | null
   | unknown;
 
 // batch operations
