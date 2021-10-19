@@ -18,7 +18,8 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - run: yarn install --frozen-lockfile
       - run: yarn lint
-      - run: yarn ci:test
+      - run: yarn lint:ts
+      - run: yarn test:ci
 
   test-coverage:
     needs: test
@@ -38,7 +39,7 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
-          coverageCommand: yarn ci:test:coverage
+          coverageCommand: yarn test:ci:coverage
           debug: true
 
   publish-to-npm:
