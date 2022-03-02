@@ -11,7 +11,6 @@ Expression builder for `AWS.DynamoDB.DocumentClient`.
     <img src="https://api.codeclimate.com/v1/badges/3564497cf991d094e2eb/test_coverage" />
   </a>
   <img src="https://github.com/tuplo/dynoexpr/workflows/Build/badge.svg">
-  <img src="https://david-dm.org/tuplo/dynoexpr.svg">
 </p>
 
 ## Usage
@@ -69,14 +68,14 @@ const results = await docClient
 
 **Using multiple expressions on the same field**
 
-You can hide multiple expressions on the same field, by packing them into an array and assigning it to the key with the field's name.
+You can use multiple expressions on the same field, by packing them into an array and assigning it to the key with the field's name.
 
 ```typescript
 const params = dynoexpr({
   Condition: {
     color: ['attribute_not_exists', 'yellow', 'blue'],
   },
-  logicalOperator: 'OR',
+  ConditionLogicalOperator: 'OR',
 });
 
 /*

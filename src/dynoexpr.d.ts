@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/indent */
-type LogicalOperatorType = 'AND' | 'OR';
+type LogicalOperatorType = string | 'AND' | 'OR';
 
 type DynoexprInputValue =
   | string
