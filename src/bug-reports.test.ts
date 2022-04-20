@@ -37,4 +37,18 @@ describe('bug reports', () => {
 
     dateNowSpy.mockRestore();
   });
+
+  it('supports if_not_exists on update expressions', () => {
+    expect.assertions(1);
+    const result = dynoexpr({
+      Update: { number: 'if_not_exists(420)' },
+    });
+
+    const expected = {
+      UpdateExpression: 'SET #n15df = if_not_exists(#n15df, :v2772)',
+      ExpressionAttributeNames: { '#n15df': 'number' },
+      ExpressionAttributeValues: { ':v2772': '420' },
+    };
+    expect(result).toStrictEqual(expected);
+  });
 });

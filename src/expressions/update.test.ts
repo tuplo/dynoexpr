@@ -27,6 +27,8 @@ describe('update expression', () => {
       'foo.bar': 'quz',
       foo_bar: 'qiz',
       FooBaz: null,
+      quz: 'if_not_exists(bazz)',
+      Price: 'if_not_exists(:p)',
     };
     const params = { Update };
     const result = getExpressionAttributes(params);
@@ -34,6 +36,8 @@ describe('update expression', () => {
     const expected = {
       Update,
       ExpressionAttributeNames: {
+        '#n0118': 'Price',
+        '#n11cd': 'quz',
         '#na4d8': 'foo',
         '#n51f2': 'bar',
         '#n6e88': 'baz',
@@ -47,6 +51,8 @@ describe('update expression', () => {
         ':v862c': 2,
         ':v66e7': 'buz',
         ':vfef0': 'buzz',
+        ':p': ':p',
+        ':v0c65': 'bazz',
         ':v11cd': 'quz',
         ':vf0bd': null,
         ':vc4ab': 'qiz',
@@ -104,6 +110,21 @@ describe('update expression', () => {
         ':v66e7': 'buz',
         ':vf0bd': null,
       },
+    };
+    expect(result).toStrictEqual(expected);
+  });
+
+  it('update expression with if_not_exists', () => {
+    expect.assertions(1);
+    const params = {
+      Update: { foo: 'if_not_exists(bar)' },
+    };
+    const result = getUpdateExpression(params);
+
+    const expected = {
+      UpdateExpression: 'SET #na4d8 = if_not_exists(#na4d8, :v51f2)',
+      ExpressionAttributeNames: { '#na4d8': 'foo' },
+      ExpressionAttributeValues: { ':v51f2': 'bar' },
     };
     expect(result).toStrictEqual(expected);
   });

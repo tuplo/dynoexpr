@@ -14,8 +14,10 @@ export const parseOperationValue: ParseOperationValueFn = (expr, key) => {
 type IsMathExpressionFn = (name: string, value: DynoexprInputValue) => boolean;
 export const isMathExpression: IsMathExpressionFn = (name, value) => {
   if (typeof name !== 'string') return false;
+
   const rgLh = new RegExp(`^${name}\\s*[+-]\\s*\\d+$`);
   const rgRh = new RegExp(`^\\d+\\s*[+-]\\s*${name}$`);
+
   return rgLh.test(`${value}`) || rgRh.test(`${value}`);
 };
 
@@ -26,16 +28,24 @@ type ExpressionAttributesMap = {
 type GetExpressionAttributesFn = (params: UpdateInput) => UpdateOutput;
 export const getExpressionAttributes: GetExpressionAttributesFn = (params) => {
   const { Update = {}, UpdateAction = 'SET' } = params;
+
   return Object.entries(Update).reduce((acc, [key, value]) => {
     if (!acc.ExpressionAttributeNames) acc.ExpressionAttributeNames = {};
     if (!acc.ExpressionAttributeValues) acc.ExpressionAttributeValues = {};
+
     key.split('.').forEach((k) => {
       acc.ExpressionAttributeNames[getAttrName(k)] = k;
     });
+
     if (UpdateAction !== 'REMOVE') {
-      const v = isMathExpression(key, value)
-        ? parseOperationValue(value as string, key)
-        : value;
+      let v = value;
+      if (isMathExpression(key, value)) {
+        v = parseOperationValue(value as string, key);
+      }
+      if (/^if_not_exists/.test(`${value}`)) {
+        const [, vv] = /if_not_exists\((.+)\)/.exec(`${value}`) || [];
+        v = vv;
+      }
 
       if (Array.isArray(v) && /ADD|DELETE/.test(UpdateAction)) {
         const s = new Set(v as string[]);
@@ -44,6 +54,7 @@ export const getExpressionAttributes: GetExpressionAttributesFn = (params) => {
         acc.ExpressionAttributeValues[getAttrValue(v)] = v;
       }
     }
+
     return acc;
   }, params as ExpressionAttributesMap);
 };
@@ -51,16 +62,22 @@ export const getExpressionAttributes: GetExpressionAttributesFn = (params) => {
 type GetUpdateExpressionFn = (params?: UpdateInput) => UpdateOutput;
 export const getUpdateExpression: GetUpdateExpressionFn = (params = {}) => {
   if (!params.Update) return params;
+
   const { Update, UpdateAction = 'SET', ...restOfParams } = params;
-  const {
-    ExpressionAttributeNames = {},
-    ExpressionAttributeValues = {},
-  } = getExpressionAttributes(params);
+  const { ExpressionAttributeNames = {}, ExpressionAttributeValues = {} } =
+    getExpressionAttributes(params);
+
   let entries = '';
   switch (UpdateAction) {
     case 'SET':
       entries = Object.entries(Update)
         .map(([name, value]) => {
+          if (/^if_not_exists/.test(`${value}` || '')) {
+            const attr = getAttrName(name);
+            const [, v] = /if_not_exists\((.+)\)/.exec(`${value}`) || [];
+            return `${attr} = if_not_exists(${attr}, ${getAttrValue(v)})`;
+          }
+
           if (isMathExpression(name, value)) {
             const [, operator] = /([+-])/.exec(value as string) || [];
             const expr = (value as string)
@@ -72,8 +89,10 @@ export const getUpdateExpression: GetUpdateExpressionFn = (params = {}) => {
                 return getAttrValue(v);
               })
               .join(` ${operator} `);
+
             return `${getAttrName(name)} = ${expr}`;
           }
+
           return `${getAttrName(name)} = ${getAttrValue(value)}`;
         })
         .join(', ');
