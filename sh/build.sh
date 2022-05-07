@@ -1,15 +1,28 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-rimraf dist
-rimraf cjs
-tsc --build tsconfig.build.json
+main() {
+  rm -rf dist
+  rm -rf cjs
+  tsc --build tsconfig.build.json
 
-esbuild src/index.cjs --bundle --platform=node --outfile=dist/index.cjs \
-  --external:aws-sdk
-esbuild src/index.ts --bundle --format=esm --outfile=dist/index.mjs \
-  --external:aws-sdk --external:crypto
+  esbuild src/cjs/index.cjs \
+    --bundle \
+    --platform=node \
+    --outfile=dist/index.cjs \
+    --external:aws-sdk
 
-# node12 compatibility
-mkdir cjs && cp dist/index.cjs cjs/index.js
+  esbuild src/index.ts \
+    --bundle \
+    --format=esm \
+    --outfile=dist/index.mjs \
+    --external:aws-sdk \
+    --external:crypto
 
-cp src/dynoexpr.d.ts dist/dynoexpr.d.ts
+  # node12 compatibility
+  mkdir cjs && cp dist/index.cjs cjs/index.js
+
+  cp src/dynoexpr.d.ts dist/dynoexpr.d.ts
+}
+
+main

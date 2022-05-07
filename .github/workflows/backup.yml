@@ -1,4 +1,4 @@
-name: Backup
+name: backup
 
 on: [push, delete]
 
