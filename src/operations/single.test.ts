@@ -11,7 +11,6 @@ const docClient = new AWS.DynamoDB.DocumentClient();
 
 describe('single table operations', () => {
   it('applies consecutive expression getters to a parameters object', () => {
-    expect.assertions(1);
     const params: DynoexprInput = {
       KeyCondition: { c: 5 },
       Condition: { b: '> 10' },
@@ -71,7 +70,6 @@ describe('single table operations', () => {
       true,
     ],
   ])('checks if only UpdateRemove is present - %s', (_, params, expected) => {
-    expect.assertions(1);
     const result = isUpdateRemoveOnlyPresent(params);
     expect(result).toBe(expected);
   });
@@ -100,14 +98,12 @@ describe('single table operations', () => {
   ])(
     "doesn't include ExpressionAttributeValues - %s",
     (_, params, expected) => {
-      expect.assertions(1);
       const result = getSingleTableExpressions(params);
       expect(result).toStrictEqual(expected);
     }
   );
 
   it("doesn't clash values for different expressions", () => {
-    expect.assertions(1);
     const params: DynoexprInput = {
       KeyCondition: { a: 5 },
       Condition: { a: '> 10' },
@@ -137,7 +133,6 @@ describe('single table operations', () => {
   });
 
   it('keeps existing Names/Values', () => {
-    expect.assertions(1);
     const params: DynoexprInput = {
       KeyCondition: { a: 5 },
       Condition: { a: '> 10' },
@@ -175,7 +170,6 @@ describe('single table operations', () => {
   });
 
   it('converts Sets to DynamoDbSet if present in ExpressionsAttributeValues', () => {
-    expect.assertions(1);
     const values = {
       a: 1,
       b: 'foo',

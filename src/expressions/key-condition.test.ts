@@ -3,7 +3,6 @@ import { getKeyConditionExpression } from './key-condition';
 
 describe('key condition expression', () => {
   it('builds the ConditionExpression and NameValueMaps - comparison operators', () => {
-    expect.assertions(1);
     const KeyCondition = {
       a: 'foo',
       b: '> 1',
@@ -11,6 +10,7 @@ describe('key condition expression', () => {
       d: '< 3',
       e: '<= 4',
       f: '<> 5',
+      fa: '<> true',
       g: 'BETWEEN 6 AND 7',
       h: 'IN (foo, bar)',
     };
@@ -25,6 +25,7 @@ describe('key condition expression', () => {
         '#n91ad < :vbaf3',
         '#nec32 <= :v122c',
         '#ncce7 <> :v18d5',
+        '#n9e65 <> :vcb09',
         '#n845d between :vb2dc and :v2543',
         '#n5e91 in (:va4d8,:v51f2)',
       ]
@@ -37,6 +38,7 @@ describe('key condition expression', () => {
         '#n91ad': 'd',
         '#nec32': 'e',
         '#ncce7': 'f',
+        '#n9e65': 'fa',
         '#n845d': 'g',
         '#n5e91': 'h',
       },
@@ -50,13 +52,13 @@ describe('key condition expression', () => {
         ':v2543': 7,
         ':va4d8': 'foo',
         ':v51f2': 'bar',
+        ':vcb09': true,
       },
     };
     expect(result).toStrictEqual(expected);
   });
 
   it('builds the ConditionExpression and NameValueMaps - function', () => {
-    expect.assertions(1);
     const KeyCondition = {
       a: 'attribute_exists',
       b: 'attribute_not_exists',
@@ -97,7 +99,6 @@ describe('key condition expression', () => {
   });
 
   it('builds the ConditionExpression and NameValueMaps - mixed operators', () => {
-    expect.assertions(1);
     const KeyCondition = {
       a: 1,
       b: 'between 2 and 3',

@@ -3,7 +3,6 @@ import { getFilterExpression } from './filter';
 
 describe('filter expression', () => {
   it('builds the FilterExpression and NameValueMaps - comparison operators', () => {
-    expect.assertions(1);
     const Filter = {
       a: 'foo',
       b: '> 1',
@@ -11,6 +10,7 @@ describe('filter expression', () => {
       d: '< 3',
       e: '<= 4',
       f: '<> 5',
+      fa: '<> true',
       g: '> six',
       h: '>= seven',
       i: '< eight',
@@ -31,6 +31,7 @@ describe('filter expression', () => {
         '#n91ad < :vbaf3',
         '#nec32 <= :v122c',
         '#ncce7 <> :v18d5',
+        '#n9e65 <> :vcb09',
         '#n845d > :v60bf',
         '#n5e91 >= :vd432',
         '#n8741 < :vaa5c',
@@ -54,6 +55,7 @@ describe('filter expression', () => {
         '#n8741': 'i',
         '#n5515': 'j',
         '#n9df3': 'k',
+        '#n9e65': 'fa',
         '#n3b33': 'l',
         '#n501b': 'm',
         '#n63a1': 'n',
@@ -67,6 +69,7 @@ describe('filter expression', () => {
         ':vb2dc': 6,
         ':v2543': 7,
         ':v60bf': 'six',
+        ':vcb09': true,
         ':vd432': 'seven',
         ':vaa5c': 'eight',
         ':v9a54': 'nine',
@@ -81,7 +84,6 @@ describe('filter expression', () => {
   });
 
   it('builds the FilterExpression and NameValueMaps - function', () => {
-    expect.assertions(1);
     const Filter = {
       a: 'attribute_exists',
       b: 'attribute_not_exists',
@@ -122,7 +124,6 @@ describe('filter expression', () => {
   });
 
   it('builds the FilterExpression and NameValueMaps - mixed operators', () => {
-    expect.assertions(1);
     const Filter = {
       a: 1,
       b: 'between 2 and 3',

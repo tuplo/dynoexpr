@@ -5,6 +5,15 @@ import type {
 } from '../dynoexpr';
 import { getAttrName, getAttrValue } from '../utils';
 
+type Value = string | boolean | number | null;
+export function convertValue(value: string): Value {
+  const v = value.trim();
+  if (v === 'null') return null;
+  if (/^true$|^false$/i.test(v)) return v === 'true';
+  if (/^[0-9.]+$/.test(v)) return Number(v);
+  return v;
+}
+
 const REGEX_NOT = /^not\s(.+)/i;
 type ParseNotConditionFn = (exp: string) => string;
 export const parseNotCondition: ParseNotConditionFn = (exp) => {
@@ -13,59 +22,53 @@ export const parseNotCondition: ParseNotConditionFn = (exp) => {
 };
 
 const REGEX_ATTRIBUTE_TYPE = /^attribute_type\s*\(([^)]+)/i;
-type ParseAttributeTypeValue = (exp: string) => string;
+type ParseAttributeTypeValue = (exp: string) => Value;
 export const parseAttributeTypeValue: ParseAttributeTypeValue = (exp) => {
   const [, v] = REGEX_ATTRIBUTE_TYPE.exec(exp) || [];
-  return v.trim();
+  return convertValue(v);
 };
 
 const REGEX_BEGINS_WITH = /^begins_with[ |(]+([^)]+)/i;
-type ParseBeginsWithValueFn = (exp: string) => string;
+type ParseBeginsWithValueFn = (exp: string) => Value;
 export const parseBeginsWithValue: ParseBeginsWithValueFn = (exp) => {
   const [, v] = REGEX_BEGINS_WITH.exec(exp) || [];
-  return v.trim();
+  return convertValue(v);
 };
 
 const REGEX_BETWEEN = /^between\s+(.+)\s+and\s+(.+)/i;
-type ParseBetweenValueFn = (exp: string) => (string | number)[];
+type ParseBetweenValueFn = (exp: string) => Value[];
 export const parseBetweenValue: ParseBetweenValueFn = (exp) => {
   const vs = REGEX_BETWEEN.exec(exp) || [];
-  return vs
-    .slice(1, 3)
-    .map((val) => val.trim())
-    .map((val) => (/^\d+$/.test(val) ? Number(val) : val));
+  return vs.slice(1, 3).map(convertValue);
 };
 
 const REGEX_COMPARISON = /^[>=<]+\s*(.+)/;
-type ParseComparisonValueFn = (exp: string) => string | number;
+type ParseComparisonValueFn = (exp: string) => Value;
 export const parseComparisonValue: ParseComparisonValueFn = (exp) => {
   const [, v] = REGEX_COMPARISON.exec(exp) || [];
   const sv = v.trim();
-  return /^\d+$/.test(sv) ? Number(sv) : sv;
+  return convertValue(sv);
 };
 
 const REGEX_PARSE_IN = /^in\s*\(([^)]+)/i;
-type ParseInValueFn = (exp: string) => (string | number)[];
+type ParseInValueFn = (exp: string) => Value[];
 export const parseInValue: ParseInValueFn = (exp) => {
   const [, list] = REGEX_PARSE_IN.exec(exp) || [];
-  return list
-    .split(',')
-    .map((el) => el.trim())
-    .map((el) => (/^\d+$/.test(el) ? Number(el) : el));
+  return list.split(',').map(convertValue);
 };
 
 const REGEX_SIZE = /^size\s*[<=>]+\s*(\d+)/i;
-type ParseSizeValueFn = (exp: string) => number;
+type ParseSizeValueFn = (exp: string) => Value;
 export const parseSizeValue: ParseSizeValueFn = (exp) => {
   const [, v] = REGEX_SIZE.exec(exp) || [];
-  return Number(v.trim());
+  return convertValue(v);
 };
 
 const REGEX_CONTAINS = /^contains\s*\(([^)]+)\)/i;
-type ParseContainsValueFn = (exp: string) => string;
+type ParseContainsValueFn = (exp: string) => Value;
 export const parseContainsValue: ParseContainsValueFn = (exp) => {
   const [, v] = REGEX_CONTAINS.exec(exp) || [];
-  return v.trim();
+  return convertValue(v);
 };
 
 const REGEX_ATTRIBUTE_EXISTS = /^attribute_exists$/i;

@@ -3,7 +3,6 @@ import { getProjectionExpression } from './projection';
 
 describe('projection expression', () => {
   it('converts a ProjectionExpression to ExpressionAttributesMap', () => {
-    expect.assertions(1);
     const params: ProjectionInput = {
       Projection: ['foo', 'cast', 'year', 'baz'],
     };
@@ -22,7 +21,6 @@ describe('projection expression', () => {
   });
 
   it('adds new names to an existing ExpressionAttributesMap', () => {
-    expect.assertions(1);
     const params: ProjectionInput = {
       Projection: ['foo', 'cast', 'year', 'baz'],
       ExpressionAttributeNames: {
@@ -45,7 +43,6 @@ describe('projection expression', () => {
   });
 
   it('maintains existing ProjectionExpression names', () => {
-    expect.assertions(1);
     const params: ProjectionInput = {
       Projection: ['foo', 'baz'],
       ExpressionAttributeNames: {

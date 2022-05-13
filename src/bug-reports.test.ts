@@ -1,8 +1,8 @@
 import dynoexpr from './index';
+import type { FilterInput } from './dynoexpr.d';
 
 describe('bug reports', () => {
   it('logical operator', () => {
-    expect.assertions(1);
     const dateNowSpy = jest.spyOn(Date, 'now').mockReturnValue(1646249594000);
     const args = {
       Update: {
@@ -39,7 +39,6 @@ describe('bug reports', () => {
   });
 
   it('supports if_not_exists on update expressions', () => {
-    expect.assertions(1);
     const result = dynoexpr({
       Update: { number: 'if_not_exists(420)' },
     });
@@ -50,5 +49,21 @@ describe('bug reports', () => {
       ExpressionAttributeValues: { ':v2772': '420' },
     };
     expect(result).toStrictEqual(expected);
+  });
+
+  it('allows boolean values', () => {
+    const Filter = {
+      a: '<> true',
+      b: '<> false',
+    };
+    const params: FilterInput = { Filter };
+    const actual = dynoexpr(params);
+
+    const expected = {
+      ExpressionAttributeNames: { '#n2661': 'a', '#n578f': 'b' },
+      ExpressionAttributeValues: { ':v2327': false, ':vcb09': true },
+      FilterExpression: '(#n2661 <> :vcb09) AND (#n578f <> :v2327)',
+    };
+    expect(actual).toStrictEqual(expected);
   });
 });

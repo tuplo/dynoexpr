@@ -13,6 +13,15 @@ Expression builder for `AWS.DynamoDB.DocumentClient`.
   <img src="https://github.com/tuplo/dynoexpr/workflows/Build/badge.svg">
 </p>
 
+## Install
+
+```bash
+$ npm install @tuplo/dynoexpr
+
+# or with yarn
+$ yarn add @tuplo/dynoexpr
+```
+
 ## Usage
 
 Converts a plain object to a DynamoDB expression with all variables and names replaced with safe placeholders. It supports `Condition`, `KeyCondition`, `Filter`, `Projection` and `Update` expressions. The resulting expressions can then be used with `AWS.DynamoDB.DocumentClient` requests.
@@ -42,7 +51,7 @@ const params = dynoexpr({
   },
   ExpressionAttributeValues: {
     ':vaa3d': '567',
-    ':vf170': '4.5',
+    ':vf170': 4.5,
     ':v0c8f': 'blue',
   },
 }
@@ -268,7 +277,7 @@ const params = dynoexpr({
   RequestItems: {
     'Table-1': {
       Keys: [{ foo: 'bar' }],
-      Projection: [`a`, `b`],
+      Projection: ['a', 'b'],
     },
   },
   ReturnConsumedCapacity: 'TOTAL',
@@ -397,13 +406,4 @@ Parameters accepted by `AWS.DynamoDB.DocumentClient`
   ExpressionAttributeNames: { [key: string]: string },
   ExpressionAtributeValues: { [key: string]: string },
 }
-```
-
-## Install
-
-```bash
-$ npm install @tuplo/dynoexpr
-
-# or with yarn
-$ yarn add @tuplo/dynoexpr
 ```

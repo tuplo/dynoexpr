@@ -9,7 +9,6 @@ import {
 
 describe('update operations - SET/REMOVE/ADD/DELETE', () => {
   it('builds a SET update expression', () => {
-    expect.assertions(1);
     const params: UpdateInput = {
       UpdateSet: {
         foo: 'foo - 2',
@@ -48,7 +47,6 @@ describe('update operations - SET/REMOVE/ADD/DELETE', () => {
   });
 
   it('builds a REMOVE update expression', () => {
-    expect.assertions(1);
     const params: UpdateInput = {
       UpdateRemove: {
         foo: 'bar',
@@ -69,7 +67,6 @@ describe('update operations - SET/REMOVE/ADD/DELETE', () => {
   });
 
   it('builds an ADD update expression', () => {
-    expect.assertions(1);
     const params: UpdateInput = {
       UpdateAdd: {
         foo: 'bar',
@@ -103,7 +100,6 @@ describe('update operations - SET/REMOVE/ADD/DELETE', () => {
   });
 
   it('builds a DELETE update expression', () => {
-    expect.assertions(1);
     const params: UpdateInput = {
       UpdateDelete: {
         foo: 'bar',
@@ -137,7 +133,6 @@ describe('update operations - SET/REMOVE/ADD/DELETE', () => {
   });
 
   it('builds multiple update expressions', () => {
-    expect.assertions(1);
     const params: UpdateInput = {
       UpdateSet: { ufoo: 'ufoo - 2' },
       UpdateRemove: { rfoo: 'rbar' },

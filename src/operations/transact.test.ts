@@ -4,7 +4,6 @@ import { getTransactExpressions } from './transact';
 
 describe('transact requests', () => {
   it('accepts transact operations - transactGet', () => {
-    expect.assertions(1);
     const params = {
       TransactItems: [
         {
@@ -63,7 +62,6 @@ describe('transact requests', () => {
   });
 
   it('accepts transact operations - transactWrite', () => {
-    expect.assertions(1);
     const params = {
       TransactItems: [
         {

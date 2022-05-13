@@ -1,4 +1,5 @@
 import {
+  convertValue,
   buildConditionAttributeNames,
   buildConditionAttributeValues,
   buildConditionExpression,
@@ -15,11 +16,25 @@ import {
 } from './helpers';
 
 describe('helpers for condition helpers', () => {
+  it.each([
+    ['foo', 'foo'],
+    ['true', true],
+    ['false', false],
+    ['truest', 'truest'],
+    ['falsest', 'falsest'],
+    ['null', null],
+    ['123', 123],
+    ['2.5', 2.5],
+    ['123a', '123a'],
+  ])('converts from string to primitive values: %s', (value, expected) => {
+    const actual = convertValue(value);
+    expect(actual).toBe(expected);
+  });
+
   describe('parse expression values', () => {
     it.each(['> 5', '>5', '>  5', '>=5', '>= 5', '>=  5'])(
       'comparison v: %s',
       (expr) => {
-        expect.assertions(1);
         const result = parseComparisonValue(expr);
 
         const expected = 5;
@@ -33,7 +48,6 @@ describe('helpers for condition helpers', () => {
       'attribute_type  (foo)',
       'attribute_type( foo )',
     ])('attribute_type(v): %s', (expr) => {
-      expect.assertions(1);
       const result = parseAttributeTypeValue(expr);
 
       const expected = 'foo';
@@ -48,7 +62,6 @@ describe('helpers for condition helpers', () => {
       'begins_with foo',
       'begins_with  foo',
     ])('begins_with(v): %s', (expr) => {
-      expect.assertions(1);
       const result = parseBeginsWithValue(expr);
 
       const expected = 'foo';
@@ -58,7 +71,6 @@ describe('helpers for condition helpers', () => {
     it.each(['between 1 and 2', 'between  1  and   2'])(
       'between v1 and v2',
       (expr) => {
-        expect.assertions(1);
         const result = parseBetweenValue(expr);
 
         const expected = [1, 2];
@@ -73,7 +85,6 @@ describe('helpers for condition helpers', () => {
       'contains( foo )',
       'CONTAINS(foo)',
     ])('contains(v): %s', (expr) => {
-      expect.assertions(1);
       const result = parseContainsValue(expr);
 
       const expected = 'foo';
@@ -89,7 +100,6 @@ describe('helpers for condition helpers', () => {
       ['in(foo, bar, baz)', ['foo', 'bar', 'baz']],
       ['in(foo,  bar,  baz)', ['foo', 'bar', 'baz']],
     ])('in(v1,v2,v3): %s', (expr, expected) => {
-      expect.assertions(1);
       const result = parseInValue(expr);
       expect(result).toStrictEqual(expected);
     });
@@ -102,7 +112,6 @@ describe('helpers for condition helpers', () => {
       'SIZE>10',
       'size  >  10',
     ])('size [op] v: %s', (expr) => {
-      expect.assertions(1);
       const result = parseSizeValue(expr);
 
       const expected = 10;
@@ -112,8 +121,8 @@ describe('helpers for condition helpers', () => {
     it.each([
       ['not contains(foo)', 'contains(foo)'],
       ['not begins_with(foo)', 'begins_with(foo)'],
+      ['not begins_with(1)', 'begins_with(1)'],
     ])('parse not conditions: %s', (expr, expected) => {
-      expect.assertions(1);
       const result = parseNotCondition(expr);
       expect(result).toBe(expected);
     });
@@ -127,7 +136,6 @@ describe('helpers for condition helpers', () => {
     };
 
     it('builds not conditions (expression)', () => {
-      expect.assertions(1);
       const result = buildConditionExpression({ Condition });
 
       const expected = [
@@ -141,7 +149,6 @@ describe('helpers for condition helpers', () => {
     });
 
     it('builds not conditions (values)', () => {
-      expect.assertions(1);
       const result = buildConditionAttributeValues(Condition);
 
       const expected = { ':va4d8': 'foo' };
@@ -162,7 +169,6 @@ describe('helpers for condition helpers', () => {
     };
 
     it('builds a condition expression', () => {
-      expect.assertions(1);
       const result = buildConditionExpression({ Condition });
 
       const expected = [
@@ -181,7 +187,6 @@ describe('helpers for condition helpers', () => {
     });
 
     it('builds a condition expression with a specific logical operator', () => {
-      expect.assertions(1);
       const result = buildConditionExpression({
         Condition,
         LogicalOperator: 'OR',
@@ -203,7 +208,6 @@ describe('helpers for condition helpers', () => {
     });
 
     it('builds a condition expression with a list of expressions for the same field', () => {
-      expect.assertions(1);
       const result = buildConditionExpression({
         Condition: {
           a: [
@@ -238,7 +242,6 @@ describe('helpers for condition helpers', () => {
     });
 
     it('builds the ExpressionAttributeNameMap', () => {
-      expect.assertions(1);
       const result = buildConditionAttributeNames(Condition);
 
       const expected = {
@@ -255,7 +258,6 @@ describe('helpers for condition helpers', () => {
     });
 
     it('builds the ExpressionAttributeNameMap with an existing map', () => {
-      expect.assertions(1);
       const Condition2 = { b: 'foo' };
       const params: ConditionAttributeNamesParams = {
         ExpressionAttributeNames: { '#a': 'a' },
@@ -270,7 +272,6 @@ describe('helpers for condition helpers', () => {
     });
 
     it('builds the ExpressionAttributesValueMap', () => {
-      expect.assertions(1);
       const result = buildConditionAttributeValues(Condition);
 
       const expected = {
@@ -288,7 +289,6 @@ describe('helpers for condition helpers', () => {
     });
 
     it('builds the ExpressionAttributesValueMap with an existing map', () => {
-      expect.assertions(1);
       const Condition2 = { b: 'foo' };
       const params: ConditionAttributeValuesParams = {
         ExpressionAttributeValues: { ':a': 'bar' },
@@ -303,7 +303,6 @@ describe('helpers for condition helpers', () => {
     });
 
     it('builds the ExpressionAttributesValueMap with multiple expressions for the same field', () => {
-      expect.assertions(1);
       const Condition2 = { b: ['foo', 'attribute_exists'] };
       const result = buildConditionAttributeValues(Condition2);
 
@@ -325,7 +324,6 @@ describe('helpers for condition helpers', () => {
     };
 
     it('builds a condition expression', () => {
-      expect.assertions(1);
       const result = buildConditionExpression({ Condition });
 
       const expected = [
@@ -344,7 +342,6 @@ describe('helpers for condition helpers', () => {
     });
 
     it('builds the ExpressionAttributeNameMap', () => {
-      expect.assertions(1);
       const result = buildConditionAttributeNames(Condition);
 
       const expected = {
@@ -361,7 +358,6 @@ describe('helpers for condition helpers', () => {
     });
 
     it('builds the ExpressionAttributesValueMap', () => {
-      expect.assertions(1);
       const result = buildConditionAttributeValues(Condition);
 
       const expected = {
@@ -374,7 +370,6 @@ describe('helpers for condition helpers', () => {
   });
 
   it('handles comparators look-a-likes', () => {
-    expect.assertions(1);
     const Condition = {
       a: 'attribute_type_number',
       b: 'begins_without',

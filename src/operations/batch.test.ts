@@ -2,7 +2,6 @@ import { getBatchExpressions } from './batch';
 
 describe('batch requests', () => {
   it('accepts batch operations: batchGet', () => {
-    expect.assertions(1);
     const params = {
       RequestItems: {
         'Table-1': {
@@ -47,7 +46,6 @@ describe('batch requests', () => {
   });
 
   it('accepts batch operations: batchWrite', () => {
-    expect.assertions(1);
     const params = {
       RequestItems: {
         'Table-1': [{ DeleteRequest: { Key: { foo: 'bar' } } }],

@@ -10,7 +10,6 @@ describe('update expression', () => {
   it.each(['foo + 2', 'foo - 2', '2 - foo', '2 + foo', 'foo  +  2', 'foo+2'])(
     'parses the number on a math operation update: %s',
     (expr) => {
-      expect.assertions(1);
       const expected = 2;
       const result = parseOperationValue(expr, 'foo');
       expect(result).toBe(expected);
@@ -18,7 +17,6 @@ describe('update expression', () => {
   );
 
   it('converts from an obj to ExpressionAttributes', () => {
-    expect.assertions(1);
     const Update = {
       foo: 'bar',
       baz: 2,
@@ -62,7 +60,6 @@ describe('update expression', () => {
   });
 
   it('builds ExpressionAttributesMap with existing maps', () => {
-    expect.assertions(1);
     const Update = { a: 1 };
     const params = {
       Update,
@@ -80,7 +77,6 @@ describe('update expression', () => {
   });
 
   it('updates attributes - SET', () => {
-    expect.assertions(1);
     const params = {
       Update: {
         foo: 'bar',
@@ -115,7 +111,6 @@ describe('update expression', () => {
   });
 
   it('update expression with if_not_exists', () => {
-    expect.assertions(1);
     const params = {
       Update: { foo: 'if_not_exists(bar)' },
     };
@@ -143,14 +138,12 @@ describe('update expression', () => {
   ])(
     'identifies an expression as being a math expression',
     (expr1, expr2, expected) => {
-      expect.assertions(1);
       const result = isMathExpression(expr1, expr2);
       expect(result).toStrictEqual(expected);
     }
   );
 
   it('updates numeric value math operations - SET', () => {
-    expect.assertions(1);
     const params: UpdateInput = {
       Update: {
         foo: 'foo - 2',
@@ -177,7 +170,6 @@ describe('update expression', () => {
   });
 
   it("updates expression with -/+ but it's not a math expression", () => {
-    expect.assertions(1);
     const params: UpdateInput = {
       Update: {
         foo: '10-20-001',
@@ -208,7 +200,6 @@ describe('update expression', () => {
   });
 
   it('adds a number - ADD', () => {
-    expect.assertions(1);
     const params: UpdateInput = {
       UpdateAction: 'ADD',
       Update: {
@@ -230,7 +221,6 @@ describe('update expression', () => {
   });
 
   it('adds elements to a set - SET', () => {
-    expect.assertions(1);
     const params: UpdateInput = {
       UpdateAction: 'ADD',
       Update: {
@@ -254,7 +244,6 @@ describe('update expression', () => {
   });
 
   it('removes element from a set - DELETE', () => {
-    expect.assertions(1);
     const params: UpdateInput = {
       UpdateAction: 'DELETE',
       Update: {
