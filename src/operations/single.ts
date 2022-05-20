@@ -8,38 +8,9 @@ import { getUpdateExpression } from '../expressions/update';
 import { getUpdateOperationsExpression } from '../expressions/update-ops';
 import { getKeyConditionExpression } from '../expressions/key-condition';
 
+import { trimEmptyExpressionAttributes } from './helpers';
+
 const docClient = new AWS.DynamoDB.DocumentClient();
-
-type IsUpdateRemoveOnlyPresentFn = (params: DynoexprInput) => boolean;
-export const isUpdateRemoveOnlyPresent: IsUpdateRemoveOnlyPresentFn = (
-  params
-) => {
-  const { UpdateAction, UpdateRemove } = params;
-  if (UpdateAction !== 'REMOVE' && typeof UpdateRemove === 'undefined')
-    return false;
-
-  const {
-    Condition,
-    Filter,
-    KeyCondition,
-    UpdateSet,
-    UpdateAdd,
-    UpdateDelete,
-  } = params;
-  const otherPresent = [
-    Condition,
-    Filter,
-    KeyCondition,
-    UpdateSet,
-    UpdateAdd,
-    UpdateDelete,
-  ].some((key) => typeof key !== 'undefined');
-  if (otherPresent) {
-    return false;
-  }
-
-  return true;
-};
 
 type ConvertValuesToDynamoDbSetFn = (
   attributeValues: Record<string, unknown>
@@ -78,9 +49,5 @@ export function getSingleTableExpressions<
     );
   }
 
-  if (isUpdateRemoveOnlyPresent(params)) {
-    delete expression.ExpressionAttributeValues;
-  }
-
-  return expression;
+  return trimEmptyExpressionAttributes(expression);
 }

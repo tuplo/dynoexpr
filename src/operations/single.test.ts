@@ -3,7 +3,6 @@ import AWS from 'aws-sdk';
 import type { DynoexprInput, DynoexprOutput } from '../dynoexpr';
 import {
   getSingleTableExpressions,
-  isUpdateRemoveOnlyPresent,
   convertValuesToDynamoDbSet,
 } from './single';
 
@@ -51,29 +50,6 @@ describe('single table operations', () => {
     expect(result).toStrictEqual(expected);
   });
 
-  it.each<[string, DynoexprInput, boolean]>([
-    ['no update remove', { Filter: { foo: 2 } }, false],
-    ['UpdateRemove only', { UpdateRemove: { foo: 1 } }, true],
-    [
-      'UpdateAction: REMOVE',
-      { Update: { foo: 1 }, UpdateAction: 'REMOVE' },
-      true,
-    ],
-    [
-      'other expressions',
-      { UpdateRemove: { foo: 1 }, Filter: { bar: 2 } },
-      false,
-    ],
-    [
-      "don't include Projection",
-      { UpdateRemove: { foo: 1 }, Projection: ['bar'] },
-      true,
-    ],
-  ])('checks if only UpdateRemove is present - %s', (_, params, expected) => {
-    const result = isUpdateRemoveOnlyPresent(params);
-    expect(result).toBe(expected);
-  });
-
   it.each<[string, DynoexprInput, DynoexprOutput]>([
     [
       'UpdateRemove',
@@ -95,13 +71,22 @@ describe('single table operations', () => {
         },
       },
     ],
-  ])(
-    "doesn't include ExpressionAttributeValues - %s",
-    (_, params, expected) => {
-      const result = getSingleTableExpressions(params);
-      expect(result).toStrictEqual(expected);
-    }
-  );
+    [
+      'UpdateRemove with Projection',
+      { UpdateRemove: { foo: 1 }, Projection: ['bar'] },
+      {
+        UpdateExpression: 'REMOVE #na4d8',
+        ExpressionAttributeNames: {
+          '#n51f2': 'bar',
+          '#na4d8': 'foo',
+        },
+        ProjectionExpression: '#n51f2',
+      },
+    ],
+  ])("doesn't include ExpressionAttributeValues: %s", (_, params, expected) => {
+    const result = getSingleTableExpressions(params);
+    expect(result).toStrictEqual(expected);
+  });
 
   it("doesn't clash values for different expressions", () => {
     const params: DynoexprInput = {

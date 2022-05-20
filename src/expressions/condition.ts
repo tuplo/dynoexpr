@@ -21,10 +21,14 @@ export const getConditionExpression: GetConditionExpressionFn = (
     ExpressionAttributeValues: buildConditionAttributeValues(Condition, params),
   };
 
-  const attributeValueKeys = Object.keys(
-    paramsWithConditions.ExpressionAttributeValues || {}
-  );
-  if (attributeValueKeys.length === 0) {
+  const { ExpressionAttributeNames, ExpressionAttributeValues } =
+    paramsWithConditions;
+
+  if (Object.keys(ExpressionAttributeNames || {}).length === 0) {
+    delete paramsWithConditions.ExpressionAttributeNames;
+  }
+
+  if (Object.keys(ExpressionAttributeValues || {}).length === 0) {
     delete paramsWithConditions.ExpressionAttributeValues;
   }
 

@@ -66,4 +66,22 @@ describe('bug reports', () => {
     };
     expect(actual).toStrictEqual(expected);
   });
+
+  it('empty ExpressionAttributeValues on UpdateRemove with Condition', () => {
+    const params = {
+      UpdateRemove: { 'parent.item': 1 },
+      Condition: { 'parent.item': 'attribute_exists' },
+    };
+    const actual = dynoexpr(params);
+
+    const expected = {
+      ConditionExpression: '(attribute_exists(#nb602.#n7ebc))',
+      ExpressionAttributeNames: {
+        '#n7ebc': 'item',
+        '#nb602': 'parent',
+      },
+      UpdateExpression: 'REMOVE #nb602.#n7ebc',
+    };
+    expect(actual).toStrictEqual(expected);
+  });
 });

@@ -21,6 +21,7 @@ function dynoexpr<T = DynoexprOutput>(params: DynoexprParams): T {
   if (isTransactRequest(params)) {
     return getTransactExpressions(params) as DynoexprOutput as T;
   }
+
   return getSingleTableExpressions(params) as T;
 }
 
