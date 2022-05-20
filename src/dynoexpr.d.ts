@@ -12,7 +12,8 @@ type DynoexprInputValue =
   | Record<string, unknown>[]
   | Set<number>
   | Set<string>
-  | null;
+  | null
+  | undefined;
 
 type DynamoDbValue =
   | string

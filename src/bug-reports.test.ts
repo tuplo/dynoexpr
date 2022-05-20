@@ -84,4 +84,22 @@ describe('bug reports', () => {
     };
     expect(actual).toStrictEqual(expected);
   });
+
+  it('pass undefined to UpdateRemove', () => {
+    const params = {
+      UpdateRemove: { 'parent.item': undefined },
+      Condition: { 'parent.item': 'attribute_exists' },
+    };
+    const actual = dynoexpr(params);
+
+    const expected = {
+      ConditionExpression: '(attribute_exists(#nb602.#n7ebc))',
+      ExpressionAttributeNames: {
+        '#n7ebc': 'item',
+        '#nb602': 'parent',
+      },
+      UpdateExpression: 'REMOVE #nb602.#n7ebc',
+    };
+    expect(actual).toStrictEqual(expected);
+  });
 });
