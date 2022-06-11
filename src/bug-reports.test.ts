@@ -102,4 +102,18 @@ describe('bug reports', () => {
     };
     expect(actual).toStrictEqual(expected);
   });
+
+  it('handles list_append', () => {
+    const params = {
+      Update: { numbersArray: 'list_append([1, 2], numbersArray)' },
+    };
+    const actual = dynoexpr(params);
+
+    const expected = {
+      UpdateExpression: 'SET #neb9c = list_append(:v4136, #neb9c)',
+      ExpressionAttributeNames: { '#neb9c': 'numbersArray' },
+      ExpressionAttributeValues: { ':v4136': '[1, 2]' },
+    };
+    expect(actual).toStrictEqual(expected);
+  });
 });

@@ -21,6 +21,43 @@ export const isMathExpression: IsMathExpressionFn = (name, value) => {
   return rgLh.test(`${value}`) || rgRh.test(`${value}`);
 };
 
+export function getListAppendExpressionAttributes(
+  key: string,
+  value: DynoexprInputValue
+) {
+  const [, listAppendValues] = /list_append\((.+)\)/.exec(`${value}`) || [];
+  const rg = /(\[[^\]]+\])/g;
+  return [...listAppendValues.matchAll(rg)]
+    .map((m) => m[0])
+    .filter((v) => v !== key)
+    .join('');
+}
+
+export function getListAppendExpression(
+  key: string,
+  value: DynoexprInputValue
+) {
+  const attr = getAttrName(key);
+  const [, listAppendValues] = /list_append\((.+)\)/.exec(`${value}`) || [];
+
+  const rg = /(\[[^\]]+\])/g;
+  const lists = [...listAppendValues.matchAll(rg)].map((m) => m[0]);
+  const attrValues: Record<string, string> = {};
+
+  // replace only lists with attrValues
+  const newValue = lists.reduce((acc, list) => {
+    attrValues[list] = getAttrValue(list);
+    return acc.replace(list, attrValues[list]);
+  }, listAppendValues as string);
+
+  const vv = newValue
+    .split(/,/)
+    .map((v) => v.trim())
+    .map((v) => (v === key ? attr : v));
+
+  return `${attr} = list_append(${vv.join(', ')})`;
+}
+
 type ExpressionAttributesMap = {
   ExpressionAttributeNames: { [key: string]: string };
   ExpressionAttributeValues: { [key: string]: DynoexprInputValue };
@@ -39,12 +76,18 @@ export const getExpressionAttributes: GetExpressionAttributesFn = (params) => {
 
     if (UpdateAction !== 'REMOVE') {
       let v = value;
+
       if (isMathExpression(key, value)) {
         v = parseOperationValue(value as string, key);
       }
+
       if (/^if_not_exists/.test(`${value}`)) {
         const [, vv] = /if_not_exists\((.+)\)/.exec(`${value}`) || [];
         v = vv;
+      }
+
+      if (/^list_append/.test(`${value}`)) {
+        v = getListAppendExpressionAttributes(key, value);
       }
 
       if (Array.isArray(v) && /ADD|DELETE/.test(UpdateAction)) {
@@ -72,10 +115,14 @@ export const getUpdateExpression: GetUpdateExpressionFn = (params = {}) => {
     case 'SET':
       entries = Object.entries(Update)
         .map(([name, value]) => {
-          if (/^if_not_exists/.test(`${value}` || '')) {
+          if (/^if_not_exists/.test(`${value}`)) {
             const attr = getAttrName(name);
             const [, v] = /if_not_exists\((.+)\)/.exec(`${value}`) || [];
             return `${attr} = if_not_exists(${attr}, ${getAttrValue(v)})`;
+          }
+
+          if (/^list_append/.test(`${value}`)) {
+            return getListAppendExpression(name, value);
           }
 
           if (isMathExpression(name, value)) {

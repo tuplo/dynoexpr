@@ -407,3 +407,7 @@ Parameters accepted by `AWS.DynamoDB.DocumentClient`
   ExpressionAtributeValues: { [key: string]: string },
 }
 ```
+
+## License
+
+MIT

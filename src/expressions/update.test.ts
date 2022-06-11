@@ -124,6 +124,36 @@ describe('update expression', () => {
     expect(result).toStrictEqual(expected);
   });
 
+  describe('list_append', () => {
+    it('adds to the beginning of the list', () => {
+      const params = {
+        Update: { foo: 'list_append([1, 2], foo)' },
+      };
+      const actual = getUpdateExpression(params);
+
+      const expected = {
+        UpdateExpression: 'SET #na4d8 = list_append(:v4136, #na4d8)',
+        ExpressionAttributeNames: { '#na4d8': 'foo' },
+        ExpressionAttributeValues: { ':v4136': '[1, 2]' },
+      };
+      expect(actual).toStrictEqual(expected);
+    });
+
+    it('adds to the end of the list', () => {
+      const params = {
+        Update: { foo: 'list_append(foo, [1, 2])' },
+      };
+      const actual = getUpdateExpression(params);
+
+      const expected = {
+        UpdateExpression: 'SET #na4d8 = list_append(#na4d8, :v4136)',
+        ExpressionAttributeNames: { '#na4d8': 'foo' },
+        ExpressionAttributeValues: { ':v4136': '[1, 2]' },
+      };
+      expect(actual).toStrictEqual(expected);
+    });
+  });
+
   it.each([
     ['foo', 'foo - 2', true],
     ['foo', 'foo-2', true],
