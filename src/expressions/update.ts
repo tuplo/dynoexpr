@@ -23,9 +23,7 @@ export const isMathExpression: IsMathExpressionFn = (name, value) => {
 
 function fromStrListToArray(strList: string): DynoexprInputValue[] {
   const [, inner] = /^\[([^\]]+)\]$/.exec(strList) || [];
-  return inner
-    .split(',')
-    .map((v) => (/[0-9]+/.test(v) ? Number(v.trim()) : v.trim()));
+  return inner.split(',').map((v) => JSON.parse(v));
 }
 
 export function getListAppendExpressionAttributes(

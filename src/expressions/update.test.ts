@@ -157,7 +157,7 @@ describe('update expression', () => {
 
     it('adds to the beginning of the list (strings)', () => {
       const params = {
-        Update: { foo: 'list_append([buu, 2], foo)' },
+        Update: { foo: 'list_append(["buu", 2], foo)' },
       };
       const actual = getUpdateExpression(params);
 
@@ -171,7 +171,7 @@ describe('update expression', () => {
 
     it('adds to the end of the list (string)', () => {
       const params = {
-        Update: { foo: 'list_append(foo, [1, buu])' },
+        Update: { foo: 'list_append(foo, [1, "buu"])' },
       };
       const actual = getUpdateExpression(params);
 

@@ -116,4 +116,18 @@ describe('bug reports', () => {
     };
     expect(actual).toStrictEqual(expected);
   });
+
+  it('handles list_append with strings', () => {
+    const params = {
+      Update: { numbersArray: 'list_append(["a", "b"], numbersArray)' },
+    };
+    const actual = dynoexpr(params);
+
+    const expected = {
+      UpdateExpression: 'SET #neb9c = list_append(:vc5eb, #neb9c)',
+      ExpressionAttributeNames: { '#neb9c': 'numbersArray' },
+      ExpressionAttributeValues: { ':vc5eb': ['a', 'b'] },
+    };
+    expect(actual).toStrictEqual(expected);
+  });
 });
