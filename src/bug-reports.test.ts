@@ -110,9 +110,9 @@ describe('bug reports', () => {
     const actual = dynoexpr(params);
 
     const expected = {
-      UpdateExpression: 'SET #neb9c = list_append(:v4136, #neb9c)',
+      UpdateExpression: 'SET #neb9c = list_append(:veb45, #neb9c)',
       ExpressionAttributeNames: { '#neb9c': 'numbersArray' },
-      ExpressionAttributeValues: { ':v4136': '[1, 2]' },
+      ExpressionAttributeValues: { ':veb45': [1, 2] },
     };
     expect(actual).toStrictEqual(expected);
   });

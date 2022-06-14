@@ -110,45 +110,75 @@ describe('update expression', () => {
     expect(result).toStrictEqual(expected);
   });
 
-  it('update expression with if_not_exists', () => {
-    const params = {
-      Update: { foo: 'if_not_exists(bar)' },
-    };
-    const result = getUpdateExpression(params);
+  describe('if_not_exists', () => {
+    it('update expression with if_not_exists', () => {
+      const params = {
+        Update: { foo: 'if_not_exists(bar)' },
+      };
+      const result = getUpdateExpression(params);
 
-    const expected = {
-      UpdateExpression: 'SET #na4d8 = if_not_exists(#na4d8, :v51f2)',
-      ExpressionAttributeNames: { '#na4d8': 'foo' },
-      ExpressionAttributeValues: { ':v51f2': 'bar' },
-    };
-    expect(result).toStrictEqual(expected);
+      const expected = {
+        UpdateExpression: 'SET #na4d8 = if_not_exists(#na4d8, :v51f2)',
+        ExpressionAttributeNames: { '#na4d8': 'foo' },
+        ExpressionAttributeValues: { ':v51f2': 'bar' },
+      };
+      expect(result).toStrictEqual(expected);
+    });
   });
 
   describe('list_append', () => {
-    it('adds to the beginning of the list', () => {
+    it('adds to the beginning of the list (numbers)', () => {
       const params = {
         Update: { foo: 'list_append([1, 2], foo)' },
       };
       const actual = getUpdateExpression(params);
 
       const expected = {
-        UpdateExpression: 'SET #na4d8 = list_append(:v4136, #na4d8)',
+        UpdateExpression: 'SET #na4d8 = list_append(:veb45, #na4d8)',
         ExpressionAttributeNames: { '#na4d8': 'foo' },
-        ExpressionAttributeValues: { ':v4136': '[1, 2]' },
+        ExpressionAttributeValues: { ':veb45': [1, 2] },
       };
       expect(actual).toStrictEqual(expected);
     });
 
-    it('adds to the end of the list', () => {
+    it('adds to the end of the list (numbers)', () => {
       const params = {
         Update: { foo: 'list_append(foo, [1, 2])' },
       };
       const actual = getUpdateExpression(params);
 
       const expected = {
-        UpdateExpression: 'SET #na4d8 = list_append(#na4d8, :v4136)',
+        UpdateExpression: 'SET #na4d8 = list_append(#na4d8, :veb45)',
         ExpressionAttributeNames: { '#na4d8': 'foo' },
-        ExpressionAttributeValues: { ':v4136': '[1, 2]' },
+        ExpressionAttributeValues: { ':veb45': [1, 2] },
+      };
+      expect(actual).toStrictEqual(expected);
+    });
+
+    it('adds to the beginning of the list (strings)', () => {
+      const params = {
+        Update: { foo: 'list_append([buu, 2], foo)' },
+      };
+      const actual = getUpdateExpression(params);
+
+      const expected = {
+        UpdateExpression: 'SET #na4d8 = list_append(:v6eec, #na4d8)',
+        ExpressionAttributeNames: { '#na4d8': 'foo' },
+        ExpressionAttributeValues: { ':v6eec': ['buu', 2] },
+      };
+      expect(actual).toStrictEqual(expected);
+    });
+
+    it('adds to the end of the list (string)', () => {
+      const params = {
+        Update: { foo: 'list_append(foo, [1, buu])' },
+      };
+      const actual = getUpdateExpression(params);
+
+      const expected = {
+        UpdateExpression: 'SET #na4d8 = list_append(#na4d8, :v15de)',
+        ExpressionAttributeNames: { '#na4d8': 'foo' },
+        ExpressionAttributeValues: { ':v15de': [1, 'buu'] },
       };
       expect(actual).toStrictEqual(expected);
     });

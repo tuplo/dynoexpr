@@ -21,16 +21,24 @@ export const isMathExpression: IsMathExpressionFn = (name, value) => {
   return rgLh.test(`${value}`) || rgRh.test(`${value}`);
 };
 
+function fromStrListToArray(strList: string): DynoexprInputValue[] {
+  const [, inner] = /^\[([^\]]+)\]$/.exec(strList) || [];
+  return inner
+    .split(',')
+    .map((v) => (/[0-9]+/.test(v) ? Number(v.trim()) : v.trim()));
+}
+
 export function getListAppendExpressionAttributes(
   key: string,
   value: DynoexprInputValue
 ) {
   const [, listAppendValues] = /list_append\((.+)\)/.exec(`${value}`) || [];
-  const rg = /(\[[^\]]+\])/g;
+  const rg = /(\[[^\]]+\])/g; // match [1, 2]
+
   return [...listAppendValues.matchAll(rg)]
     .map((m) => m[0])
     .filter((v) => v !== key)
-    .join('');
+    .flatMap((list) => fromStrListToArray(list));
 }
 
 export function getListAppendExpression(
@@ -46,7 +54,8 @@ export function getListAppendExpression(
 
   // replace only lists with attrValues
   const newValue = lists.reduce((acc, list) => {
-    attrValues[list] = getAttrValue(list);
+    const listValues = fromStrListToArray(list);
+    attrValues[list] = getAttrValue(listValues);
     return acc.replace(list, attrValues[list]);
   }, listAppendValues as string);
 
@@ -75,7 +84,7 @@ export const getExpressionAttributes: GetExpressionAttributesFn = (params) => {
     });
 
     if (UpdateAction !== 'REMOVE') {
-      let v = value;
+      let v: DynoexprInputValue | DynoexprInputValue[] = value;
 
       if (isMathExpression(key, value)) {
         v = parseOperationValue(value as string, key);
@@ -94,6 +103,7 @@ export const getExpressionAttributes: GetExpressionAttributesFn = (params) => {
         const s = new Set(v as string[]);
         acc.ExpressionAttributeValues[getAttrValue(s)] = s;
       } else {
+        // @ts-expect-error foobar
         acc.ExpressionAttributeValues[getAttrValue(v)] = v;
       }
     }
