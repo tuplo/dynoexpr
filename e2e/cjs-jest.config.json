@@ -1,5 +1,5 @@
 {
-  "moduleNameMapper": {
-    "dynoexpr$": "<rootDir>node_modules/@tuplo/dynoexpr/cjs"
-  }
+	"moduleNameMapper": {
+		"dynoexpr$": "<rootDir>node_modules/@tuplo/dynoexpr/cjs"
+	}
 }

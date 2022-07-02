@@ -1,12 +1,12 @@
 const dynoexpr = require('@tuplo/dynoexpr');
 
 function getParams() {
-  return dynoexpr({
-    KeyCondition: { id: '567' },
-    Condition: { rating: '> 4.5' },
-    Filter: { color: 'blue' },
-    Projection: ['weight', 'size'],
-  });
+	return dynoexpr({
+		KeyCondition: { id: '567' },
+		Condition: { rating: '> 4.5' },
+		Filter: { color: 'blue' },
+		Projection: ['weight', 'size'],
+	});
 }
 
 module.exports = { getParams };

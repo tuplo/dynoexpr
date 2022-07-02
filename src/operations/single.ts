@@ -13,41 +13,41 @@ import { trimEmptyExpressionAttributes } from './helpers';
 const docClient = new AWS.DynamoDB.DocumentClient();
 
 type ConvertValuesToDynamoDbSetFn = (
-  attributeValues: Record<string, unknown>
+	attributeValues: Record<string, unknown>
 ) => Record<string, DynamoDbValue>;
 export const convertValuesToDynamoDbSet: ConvertValuesToDynamoDbSetFn = (
-  attributeValues
+	attributeValues
 ) =>
-  Object.entries(attributeValues).reduce((acc, [key, value]) => {
-    if (value instanceof Set) {
-      acc[key] = docClient.createSet(Array.from(value));
-    } else {
-      acc[key] = value as DynamoDbValue;
-    }
-    return acc;
-  }, {} as Record<string, DynamoDbValue>);
+	Object.entries(attributeValues).reduce((acc, [key, value]) => {
+		if (value instanceof Set) {
+			acc[key] = docClient.createSet(Array.from(value));
+		} else {
+			acc[key] = value as DynamoDbValue;
+		}
+		return acc;
+	}, {} as Record<string, DynamoDbValue>);
 
 export function getSingleTableExpressions<
-  T extends DynoexprOutput = DynoexprOutput
+	T extends DynoexprOutput = DynoexprOutput
 >(params: DynoexprInput = {}): T {
-  const expression = [
-    getKeyConditionExpression,
-    getConditionExpression,
-    getFilterExpression,
-    getProjectionExpression,
-    getUpdateExpression,
-    getUpdateOperationsExpression,
-  ].reduce((acc, getExpressionFn) => getExpressionFn(acc), params) as T;
+	const expression = [
+		getKeyConditionExpression,
+		getConditionExpression,
+		getFilterExpression,
+		getProjectionExpression,
+		getUpdateExpression,
+		getUpdateOperationsExpression,
+	].reduce((acc, getExpressionFn) => getExpressionFn(acc), params) as T;
 
-  delete expression.Update;
-  delete expression.UpdateAction;
+	delete expression.Update;
+	delete expression.UpdateAction;
 
-  const { ExpressionAttributeValues = {} } = expression;
-  if (Object.keys(ExpressionAttributeValues).length > 0) {
-    expression.ExpressionAttributeValues = convertValuesToDynamoDbSet(
-      ExpressionAttributeValues
-    );
-  }
+	const { ExpressionAttributeValues = {} } = expression;
+	if (Object.keys(ExpressionAttributeValues).length > 0) {
+		expression.ExpressionAttributeValues = convertValuesToDynamoDbSet(
+			ExpressionAttributeValues
+		);
+	}
 
-  return trimEmptyExpressionAttributes(expression);
+	return trimEmptyExpressionAttributes(expression);
 }

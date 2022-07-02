@@ -404,7 +404,7 @@ Parameters accepted by `AWS.DynamoDB.DocumentClient`
   UpdateExpression: string,
 
   ExpressionAttributeNames: { [key: string]: string },
-  ExpressionAtributeValues: { [key: string]: string },
+  ExpressionAttributeValues: { [key: string]: string },
 }
 ```
 

@@ -4,68 +4,68 @@ import { getUpdateExpression } from './update';
 type GetUpdateExpressionFn = (params?: UpdateInput) => UpdateOutput;
 
 export const getUpdateSetExpression: GetUpdateExpressionFn = (params = {}) => {
-  const { UpdateSet, ...restOfParams } = params;
-  return getUpdateExpression({
-    ...restOfParams,
-    Update: UpdateSet,
-    UpdateAction: 'SET',
-  });
+	const { UpdateSet, ...restOfParams } = params;
+	return getUpdateExpression({
+		...restOfParams,
+		Update: UpdateSet,
+		UpdateAction: 'SET',
+	});
 };
 
 export const getUpdateRemoveExpression: GetUpdateExpressionFn = (
-  params = {}
+	params = {}
 ) => {
-  const { UpdateRemove, ...restOfParams } = params;
-  return getUpdateExpression({
-    ...restOfParams,
-    Update: UpdateRemove,
-    UpdateAction: 'REMOVE',
-  });
+	const { UpdateRemove, ...restOfParams } = params;
+	return getUpdateExpression({
+		...restOfParams,
+		Update: UpdateRemove,
+		UpdateAction: 'REMOVE',
+	});
 };
 
 export const getUpdateAddExpression: GetUpdateExpressionFn = (params = {}) => {
-  const { UpdateAdd, ...restOfParams } = params;
-  return getUpdateExpression({
-    ...restOfParams,
-    Update: UpdateAdd,
-    UpdateAction: 'ADD',
-  });
+	const { UpdateAdd, ...restOfParams } = params;
+	return getUpdateExpression({
+		...restOfParams,
+		Update: UpdateAdd,
+		UpdateAction: 'ADD',
+	});
 };
 
 export const getUpdateDeleteExpression: GetUpdateExpressionFn = (
-  params = {}
+	params = {}
 ) => {
-  const { UpdateDelete, ...restOfParams } = params;
-  return getUpdateExpression({
-    ...restOfParams,
-    Update: UpdateDelete,
-    UpdateAction: 'DELETE',
-  });
+	const { UpdateDelete, ...restOfParams } = params;
+	return getUpdateExpression({
+		...restOfParams,
+		Update: UpdateDelete,
+		UpdateAction: 'DELETE',
+	});
 };
 
 export const getUpdateOperationsExpression: GetUpdateExpressionFn = (
-  params = {}
+	params = {}
 ) => {
-  const updateExpressions: string[] = [];
-  const outputParams = [
-    getUpdateSetExpression,
-    getUpdateRemoveExpression,
-    getUpdateAddExpression,
-    getUpdateDeleteExpression,
-  ].reduce((acc, getExpressionFn) => {
-    const expr = getExpressionFn(acc);
-    const { UpdateExpression = '' } = expr;
-    updateExpressions.push(UpdateExpression);
-    return expr;
-  }, params as UpdateOutput);
+	const updateExpressions: string[] = [];
+	const outputParams = [
+		getUpdateSetExpression,
+		getUpdateRemoveExpression,
+		getUpdateAddExpression,
+		getUpdateDeleteExpression,
+	].reduce((acc, getExpressionFn) => {
+		const expr = getExpressionFn(acc);
+		const { UpdateExpression = '' } = expr;
+		updateExpressions.push(UpdateExpression);
+		return expr;
+	}, params as UpdateOutput);
 
-  const aggUpdateExpression = updateExpressions
-    .filter(Boolean)
-    .filter((e, i, a) => a.indexOf(e) === i)
-    .join(' ');
-  if (aggUpdateExpression) {
-    outputParams.UpdateExpression = aggUpdateExpression;
-  }
+	const aggUpdateExpression = updateExpressions
+		.filter(Boolean)
+		.filter((e, i, a) => a.indexOf(e) === i)
+		.join(' ');
+	if (aggUpdateExpression) {
+		outputParams.UpdateExpression = aggUpdateExpression;
+	}
 
-  return outputParams;
+	return outputParams;
 };

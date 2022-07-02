@@ -1,229 +1,229 @@
 import type {
-  LogicalOperatorType,
-  DynoexprInputValue,
-  DynamoDbValue,
+	LogicalOperatorType,
+	DynoexprInputValue,
+	DynamoDbValue,
 } from '../dynoexpr';
 import { getAttrName, getAttrValue } from '../utils';
 
 type Value = string | boolean | number | null;
 export function convertValue(value: string): Value {
-  const v = value.trim();
-  if (v === 'null') return null;
-  if (/^true$|^false$/i.test(v)) return v === 'true';
-  if (/^[0-9.]+$/.test(v)) return Number(v);
-  return v;
+	const v = value.trim();
+	if (v === 'null') return null;
+	if (/^true$|^false$/i.test(v)) return v === 'true';
+	if (/^[0-9.]+$/.test(v)) return Number(v);
+	return v;
 }
 
 const REGEX_NOT = /^not\s(.+)/i;
 type ParseNotConditionFn = (exp: string) => string;
 export const parseNotCondition: ParseNotConditionFn = (exp) => {
-  const [, v] = REGEX_NOT.exec(exp) || [];
-  return v.trim();
+	const [, v] = REGEX_NOT.exec(exp) || [];
+	return v.trim();
 };
 
 const REGEX_ATTRIBUTE_TYPE = /^attribute_type\s*\(([^)]+)/i;
 type ParseAttributeTypeValue = (exp: string) => Value;
 export const parseAttributeTypeValue: ParseAttributeTypeValue = (exp) => {
-  const [, v] = REGEX_ATTRIBUTE_TYPE.exec(exp) || [];
-  return convertValue(v);
+	const [, v] = REGEX_ATTRIBUTE_TYPE.exec(exp) || [];
+	return convertValue(v);
 };
 
 const REGEX_BEGINS_WITH = /^begins_with[ |(]+([^)]+)/i;
 type ParseBeginsWithValueFn = (exp: string) => Value;
 export const parseBeginsWithValue: ParseBeginsWithValueFn = (exp) => {
-  const [, v] = REGEX_BEGINS_WITH.exec(exp) || [];
-  return convertValue(v);
+	const [, v] = REGEX_BEGINS_WITH.exec(exp) || [];
+	return convertValue(v);
 };
 
 const REGEX_BETWEEN = /^between\s+(.+)\s+and\s+(.+)/i;
 type ParseBetweenValueFn = (exp: string) => Value[];
 export const parseBetweenValue: ParseBetweenValueFn = (exp) => {
-  const vs = REGEX_BETWEEN.exec(exp) || [];
-  return vs.slice(1, 3).map(convertValue);
+	const vs = REGEX_BETWEEN.exec(exp) || [];
+	return vs.slice(1, 3).map(convertValue);
 };
 
 const REGEX_COMPARISON = /^[>=<]+\s*(.+)/;
 type ParseComparisonValueFn = (exp: string) => Value;
 export const parseComparisonValue: ParseComparisonValueFn = (exp) => {
-  const [, v] = REGEX_COMPARISON.exec(exp) || [];
-  const sv = v.trim();
-  return convertValue(sv);
+	const [, v] = REGEX_COMPARISON.exec(exp) || [];
+	const sv = v.trim();
+	return convertValue(sv);
 };
 
 const REGEX_PARSE_IN = /^in\s*\(([^)]+)/i;
 type ParseInValueFn = (exp: string) => Value[];
 export const parseInValue: ParseInValueFn = (exp) => {
-  const [, list] = REGEX_PARSE_IN.exec(exp) || [];
-  return list.split(',').map(convertValue);
+	const [, list] = REGEX_PARSE_IN.exec(exp) || [];
+	return list.split(',').map(convertValue);
 };
 
 const REGEX_SIZE = /^size\s*[<=>]+\s*(\d+)/i;
 type ParseSizeValueFn = (exp: string) => Value;
 export const parseSizeValue: ParseSizeValueFn = (exp) => {
-  const [, v] = REGEX_SIZE.exec(exp) || [];
-  return convertValue(v);
+	const [, v] = REGEX_SIZE.exec(exp) || [];
+	return convertValue(v);
 };
 
 const REGEX_CONTAINS = /^contains\s*\(([^)]+)\)/i;
 type ParseContainsValueFn = (exp: string) => Value;
 export const parseContainsValue: ParseContainsValueFn = (exp) => {
-  const [, v] = REGEX_CONTAINS.exec(exp) || [];
-  return convertValue(v);
+	const [, v] = REGEX_CONTAINS.exec(exp) || [];
+	return convertValue(v);
 };
 
 const REGEX_ATTRIBUTE_EXISTS = /^attribute_exists$/i;
 const REGEX_ATTRIBUTE_NOT_EXISTS = /^attribute_not_exists$/i;
 
 type FlattenExpressionsFn = (
-  Condition: Record<string, DynoexprInputValue>
+	Condition: Record<string, DynoexprInputValue>
 ) => [string, DynoexprInputValue][];
 export const flattenExpressions: FlattenExpressionsFn = (Condition) =>
-  Object.entries(Condition).flatMap(([key, value]) => {
-    if (Array.isArray(value)) {
-      return value.map((v: DynoexprInputValue) => [key, v]);
-    }
-    return [[key, value]];
-  }) as [string, DynoexprInputValue][];
+	Object.entries(Condition).flatMap(([key, value]) => {
+		if (Array.isArray(value)) {
+			return value.map((v: DynoexprInputValue) => [key, v]);
+		}
+		return [[key, value]];
+	}) as [string, DynoexprInputValue][];
 
 type BuildConditionExpressionInput = {
-  Condition: Record<string, DynoexprInputValue>;
-  LogicalOperator?: LogicalOperatorType;
+	Condition: Record<string, DynoexprInputValue>;
+	LogicalOperator?: LogicalOperatorType;
 };
 type BuildConditionExpressionFn = (
-  params: BuildConditionExpressionInput
+	params: BuildConditionExpressionInput
 ) => string;
 export const buildConditionExpression: BuildConditionExpressionFn = ({
-  Condition = {},
-  LogicalOperator = 'AND',
+	Condition = {},
+	LogicalOperator = 'AND',
 }) =>
-  flattenExpressions(Condition)
-    .map(([key, value]) => {
-      let expr: string;
-      if (typeof value === 'string') {
-        let strValue = value.trim();
+	flattenExpressions(Condition)
+		.map(([key, value]) => {
+			let expr: string;
+			if (typeof value === 'string') {
+				let strValue = value.trim();
 
-        const hasNotCondition = REGEX_NOT.test(strValue);
-        if (hasNotCondition) {
-          strValue = parseNotCondition(strValue);
-        }
+				const hasNotCondition = REGEX_NOT.test(strValue);
+				if (hasNotCondition) {
+					strValue = parseNotCondition(strValue);
+				}
 
-        if (REGEX_COMPARISON.test(strValue)) {
-          const [, operator] = /([<=>]+)/.exec(strValue) || [];
-          const v = parseComparisonValue(strValue);
-          expr = `${getAttrName(key)} ${operator} ${getAttrValue(v)}`;
-        } else if (REGEX_BETWEEN.test(strValue)) {
-          const v = parseBetweenValue(strValue);
-          const exp = `between ${getAttrValue(v[0])} and ${getAttrValue(v[1])}`;
-          expr = `${getAttrName(key)} ${exp}`;
-        } else if (REGEX_PARSE_IN.test(strValue)) {
-          const v = parseInValue(strValue);
-          expr = `${getAttrName(key)} in (${v.map(getAttrValue).join(',')})`;
-        } else if (REGEX_ATTRIBUTE_EXISTS.test(strValue)) {
-          expr = `attribute_exists(${getAttrName(key)})`;
-        } else if (REGEX_ATTRIBUTE_NOT_EXISTS.test(strValue)) {
-          expr = `attribute_not_exists(${getAttrName(key)})`;
-        } else if (REGEX_ATTRIBUTE_TYPE.test(strValue)) {
-          const v = parseAttributeTypeValue(strValue);
-          expr = `attribute_type(${getAttrName(key)},${getAttrValue(v)})`;
-        } else if (REGEX_BEGINS_WITH.test(strValue)) {
-          const v = parseBeginsWithValue(strValue);
-          expr = `begins_with(${getAttrName(key)},${getAttrValue(v)})`;
-        } else if (REGEX_CONTAINS.test(strValue)) {
-          const v = parseContainsValue(strValue);
-          expr = `contains(${getAttrName(key)},${getAttrValue(v)})`;
-        } else if (REGEX_SIZE.test(strValue)) {
-          const [, operator] = /([<=>]+)/.exec(strValue) || [];
-          const v = parseSizeValue(strValue);
-          expr = `size(${getAttrName(key)}) ${operator} ${getAttrValue(v)}`;
-        } else {
-          expr = `${getAttrName(key)} = ${getAttrValue(strValue)}`;
-        }
+				if (REGEX_COMPARISON.test(strValue)) {
+					const [, operator] = /([<=>]+)/.exec(strValue) || [];
+					const v = parseComparisonValue(strValue);
+					expr = `${getAttrName(key)} ${operator} ${getAttrValue(v)}`;
+				} else if (REGEX_BETWEEN.test(strValue)) {
+					const v = parseBetweenValue(strValue);
+					const exp = `between ${getAttrValue(v[0])} and ${getAttrValue(v[1])}`;
+					expr = `${getAttrName(key)} ${exp}`;
+				} else if (REGEX_PARSE_IN.test(strValue)) {
+					const v = parseInValue(strValue);
+					expr = `${getAttrName(key)} in (${v.map(getAttrValue).join(',')})`;
+				} else if (REGEX_ATTRIBUTE_EXISTS.test(strValue)) {
+					expr = `attribute_exists(${getAttrName(key)})`;
+				} else if (REGEX_ATTRIBUTE_NOT_EXISTS.test(strValue)) {
+					expr = `attribute_not_exists(${getAttrName(key)})`;
+				} else if (REGEX_ATTRIBUTE_TYPE.test(strValue)) {
+					const v = parseAttributeTypeValue(strValue);
+					expr = `attribute_type(${getAttrName(key)},${getAttrValue(v)})`;
+				} else if (REGEX_BEGINS_WITH.test(strValue)) {
+					const v = parseBeginsWithValue(strValue);
+					expr = `begins_with(${getAttrName(key)},${getAttrValue(v)})`;
+				} else if (REGEX_CONTAINS.test(strValue)) {
+					const v = parseContainsValue(strValue);
+					expr = `contains(${getAttrName(key)},${getAttrValue(v)})`;
+				} else if (REGEX_SIZE.test(strValue)) {
+					const [, operator] = /([<=>]+)/.exec(strValue) || [];
+					const v = parseSizeValue(strValue);
+					expr = `size(${getAttrName(key)}) ${operator} ${getAttrValue(v)}`;
+				} else {
+					expr = `${getAttrName(key)} = ${getAttrValue(strValue)}`;
+				}
 
-        // adds NOT condition if it exists
-        expr = [hasNotCondition && 'not', expr].filter(Boolean).join(' ');
-      } else {
-        expr = `${getAttrName(key)} = ${getAttrValue(value)}`;
-      }
+				// adds NOT condition if it exists
+				expr = [hasNotCondition && 'not', expr].filter(Boolean).join(' ');
+			} else {
+				expr = `${getAttrName(key)} = ${getAttrValue(value)}`;
+			}
 
-      return expr;
-    })
-    .map((expr) => `(${expr})`)
-    .join(` ${LogicalOperator} `);
+			return expr;
+		})
+		.map((expr) => `(${expr})`)
+		.join(` ${LogicalOperator} `);
 
 export type ConditionAttributeNamesParams = {
-  ExpressionAttributeNames?: { [key: string]: string };
+	ExpressionAttributeNames?: { [key: string]: string };
 };
 type BuildConditionAttributeNamesFn = (
-  condition: Record<string, DynoexprInputValue>,
-  params?: ConditionAttributeNamesParams
+	condition: Record<string, DynoexprInputValue>,
+	params?: ConditionAttributeNamesParams
 ) => { [key: string]: string };
 export const buildConditionAttributeNames: BuildConditionAttributeNamesFn = (
-  condition,
-  params = {}
+	condition,
+	params = {}
 ) =>
-  Object.keys(condition).reduce((acc, key) => {
-    key.split('.').forEach((k) => {
-      acc[getAttrName(k)] = k;
-    });
-    return acc;
-  }, params.ExpressionAttributeNames || ({} as { [key: string]: string }));
+	Object.keys(condition).reduce((acc, key) => {
+		key.split('.').forEach((k) => {
+			acc[getAttrName(k)] = k;
+		});
+		return acc;
+	}, params.ExpressionAttributeNames || ({} as { [key: string]: string }));
 
 export type ConditionAttributeValuesParams = {
-  ExpressionAttributeValues?: { [key: string]: DynamoDbValue };
+	ExpressionAttributeValues?: { [key: string]: DynamoDbValue };
 };
 type BuildConditionAttributeValuesFn = (
-  condition: Record<string, DynoexprInputValue>,
-  params?: ConditionAttributeValuesParams
+	condition: Record<string, DynoexprInputValue>,
+	params?: ConditionAttributeValuesParams
 ) => { [key: string]: DynamoDbValue };
 export const buildConditionAttributeValues: BuildConditionAttributeValuesFn = (
-  condition,
-  params = {}
+	condition,
+	params = {}
 ) =>
-  flattenExpressions(condition).reduce((acc, [, value]) => {
-    let v: DynamoDbValue | undefined;
-    if (typeof value === 'string') {
-      let strValue = value.trim();
+	flattenExpressions(condition).reduce((acc, [, value]) => {
+		let v: DynamoDbValue | undefined;
+		if (typeof value === 'string') {
+			let strValue = value.trim();
 
-      const hasNotCondition = REGEX_NOT.test(strValue);
-      if (hasNotCondition) {
-        strValue = parseNotCondition(strValue);
-      }
+			const hasNotCondition = REGEX_NOT.test(strValue);
+			if (hasNotCondition) {
+				strValue = parseNotCondition(strValue);
+			}
 
-      if (REGEX_COMPARISON.test(strValue)) {
-        v = parseComparisonValue(strValue);
-      } else if (REGEX_BETWEEN.test(strValue)) {
-        v = parseBetweenValue(strValue);
-      } else if (REGEX_PARSE_IN.test(strValue)) {
-        v = parseInValue(strValue);
-      } else if (REGEX_ATTRIBUTE_TYPE.test(strValue)) {
-        v = parseAttributeTypeValue(strValue);
-      } else if (REGEX_BEGINS_WITH.test(strValue)) {
-        v = parseBeginsWithValue(strValue);
-      } else if (REGEX_CONTAINS.test(strValue)) {
-        v = parseContainsValue(strValue);
-      } else if (REGEX_SIZE.test(strValue)) {
-        v = parseSizeValue(strValue);
-      } else if (
-        !REGEX_ATTRIBUTE_EXISTS.test(strValue) &&
-        !REGEX_ATTRIBUTE_NOT_EXISTS.test(strValue)
-      ) {
-        v = strValue;
-      }
-    } else {
-      v = value;
-    }
+			if (REGEX_COMPARISON.test(strValue)) {
+				v = parseComparisonValue(strValue);
+			} else if (REGEX_BETWEEN.test(strValue)) {
+				v = parseBetweenValue(strValue);
+			} else if (REGEX_PARSE_IN.test(strValue)) {
+				v = parseInValue(strValue);
+			} else if (REGEX_ATTRIBUTE_TYPE.test(strValue)) {
+				v = parseAttributeTypeValue(strValue);
+			} else if (REGEX_BEGINS_WITH.test(strValue)) {
+				v = parseBeginsWithValue(strValue);
+			} else if (REGEX_CONTAINS.test(strValue)) {
+				v = parseContainsValue(strValue);
+			} else if (REGEX_SIZE.test(strValue)) {
+				v = parseSizeValue(strValue);
+			} else if (
+				!REGEX_ATTRIBUTE_EXISTS.test(strValue) &&
+				!REGEX_ATTRIBUTE_NOT_EXISTS.test(strValue)
+			) {
+				v = strValue;
+			}
+		} else {
+			v = value;
+		}
 
-    if (typeof v === 'undefined') {
-      return acc;
-    }
+		if (typeof v === 'undefined') {
+			return acc;
+		}
 
-    if (Array.isArray(v)) {
-      v.forEach((val) => {
-        acc[getAttrValue(val)] = val;
-      });
-    } else {
-      acc[getAttrValue(v)] = v;
-    }
+		if (Array.isArray(v)) {
+			v.forEach((val) => {
+				acc[getAttrValue(val)] = val;
+			});
+		} else {
+			acc[getAttrValue(v)] = v;
+		}
 
-    return acc;
-  }, params.ExpressionAttributeValues || ({} as { [key: string]: DynamoDbValue }));
+		return acc;
+	}, params.ExpressionAttributeValues || ({} as { [key: string]: DynamoDbValue }));
