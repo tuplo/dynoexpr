@@ -1,30 +1,26 @@
-# dynoexpr
+<br />
+<div align="center">
+  <img src="logo.png" alt="Logo" width="120" height="120">
 
-Expression builder for `AWS.DynamoDB.DocumentClient`.
+  <h1 align="center">dynoexpr</h3>
 
-<p>
-  <img src="https://img.shields.io/npm/v/@tuplo/dynoexpr">
-  <a href="https://codeclimate.com/github/tuplo/dynoexpr/maintainability">
-    <img src="https://api.codeclimate.com/v1/badges/3564497cf991d094e2eb/maintainability" />
-  </a>
-  <a href="https://codeclimate.com/github/tuplo/dynoexpr/test_coverage">
+  <p align="center">
+    Expression builder for <i>AWS.DynamoDB.DocumentClient</i>
+  </p>
+  <p align="center">
+  	<img src="https://img.shields.io/npm/v/@tuplo/dynoexpr">
+  	<a href="https://codeclimate.com/github/tuplo/dynoexpr/test_coverage">
     <img src="https://api.codeclimate.com/v1/badges/3564497cf991d094e2eb/test_coverage" />
-  </a>
-  <img src="https://github.com/tuplo/dynoexpr/workflows/Build/badge.svg">
-</p>
+  	</a>
+  	<img src="https://github.com/tuplo/dynoexpr/workflows/Build/badge.svg">
+	</p>
 
-## Install
+</div>
 
-```bash
-$ npm install @tuplo/dynoexpr
+## Introduction
 
-# or with yarn
-$ yarn add @tuplo/dynoexpr
-```
-
-## Usage
-
-Converts a plain object to a DynamoDB expression with all variables and names replaced with safe placeholders. It supports `Condition`, `KeyCondition`, `Filter`, `Projection` and `Update` expressions. The resulting expressions can then be used with `AWS.DynamoDB.DocumentClient` requests.
+Converts a plain object to a DynamoDB expression with all variables and names
+replaced with safe placeholders. It supports `Condition`, `KeyCondition`, `Filter`, `Projection` and `Update` expressions. The resulting expressions can then be used with `AWS.DynamoDB.DocumentClient` requests.
 
 ```typescript
 import dynoexpr from '@tuplo/dynoexpr';
@@ -58,7 +54,18 @@ const params = dynoexpr({
 */
 ```
 
-**Passing parameters to DocumentClient**
+## Install
+
+```bash
+$ npm install @tuplo/dynoexpr
+
+# or with yarn
+$ yarn add @tuplo/dynoexpr
+```
+
+## Usage
+
+### Passing parameters to DocumentClient
 
 ```typescript
 const docClient = new AWS.DynamoDB.DocumentClient();
@@ -75,7 +82,7 @@ const results = await docClient
   .promise();
 ```
 
-**Using multiple expressions on the same field**
+### Using multiple expressions on the same field
 
 You can use multiple expressions on the same field, by packing them into an array and assigning it to the key with the field's name.
 
@@ -103,7 +110,7 @@ const params = dynoexpr({
 */
 ```
 
-**Using functions**
+### Using functions
 
 `DynamoDB` supports a number of [functions](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.OperatorsAndFunctions.html#Expressions.OperatorsAndFunctions.Functions) to be evaluated when parsing expressions. You don't need to reference the `path` argument because that's identified by the object's key.
 
@@ -145,7 +152,7 @@ const params = dynoexpr({
 */
 ```
 
-**Using multiple expressions on the same request**
+### Using multiple expressions on the same request
 
 ```typescript
 const params = dynoexpr({
@@ -168,7 +175,7 @@ const params = dynoexpr({
 */
 ```
 
-**Working with Sets**
+### Working with Sets
 
 If a value is provided as a Set, it will be converted to `DocumentClient.DynamoDbSet`.
 
@@ -192,7 +199,7 @@ const params = dynoexpr({
 */
 ```
 
-**When using UpdateAdd or UpdateDelete, arrays are converted to DynamoDbSet**
+### When using UpdateAdd or UpdateDelete, arrays are converted to DynamoDbSet
 
 ```typescript
 const params = dynoexpr({
@@ -214,7 +221,7 @@ const params = dynoexpr({
 */
 ```
 
-**Keep existing Expressions, AttributeNames and AttributeValues**
+### Keep existing Expressions, AttributeNames and AttributeValues
 
 ```typescript
 const params = dynoexpr({
@@ -240,7 +247,7 @@ const params = dynoexpr({
 */
 ```
 
-**Parsing atomic requests, only expressions will be replaced**
+### Parsing atomic requests, only expressions will be replaced
 
 You can pass the whole request parameters to `dynoexpr` - only the expression builders will be replaced.
 
@@ -270,7 +277,7 @@ const params = dynoexpr({
 */
 ```
 
-**Parsing Batch requests**
+### Parsing Batch requests
 
 ```typescript
 const params = dynoexpr({
@@ -300,19 +307,17 @@ const params = dynoexpr({
 */
 ```
 
-**Parsing Transact requests**
+### Parsing Transact requests
 
 ```typescript
 const params = dynoexpr({
-  TransactItems: [
-    {
-      Get: {
-        TableName: 'Table-1',
-        Key: { id: 'foo' },
-        Projection: ['a', 'b'],
-      },
+  TransactItems: [{
+    Get: {
+      TableName: 'Table-1',
+      Key: { id: 'foo' },
+      Projection: ['a', 'b'],
     },
-  ],
+  }],
   ReturnConsumedCapacity: 'INDEXES',
 });
 
@@ -336,7 +341,7 @@ const params = dynoexpr({
 */
 ```
 
-**Type the resulting parameters**
+### Type the resulting parameters
 
 The resulting object is compatible with all `DocumentClient` requests, but if you want to be type-safe, `dynoexpr` accepts a generic type to be applied to the return value.
 
