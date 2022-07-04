@@ -1,4 +1,4 @@
-import AWS from 'aws-sdk';
+import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 
 import type { DynoexprInput, DynamoDbValue, DynoexprOutput } from '../dynoexpr';
 import { getConditionExpression } from '../expressions/condition';
@@ -10,7 +10,8 @@ import { getKeyConditionExpression } from '../expressions/key-condition';
 
 import { trimEmptyExpressionAttributes } from './helpers';
 
-const docClient = new AWS.DynamoDB.DocumentClient();
+export const createDynamoDbSet =
+	DocumentClient.prototype.createSet.bind(undefined);
 
 type ConvertValuesToDynamoDbSetFn = (
 	attributeValues: Record<string, unknown>
@@ -20,7 +21,7 @@ export const convertValuesToDynamoDbSet: ConvertValuesToDynamoDbSetFn = (
 ) =>
 	Object.entries(attributeValues).reduce((acc, [key, value]) => {
 		if (value instanceof Set) {
-			acc[key] = docClient.createSet(Array.from(value));
+			acc[key] = createDynamoDbSet(Array.from(value));
 		} else {
 			acc[key] = value as DynamoDbValue;
 		}
