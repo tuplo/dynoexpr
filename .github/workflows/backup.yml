@@ -3,11 +3,14 @@ name: backup
 on: [push, delete]
 
 jobs:
-  to_bitbucket:
+  backup:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: pixta-dev/repository-mirroring-action@v1
+      - uses: actions/checkout@main
         with:
-          target_repo_url: git@bitbucket.org:tuplo/dynoexpr.git
-          ssh_private_key: ${{ secrets.BITBUCKET_SSH_PRIVATE_KEY }}
+          fetch-depth: "0"
+      - uses: ruicsh/backup-action@main
+        with:
+          bitbucket_app_user: ${{ secrets.BACKUP_APP_USER }}
+          bitbucket_app_password: ${{ secrets.BACKUP_APP_PASSWORD }}
+          target_repo: tuplo/dynoexpr
