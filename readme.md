@@ -12,7 +12,7 @@
   	<a href="https://codeclimate.com/github/tuplo/dynoexpr/test_coverage">
     <img src="https://api.codeclimate.com/v1/badges/3564497cf991d094e2eb/test_coverage" />
   	</a>
-  	<img src="https://github.com/tuplo/dynoexpr/workflows/Build/badge.svg">
+  	<img src="https://github.com/tuplo/dynoexpr/workflows/build/badge.svg">
 	</p>
 
 </div>

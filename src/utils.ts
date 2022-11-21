@@ -1,4 +1,4 @@
-import crypto from 'crypto';
+import crypto from 'node:crypto';
 
 type ToStringFn = (data: unknown) => string;
 export const toString: ToStringFn = (data) => {
