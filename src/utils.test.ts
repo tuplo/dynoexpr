@@ -34,7 +34,7 @@ describe('expression helpers', () => {
 	});
 
 	it.each([
-		['new attribute', 'foo', '#na4d8'],
+		['new attribute', 'foo', '#nccc4a4d8'],
 		['already encoded', '#foo', '#foo'],
 	])('creates expressions attributes names - %s', (_, attrib, expected) => {
 		expect.assertions(1);
@@ -43,7 +43,7 @@ describe('expression helpers', () => {
 	});
 
 	it.each([
-		['new value', 'foo', ':va4d8'],
+		['new value', 'foo', ':vccc4a4d8'],
 		['already encoded', ':foo', ':foo'],
 	])('creates expressions attributes values - %s', (_, attrib, expected) => {
 		expect.assertions(1);

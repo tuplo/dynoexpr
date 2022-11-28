@@ -9,12 +9,12 @@ describe('projection expression', () => {
 		const result = getProjectionExpression(params);
 
 		const expected = {
-			ProjectionExpression: '#na4d8,#nc464,#n17d8,#n6e88',
+			ProjectionExpression: '#nccc4a4d8,#nf625c464,#n12f117d8,#nc85f6e88',
 			ExpressionAttributeNames: {
-				'#na4d8': 'foo',
-				'#nc464': 'cast',
-				'#n17d8': 'year',
-				'#n6e88': 'baz',
+				'#n12f117d8': 'year',
+				'#nc85f6e88': 'baz',
+				'#nccc4a4d8': 'foo',
+				'#nf625c464': 'cast',
 			},
 		};
 		expect(result).toStrictEqual(expected);
@@ -30,13 +30,13 @@ describe('projection expression', () => {
 		const result = getProjectionExpression(params);
 
 		const expected = {
-			ProjectionExpression: '#na4d8,#nc464,#n17d8,#n6e88',
+			ProjectionExpression: '#nccc4a4d8,#nf625c464,#n12f117d8,#nc85f6e88',
 			ExpressionAttributeNames: {
 				'#quz': 'quz',
-				'#na4d8': 'foo',
-				'#nc464': 'cast',
-				'#n17d8': 'year',
-				'#n6e88': 'baz',
+				'#n12f117d8': 'year',
+				'#nc85f6e88': 'baz',
+				'#nccc4a4d8': 'foo',
+				'#nf625c464': 'cast',
 			},
 		};
 		expect(result).toStrictEqual(expected);
@@ -52,11 +52,11 @@ describe('projection expression', () => {
 		const result = getProjectionExpression(params);
 
 		const expected = {
-			ProjectionExpression: '#na4d8,#n6e88',
+			ProjectionExpression: '#nccc4a4d8,#nc85f6e88',
 			ExpressionAttributeNames: {
 				'#foo': 'foo',
-				'#na4d8': 'foo',
-				'#n6e88': 'baz',
+				'#nccc4a4d8': 'foo',
+				'#nc85f6e88': 'baz',
 			},
 		};
 		expect(result).toStrictEqual(expected);

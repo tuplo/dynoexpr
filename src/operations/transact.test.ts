@@ -34,10 +34,10 @@ describe('transact requests', () => {
 					Get: {
 						TableName: 'Table-1',
 						Key: { id: 'foo' },
-						ProjectionExpression: '#n2661,#n578f',
+						ProjectionExpression: '#n69772661,#n7531578f',
 						ExpressionAttributeNames: {
-							'#n2661': 'a',
-							'#n578f': 'b',
+							'#n69772661': 'a',
+							'#n7531578f': 'b',
 						},
 					},
 				},
@@ -45,13 +45,13 @@ describe('transact requests', () => {
 					Get: {
 						TableName: 'Table-2',
 						Key: { id: 'bar' },
-						ProjectionExpression: '#na4d8,#nc464,#n17d8,#n6e88',
+						ProjectionExpression: '#nccc4a4d8,#nf625c464,#n12f117d8,#nc85f6e88',
 						ExpressionAttributeNames: {
 							'#quz': 'quz',
-							'#na4d8': 'foo',
-							'#nc464': 'cast',
-							'#n17d8': 'year',
-							'#n6e88': 'baz',
+							'#nccc4a4d8': 'foo',
+							'#nf625c464': 'cast',
+							'#n12f117d8': 'year',
+							'#nc85f6e88': 'baz',
 						},
 					},
 				},
@@ -98,36 +98,36 @@ describe('transact requests', () => {
 			TransactItems: [
 				{
 					ConditionCheck: {
-						ConditionExpression: '(#n2661 = :va4d8)',
+						ConditionExpression: '(#n69772661 = :vccc4a4d8)',
 						ExpressionAttributeNames: {
-							'#n2661': 'a',
+							'#n69772661': 'a',
 						},
 						ExpressionAttributeValues: {
-							':va4d8': 'foo',
+							':vccc4a4d8': 'foo',
 						},
 						TableName: 'Table-1',
 					},
 				},
 				{
 					Put: {
-						ConditionExpression: '(#n578f > :v849b)',
+						ConditionExpression: '(#n7531578f > :v6f75849b)',
 						ExpressionAttributeNames: {
-							'#n578f': 'b',
+							'#n7531578f': 'b',
 						},
 						ExpressionAttributeValues: {
-							':v849b': 1,
+							':v6f75849b': 1,
 						},
 						TableName: 'Table-1',
 					},
 				},
 				{
 					Delete: {
-						ConditionExpression: '(#n5f33 >= :v862c)',
+						ConditionExpression: '(#n408b5f33 >= :vcc14862c)',
 						ExpressionAttributeNames: {
-							'#n5f33': 'c',
+							'#n408b5f33': 'c',
 						},
 						ExpressionAttributeValues: {
-							':v862c': 2,
+							':vcc14862c': 2,
 						},
 						TableName: 'Table-2',
 					},
@@ -135,13 +135,13 @@ describe('transact requests', () => {
 				{
 					Update: {
 						ExpressionAttributeNames: {
-							'#na4d8': 'foo',
+							'#nccc4a4d8': 'foo',
 						},
 						ExpressionAttributeValues: {
-							':v51f2': 'bar',
+							':v4f2d51f2': 'bar',
 						},
 						TableName: 'Table-3',
-						UpdateExpression: 'SET #na4d8 = :v51f2',
+						UpdateExpression: 'SET #nccc4a4d8 = :v4f2d51f2',
 					},
 				},
 			],

@@ -19,40 +19,40 @@ describe('condition expression', () => {
 
 		const expected = {
 			ConditionExpression: [
-				'#n2661 = :va4d8',
-				'#n578f > :v849b',
-				'#n5f33 >= :v862c',
-				'#n91ad < :vbaf3',
-				'#nec32 <= :v122c',
-				'#ncce7 <> :v18d5',
-				'#n9e65 <> :vcb09',
-				'#n845d between :vb2dc and :v2543',
-				'#n5e91 in (:va4d8,:v51f2)',
+				'#n69772661 = :vccc4a4d8',
+				'#n7531578f > :v6f75849b',
+				'#n408b5f33 >= :vcc14862c',
+				'#n16e091ad < :vf2a7baf3',
+				'#ne841ec32 <= :v7542122c',
+				'#n1929cce7 <> :v74a318d5',
+				'#n52c19e65 <> :v7534cb09',
+				'#n3614845d between :v7eb1b2dc and :v4bea2543',
+				'#n3a695e91 in (:vccc4a4d8,:v4f2d51f2)',
 			]
 				.map((exp) => `(${exp})`)
 				.join(' AND '),
 			ExpressionAttributeNames: {
-				'#n2661': 'a',
-				'#n578f': 'b',
-				'#n5f33': 'c',
-				'#n91ad': 'd',
-				'#nec32': 'e',
-				'#ncce7': 'f',
-				'#n9e65': 'fa',
-				'#n845d': 'g',
-				'#n5e91': 'h',
+				'#n69772661': 'a',
+				'#n7531578f': 'b',
+				'#n408b5f33': 'c',
+				'#n16e091ad': 'd',
+				'#ne841ec32': 'e',
+				'#n1929cce7': 'f',
+				'#n52c19e65': 'fa',
+				'#n3614845d': 'g',
+				'#n3a695e91': 'h',
 			},
 			ExpressionAttributeValues: {
-				':v849b': 1,
-				':v862c': 2,
-				':vbaf3': 3,
-				':v122c': 4,
-				':v18d5': 5,
-				':vb2dc': 6,
-				':v2543': 7,
-				':va4d8': 'foo',
-				':v51f2': 'bar',
-				':vcb09': true,
+				':v6f75849b': 1,
+				':vcc14862c': 2,
+				':vf2a7baf3': 3,
+				':v7542122c': 4,
+				':v74a318d5': 5,
+				':v7eb1b2dc': 6,
+				':v4bea2543': 7,
+				':vccc4a4d8': 'foo',
+				':v4f2d51f2': 'bar',
+				':v7534cb09': true,
 			},
 		};
 		expect(result).toStrictEqual(expected);
@@ -72,27 +72,27 @@ describe('condition expression', () => {
 
 		const expected = {
 			ConditionExpression: [
-				'attribute_exists(#n2661)',
-				'attribute_not_exists(#n578f)',
-				'attribute_type(#n5f33,:v546e)',
-				'begins_with(#n91ad,:va4d8)',
-				'contains(#nec32,:va4d8)',
-				'size(#ncce7) > :ve820',
+				'attribute_exists(#n69772661)',
+				'attribute_not_exists(#n7531578f)',
+				'attribute_type(#n408b5f33,:v1a47546e)',
+				'begins_with(#n16e091ad,:vccc4a4d8)',
+				'contains(#ne841ec32,:vccc4a4d8)',
+				'size(#n1929cce7) > :vd163e820',
 			]
 				.map((exp) => `(${exp})`)
 				.join(' AND '),
 			ExpressionAttributeNames: {
-				'#n2661': 'a',
-				'#n578f': 'b',
-				'#n5f33': 'c',
-				'#n91ad': 'd',
-				'#nec32': 'e',
-				'#ncce7': 'f',
+				'#n69772661': 'a',
+				'#n7531578f': 'b',
+				'#n408b5f33': 'c',
+				'#n16e091ad': 'd',
+				'#ne841ec32': 'e',
+				'#n1929cce7': 'f',
 			},
 			ExpressionAttributeValues: {
-				':v546e': 'S',
-				':va4d8': 'foo',
-				':ve820': 10,
+				':v1a47546e': 'S',
+				':vccc4a4d8': 'foo',
+				':vd163e820': 10,
 			},
 		};
 		expect(result).toStrictEqual(expected);
@@ -112,22 +112,22 @@ describe('condition expression', () => {
 
 		const expected = {
 			ConditionExpression: [
-				'#n2661 = :v849b',
-				'#n578f between :v862c and :vbaf3',
-				'size(#n5f33) > :v122c',
+				'#n69772661 = :v6f75849b',
+				'#n7531578f between :vcc14862c and :vf2a7baf3',
+				'size(#n408b5f33) > :v7542122c',
 			]
 				.map((exp) => `(${exp})`)
 				.join(' OR '),
 			ExpressionAttributeNames: {
-				'#n2661': 'a',
-				'#n578f': 'b',
-				'#n5f33': 'c',
+				'#n69772661': 'a',
+				'#n7531578f': 'b',
+				'#n408b5f33': 'c',
 			},
 			ExpressionAttributeValues: {
-				':v849b': 1,
-				':v862c': 2,
-				':vbaf3': 3,
-				':v122c': 4,
+				':v6f75849b': 1,
+				':vcc14862c': 2,
+				':vf2a7baf3': 3,
+				':v7542122c': 4,
 			},
 		};
 		expect(result).toStrictEqual(expected);
@@ -143,14 +143,14 @@ describe('condition expression', () => {
 
 		const expected = {
 			ConditionExpression: [
-				'attribute_exists(#n2661)',
-				'attribute_not_exists(#n578f)',
+				'attribute_exists(#n69772661)',
+				'attribute_not_exists(#n7531578f)',
 			]
 				.map((exp) => `(${exp})`)
 				.join(' AND '),
 			ExpressionAttributeNames: {
-				'#n2661': 'a',
-				'#n578f': 'b',
+				'#n69772661': 'a',
+				'#n7531578f': 'b',
 			},
 		};
 		expect(result).toStrictEqual(expected);
@@ -168,12 +168,12 @@ describe('condition expression', () => {
 
 		const expected = {
 			ConditionExpression:
-				'(attribute_not_exists(#n531d)) OR (#n531d = :vc63f)',
+				'(attribute_not_exists(#n8ca1531d)) OR (#n8ca1531d = :v4312c63f)',
 			ExpressionAttributeNames: {
-				'#n531d': 'key',
+				'#n8ca1531d': 'key',
 			},
 			ExpressionAttributeValues: {
-				':vc63f': 'foobar',
+				':v4312c63f': 'foobar',
 			},
 		};
 		expect(result).toStrictEqual(expected);

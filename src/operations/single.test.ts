@@ -20,28 +20,28 @@ describe('single table operations', () => {
 		const result = getSingleTableExpressions(params);
 
 		const expected: DynoexprOutput = {
-			KeyConditionExpression: '(#n5f33 = :v18d5)',
-			ConditionExpression: '(#n578f > :ve820)',
-			FilterExpression: '(#n2661 = :va4d8)',
-			ProjectionExpression: '#n2661,#n578f',
+			ConditionExpression: '(#n7531578f > :vd163e820)',
+			FilterExpression: '(#n69772661 = :vccc4a4d8)',
+			KeyConditionExpression: '(#n408b5f33 = :v74a318d5)',
+			ProjectionExpression: '#n69772661,#n7531578f',
 			UpdateExpression:
-				'SET #n91ad = :v2543 REMOVE #n845d ADD #nec32 :v236d DELETE #ncce7 :vad26',
+				'SET #n16e091ad = :v4bea2543 REMOVE #n3614845d ADD #ne841ec32 :v297e236d DELETE #n1929cce7 :vc7c6ad26',
 			ExpressionAttributeNames: {
-				'#n2661': 'a',
-				'#n578f': 'b',
-				'#n5f33': 'c',
-				'#n845d': 'g',
-				'#n91ad': 'd',
-				'#ncce7': 'f',
-				'#nec32': 'e',
+				'#n16e091ad': 'd',
+				'#n1929cce7': 'f',
+				'#n3614845d': 'g',
+				'#n408b5f33': 'c',
+				'#n69772661': 'a',
+				'#n7531578f': 'b',
+				'#ne841ec32': 'e',
 			},
 			ExpressionAttributeValues: {
-				':v18d5': 5,
-				':v236d': 8,
-				':v2543': 7,
-				':va4d8': 'foo',
-				':vad26': 9,
-				':ve820': 10,
+				':v297e236d': 8,
+				':v4bea2543': 7,
+				':v74a318d5': 5,
+				':vc7c6ad26': 9,
+				':vccc4a4d8': 'foo',
+				':vd163e820': 10,
 			},
 		};
 		expect(result).toStrictEqual(expected);
@@ -52,9 +52,9 @@ describe('single table operations', () => {
 			'UpdateRemove',
 			{ UpdateRemove: { a: '' } },
 			{
-				UpdateExpression: 'REMOVE #n2661',
+				UpdateExpression: 'REMOVE #n69772661',
 				ExpressionAttributeNames: {
-					'#n2661': 'a',
+					'#n69772661': 'a',
 				},
 			},
 		],
@@ -62,9 +62,9 @@ describe('single table operations', () => {
 			"UpdateAction: 'REMOVE'",
 			{ Update: { a: '' }, UpdateAction: 'REMOVE' },
 			{
-				UpdateExpression: 'REMOVE #n2661',
+				UpdateExpression: 'REMOVE #n69772661',
 				ExpressionAttributeNames: {
-					'#n2661': 'a',
+					'#n69772661': 'a',
 				},
 			},
 		],
@@ -72,12 +72,12 @@ describe('single table operations', () => {
 			'UpdateRemove with Projection',
 			{ UpdateRemove: { foo: 1 }, Projection: ['bar'] },
 			{
-				UpdateExpression: 'REMOVE #na4d8',
+				UpdateExpression: 'REMOVE #nccc4a4d8',
 				ExpressionAttributeNames: {
-					'#n51f2': 'bar',
-					'#na4d8': 'foo',
+					'#n4f2d51f2': 'bar',
+					'#nccc4a4d8': 'foo',
 				},
-				ProjectionExpression: '#n51f2',
+				ProjectionExpression: '#n4f2d51f2',
 			},
 		],
 	])("doesn't include ExpressionAttributeValues: %s", (_, params, expected) => {
@@ -96,19 +96,19 @@ describe('single table operations', () => {
 		const result = getSingleTableExpressions(params);
 
 		const expected: DynoexprOutput = {
-			KeyConditionExpression: '(#n2661 = :v18d5)',
-			ConditionExpression: '(#n2661 > :ve820)',
-			FilterExpression: '(#n2661 = :v862c)',
-			ProjectionExpression: '#n2661,#n578f',
-			UpdateExpression: 'SET #n2661 = :v862c',
+			FilterExpression: '(#n69772661 = :vcc14862c)',
+			KeyConditionExpression: '(#n69772661 = :v74a318d5)',
+			ProjectionExpression: '#n69772661,#n7531578f',
+			UpdateExpression: 'SET #n69772661 = :vcc14862c',
+			ConditionExpression: '(#n69772661 > :vd163e820)',
 			ExpressionAttributeNames: {
-				'#n2661': 'a',
-				'#n578f': 'b',
+				'#n69772661': 'a',
+				'#n7531578f': 'b',
 			},
 			ExpressionAttributeValues: {
-				':v18d5': 5,
-				':ve820': 10,
-				':v862c': 2,
+				':v74a318d5': 5,
+				':vcc14862c': 2,
+				':vd163e820': 10,
 			},
 		};
 		expect(result).toStrictEqual(expected);
@@ -131,20 +131,20 @@ describe('single table operations', () => {
 		const result = getSingleTableExpressions(params);
 
 		const expected = {
-			KeyConditionExpression: '(#n2661 = :v18d5)',
-			ConditionExpression: '(#n2661 > :ve820)',
-			FilterExpression: '(#n2661 = :v862c)',
-			ProjectionExpression: '#n2661,#n578f',
-			UpdateExpression: 'SET #n2661 = :v862c',
+			KeyConditionExpression: '(#n69772661 = :v74a318d5)',
+			ConditionExpression: '(#n69772661 > :vd163e820)',
+			FilterExpression: '(#n69772661 = :vcc14862c)',
+			ProjectionExpression: '#n69772661,#n7531578f',
+			UpdateExpression: 'SET #n69772661 = :vcc14862c',
 			ExpressionAttributeNames: {
-				'#n2661': 'a',
-				'#n578f': 'b',
+				'#n69772661': 'a',
+				'#n7531578f': 'b',
 				'#foo': 'foo',
 			},
 			ExpressionAttributeValues: {
-				':v18d5': 5,
-				':ve820': 10,
-				':v862c': 2,
+				':v74a318d5': 5,
+				':vcc14862c': 2,
+				':vd163e820': 10,
 				':foo': 'bar',
 			},
 		};

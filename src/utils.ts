@@ -14,7 +14,7 @@ export const md5: Md5Fn = (data) =>
 	crypto.createHash('md5').update(toString(data).trim()).digest('hex');
 
 function md5hash(data: unknown) {
-	return md5(data).slice(28);
+	return md5(data).slice(24);
 }
 
 type GetAttrNameFn = (attribute: string) => string;

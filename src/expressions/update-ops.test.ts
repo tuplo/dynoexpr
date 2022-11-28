@@ -24,23 +24,23 @@ describe('update operations - SET/REMOVE/ADD/DELETE', () => {
 
 		const expected = {
 			UpdateExpression:
-				'SET #na4d8 = #na4d8 - :v862c, #n51f2 = :v862c - #n51f2, #n6e88 = #n6e88 + :vad26, #n7aa0 = :vc2b7, #n66e7 = :v2362, #neeac = :v5650, #n746d = :vf0bd',
+				'SET #nccc4a4d8 = #nccc4a4d8 - :vcc14862c, #n4f2d51f2 = :vcc14862c - #n4f2d51f2, #nc85f6e88 = #nc85f6e88 + :vc7c6ad26, #nf4d57aa0 = :v761dc2b7, #n842166e7 = :v81f92362, #n56cceeac = :v50ed5650, #n498f746d = :v89dff0bd',
 			ExpressionAttributeNames: {
-				'#na4d8': 'foo',
-				'#n51f2': 'bar',
-				'#n6e88': 'baz',
-				'#n746d': 'biz',
-				'#n7aa0': 'bez',
-				'#n66e7': 'buz',
-				'#neeac': 'boz',
+				'#nccc4a4d8': 'foo',
+				'#n4f2d51f2': 'bar',
+				'#nc85f6e88': 'baz',
+				'#n498f746d': 'biz',
+				'#nf4d57aa0': 'bez',
+				'#n842166e7': 'buz',
+				'#n56cceeac': 'boz',
 			},
 			ExpressionAttributeValues: {
-				':v862c': 2,
-				':vad26': 9,
-				':v2362': { biz: 3 },
-				':v5650': [{ qux: 2 }],
-				':vc2b7': [1, 2, 3],
-				':vf0bd': null,
+				':vcc14862c': 2,
+				':vc7c6ad26': 9,
+				':v81f92362': { biz: 3 },
+				':v50ed5650': [{ qux: 2 }],
+				':v761dc2b7': [1, 2, 3],
+				':v89dff0bd': null,
 			},
 		};
 		expect(result).toStrictEqual(expected);
@@ -56,10 +56,10 @@ describe('update operations - SET/REMOVE/ADD/DELETE', () => {
 		const result = getUpdateRemoveExpression(params);
 
 		const expected = {
-			UpdateExpression: 'REMOVE #na4d8, #n6e88',
+			UpdateExpression: 'REMOVE #nccc4a4d8, #nc85f6e88',
 			ExpressionAttributeNames: {
-				'#na4d8': 'foo',
-				'#n6e88': 'baz',
+				'#nccc4a4d8': 'foo',
+				'#nc85f6e88': 'baz',
 			},
 			ExpressionAttributeValues: {},
 		};
@@ -80,20 +80,20 @@ describe('update operations - SET/REMOVE/ADD/DELETE', () => {
 
 		const expected = {
 			UpdateExpression:
-				'ADD #na4d8 :v51f2, #n6e88 :v862c, #n7aa0 :v646d, #n66e7 :v2362, #neeac :v77e7',
+				'ADD #nccc4a4d8 :v4f2d51f2, #nc85f6e88 :vcc14862c, #nf4d57aa0 :v5b66646d, #n842166e7 :v81f92362, #n56cceeac :v533877e7',
 			ExpressionAttributeNames: {
-				'#na4d8': 'foo',
-				'#n6e88': 'baz',
-				'#n66e7': 'buz',
-				'#n7aa0': 'bez',
-				'#neeac': 'boz',
+				'#nccc4a4d8': 'foo',
+				'#nc85f6e88': 'baz',
+				'#n842166e7': 'buz',
+				'#nf4d57aa0': 'bez',
+				'#n56cceeac': 'boz',
 			},
 			ExpressionAttributeValues: {
-				':v51f2': 'bar',
-				':v862c': 2,
-				':v2362': { biz: 3 },
-				':v77e7': new Set([{ qux: 2 }]),
-				':v646d': new Set([1, 2, 3]),
+				':v4f2d51f2': 'bar',
+				':vcc14862c': 2,
+				':v81f92362': { biz: 3 },
+				':v533877e7': new Set([{ qux: 2 }]),
+				':v5b66646d': new Set([1, 2, 3]),
 			},
 		};
 		expect(result).toStrictEqual(expected);
@@ -113,20 +113,20 @@ describe('update operations - SET/REMOVE/ADD/DELETE', () => {
 
 		const expected = {
 			UpdateExpression:
-				'DELETE #na4d8 :v51f2, #n6e88 :v862c, #n7aa0 :v646d, #n66e7 :v2362, #neeac :v77e7',
+				'DELETE #nccc4a4d8 :v4f2d51f2, #nc85f6e88 :vcc14862c, #nf4d57aa0 :v5b66646d, #n842166e7 :v81f92362, #n56cceeac :v533877e7',
 			ExpressionAttributeNames: {
-				'#n66e7': 'buz',
-				'#n6e88': 'baz',
-				'#n7aa0': 'bez',
-				'#na4d8': 'foo',
-				'#neeac': 'boz',
+				'#n842166e7': 'buz',
+				'#nc85f6e88': 'baz',
+				'#nf4d57aa0': 'bez',
+				'#nccc4a4d8': 'foo',
+				'#n56cceeac': 'boz',
 			},
 			ExpressionAttributeValues: {
-				':v2362': { biz: 3 },
-				':v51f2': 'bar',
-				':v862c': 2,
-				':v77e7': new Set([{ qux: 2 }]),
-				':v646d': new Set([1, 2, 3]),
+				':v81f92362': { biz: 3 },
+				':v4f2d51f2': 'bar',
+				':vcc14862c': 2,
+				':v533877e7': new Set([{ qux: 2 }]),
+				':v5b66646d': new Set([1, 2, 3]),
 			},
 		};
 		expect(result).toStrictEqual(expected);
@@ -143,17 +143,17 @@ describe('update operations - SET/REMOVE/ADD/DELETE', () => {
 
 		const expected = {
 			UpdateExpression:
-				'SET #nff12 = #nff12 - :v862c REMOVE #n978b ADD #nb01c :ve948 DELETE #nd358 :v45cc',
+				'SET #n1ec3ff12 = #n1ec3ff12 - :vcc14862c REMOVE #nd22a978b ADD #ndcbab01c :v85f1e948 DELETE #n063fd358 :vefe145cc',
 			ExpressionAttributeNames: {
-				'#n978b': 'rfoo',
-				'#nb01c': 'afoo',
-				'#nd358': 'dfoo',
-				'#nff12': 'ufoo',
+				'#n063fd358': 'dfoo',
+				'#n1ec3ff12': 'ufoo',
+				'#nd22a978b': 'rfoo',
+				'#ndcbab01c': 'afoo',
 			},
 			ExpressionAttributeValues: {
-				':v45cc': 'dbar',
-				':v862c': 2,
-				':ve948': 'abar',
+				':v85f1e948': 'abar',
+				':vcc14862c': 2,
+				':vefe145cc': 'dbar',
 			},
 		};
 		expect(result).toStrictEqual(expected);

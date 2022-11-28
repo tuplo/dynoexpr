@@ -34,26 +34,26 @@ describe('update expression', () => {
 		const expected = {
 			Update,
 			ExpressionAttributeNames: {
-				'#n0118': 'Price',
-				'#n11cd': 'quz',
-				'#na4d8': 'foo',
-				'#n51f2': 'bar',
-				'#n6e88': 'baz',
-				'#n9cb1': 'foo-bar',
-				'#n5dc0': 'fooBar',
-				'#n5a6e': 'foo_bar',
-				'#nf26a': 'FooBaz',
+				'#n0a7f0118': 'Price',
+				'#n491011cd': 'quz',
+				'#nccc4a4d8': 'foo',
+				'#n4f2d51f2': 'bar',
+				'#nc85f6e88': 'baz',
+				'#n002f9cb1': 'foo-bar',
+				'#nb1085dc0': 'fooBar',
+				'#n87565a6e': 'foo_bar',
+				'#n77caf26a': 'FooBaz',
 			},
 			ExpressionAttributeValues: {
-				':v51f2': 'bar',
-				':v862c': 2,
-				':v66e7': 'buz',
-				':vfef0': 'buzz',
+				':v4f2d51f2': 'bar',
+				':vcc14862c': 2,
+				':v842166e7': 'buz',
+				':v6864fef0': 'buzz',
 				':p': ':p',
-				':v0c65': 'bazz',
-				':v11cd': 'quz',
-				':vf0bd': null,
-				':vc4ab': 'qiz',
+				':v08990c65': 'bazz',
+				':v491011cd': 'quz',
+				':v89dff0bd': null,
+				':vf7b0c4ab': 'qiz',
 			},
 		};
 		expect(result).toStrictEqual(expected);
@@ -70,8 +70,8 @@ describe('update expression', () => {
 
 		const expected = {
 			Update,
-			ExpressionAttributeNames: { '#b': 'b', '#n2661': 'a' },
-			ExpressionAttributeValues: { ':b': 2, ':v849b': 1 },
+			ExpressionAttributeNames: { '#b': 'b', '#n69772661': 'a' },
+			ExpressionAttributeValues: { ':b': 2, ':v6f75849b': 1 },
 		};
 		expect(result).toStrictEqual(expected);
 	});
@@ -91,20 +91,20 @@ describe('update expression', () => {
 
 		const expected = {
 			UpdateExpression:
-				'SET #na4d8 = :v51f2, #n6e88 = :v862c, #n66e7 = :v2362, #na4d8.#n51f2 = :v122c, #na4d8.#n51f2.#n6e88 = :v66e7, #na4d8.#n6e88 = :vf0bd',
+				'SET #nccc4a4d8 = :v4f2d51f2, #nc85f6e88 = :vcc14862c, #n842166e7 = :v81f92362, #nccc4a4d8.#n4f2d51f2 = :v7542122c, #nccc4a4d8.#n4f2d51f2.#nc85f6e88 = :v842166e7, #nccc4a4d8.#nc85f6e88 = :v89dff0bd',
 			ExpressionAttributeNames: {
-				'#na4d8': 'foo',
-				'#n51f2': 'bar',
-				'#n6e88': 'baz',
-				'#n66e7': 'buz',
+				'#nccc4a4d8': 'foo',
+				'#n4f2d51f2': 'bar',
+				'#nc85f6e88': 'baz',
+				'#n842166e7': 'buz',
 			},
 			ExpressionAttributeValues: {
-				':v51f2': 'bar',
-				':v862c': 2,
-				':v2362': { biz: 3 },
-				':v122c': 4,
-				':v66e7': 'buz',
-				':vf0bd': null,
+				':v4f2d51f2': 'bar',
+				':vcc14862c': 2,
+				':v81f92362': { biz: 3 },
+				':v7542122c': 4,
+				':v842166e7': 'buz',
+				':v89dff0bd': null,
 			},
 		};
 		expect(result).toStrictEqual(expected);
@@ -118,9 +118,10 @@ describe('update expression', () => {
 			const result = getUpdateExpression(params);
 
 			const expected = {
-				UpdateExpression: 'SET #na4d8 = if_not_exists(#na4d8, :v51f2)',
-				ExpressionAttributeNames: { '#na4d8': 'foo' },
-				ExpressionAttributeValues: { ':v51f2': 'bar' },
+				UpdateExpression:
+					'SET #nccc4a4d8 = if_not_exists(#nccc4a4d8, :v4f2d51f2)',
+				ExpressionAttributeNames: { '#nccc4a4d8': 'foo' },
+				ExpressionAttributeValues: { ':v4f2d51f2': 'bar' },
 			};
 			expect(result).toStrictEqual(expected);
 		});
@@ -134,9 +135,10 @@ describe('update expression', () => {
 			const actual = getUpdateExpression(params);
 
 			const expected = {
-				UpdateExpression: 'SET #na4d8 = list_append(:veb45, #na4d8)',
-				ExpressionAttributeNames: { '#na4d8': 'foo' },
-				ExpressionAttributeValues: { ':veb45': [1, 2] },
+				UpdateExpression:
+					'SET #nccc4a4d8 = list_append(:v31e6eb45, #nccc4a4d8)',
+				ExpressionAttributeNames: { '#nccc4a4d8': 'foo' },
+				ExpressionAttributeValues: { ':v31e6eb45': [1, 2] },
 			};
 			expect(actual).toStrictEqual(expected);
 		});
@@ -148,9 +150,10 @@ describe('update expression', () => {
 			const actual = getUpdateExpression(params);
 
 			const expected = {
-				UpdateExpression: 'SET #na4d8 = list_append(#na4d8, :veb45)',
-				ExpressionAttributeNames: { '#na4d8': 'foo' },
-				ExpressionAttributeValues: { ':veb45': [1, 2] },
+				UpdateExpression:
+					'SET #nccc4a4d8 = list_append(#nccc4a4d8, :v31e6eb45)',
+				ExpressionAttributeNames: { '#nccc4a4d8': 'foo' },
+				ExpressionAttributeValues: { ':v31e6eb45': [1, 2] },
 			};
 			expect(actual).toStrictEqual(expected);
 		});
@@ -162,9 +165,10 @@ describe('update expression', () => {
 			const actual = getUpdateExpression(params);
 
 			const expected = {
-				UpdateExpression: 'SET #na4d8 = list_append(:v6eec, #na4d8)',
-				ExpressionAttributeNames: { '#na4d8': 'foo' },
-				ExpressionAttributeValues: { ':v6eec': ['buu', 2] },
+				UpdateExpression:
+					'SET #nccc4a4d8 = list_append(:vc0126eec, #nccc4a4d8)',
+				ExpressionAttributeNames: { '#nccc4a4d8': 'foo' },
+				ExpressionAttributeValues: { ':vc0126eec': ['buu', 2] },
 			};
 			expect(actual).toStrictEqual(expected);
 		});
@@ -176,9 +180,10 @@ describe('update expression', () => {
 			const actual = getUpdateExpression(params);
 
 			const expected = {
-				UpdateExpression: 'SET #na4d8 = list_append(#na4d8, :v15de)',
-				ExpressionAttributeNames: { '#na4d8': 'foo' },
-				ExpressionAttributeValues: { ':v15de': [1, 'buu'] },
+				UpdateExpression:
+					'SET #nccc4a4d8 = list_append(#nccc4a4d8, :va25015de)',
+				ExpressionAttributeNames: { '#nccc4a4d8': 'foo' },
+				ExpressionAttributeValues: { ':va25015de': [1, 'buu'] },
 			};
 			expect(actual).toStrictEqual(expected);
 		});
@@ -215,15 +220,15 @@ describe('update expression', () => {
 
 		const expected = {
 			UpdateExpression:
-				'SET #na4d8 = #na4d8 - :v862c, #n51f2 = :v862c - #n51f2, #n6e88 = #n6e88 + :vad26',
+				'SET #nccc4a4d8 = #nccc4a4d8 - :vcc14862c, #n4f2d51f2 = :vcc14862c - #n4f2d51f2, #nc85f6e88 = #nc85f6e88 + :vc7c6ad26',
 			ExpressionAttributeNames: {
-				'#na4d8': 'foo',
-				'#n51f2': 'bar',
-				'#n6e88': 'baz',
+				'#nccc4a4d8': 'foo',
+				'#n4f2d51f2': 'bar',
+				'#nc85f6e88': 'baz',
 			},
 			ExpressionAttributeValues: {
-				':v862c': 2,
-				':vad26': 9,
+				':vcc14862c': 2,
+				':vc7c6ad26': 9,
 			},
 		};
 		expect(result).toStrictEqual(expected);
@@ -242,18 +247,18 @@ describe('update expression', () => {
 
 		const expected = {
 			UpdateExpression:
-				'SET #na4d8 = :vc40c, #n51f2 = :v4416, #n6e88 = :vdeb4, #n66e7 = :v14ee',
+				'SET #nccc4a4d8 = :v93d9c40c, #n4f2d51f2 = :v889c4416, #nc85f6e88 = :vb8b5deb4, #n842166e7 = :vb73f14ee',
 			ExpressionAttributeNames: {
-				'#na4d8': 'foo',
-				'#n51f2': 'bar',
-				'#n6e88': 'baz',
-				'#n66e7': 'buz',
+				'#nccc4a4d8': 'foo',
+				'#n4f2d51f2': 'bar',
+				'#nc85f6e88': 'baz',
+				'#n842166e7': 'buz',
 			},
 			ExpressionAttributeValues: {
-				':vc40c': '10-20-001',
-				':v4416': '2020-06-01T19:53:52.457Z',
-				':vdeb4': 'Mon Jun 01 2020 20:54:50 GMT+0100 (British Summer Time)',
-				':v14ee': 'foo+bar@baz-buz.com',
+				':v93d9c40c': '10-20-001',
+				':v889c4416': '2020-06-01T19:53:52.457Z',
+				':vb8b5deb4': 'Mon Jun 01 2020 20:54:50 GMT+0100 (British Summer Time)',
+				':vb73f14ee': 'foo+bar@baz-buz.com',
 			},
 		};
 		expect(result).toStrictEqual(expected);
@@ -269,12 +274,12 @@ describe('update expression', () => {
 		const result = getUpdateExpression(params);
 
 		const expected = {
-			UpdateExpression: 'ADD #na4d8 :v18d5',
+			UpdateExpression: 'ADD #nccc4a4d8 :v74a318d5',
 			ExpressionAttributeNames: {
-				'#na4d8': 'foo',
+				'#nccc4a4d8': 'foo',
 			},
 			ExpressionAttributeValues: {
-				':v18d5': 5,
+				':v74a318d5': 5,
 			},
 		};
 		expect(result).toStrictEqual(expected);
@@ -290,14 +295,14 @@ describe('update expression', () => {
 		};
 		const result = getUpdateExpression(params);
 		const expected = {
-			UpdateExpression: 'ADD #na4d8 :vd26b, #n51f2 :v9ad1',
+			UpdateExpression: 'ADD #nccc4a4d8 :v101cd26b, #n4f2d51f2 :vc0d39ad1',
 			ExpressionAttributeNames: {
-				'#n51f2': 'bar',
-				'#na4d8': 'foo',
+				'#n4f2d51f2': 'bar',
+				'#nccc4a4d8': 'foo',
 			},
 			ExpressionAttributeValues: {
-				':v9ad1': new Set(['bar', 'baz']),
-				':vd26b': new Set([1, 2]),
+				':vc0d39ad1': new Set(['bar', 'baz']),
+				':v101cd26b': new Set([1, 2]),
 			},
 		};
 		expect(result).toStrictEqual(expected);
@@ -314,14 +319,14 @@ describe('update expression', () => {
 		const result = getUpdateExpression(params);
 
 		const expected = {
-			UpdateExpression: 'DELETE #na4d8 :vd26b, #n51f2 :v9ad1',
+			UpdateExpression: 'DELETE #nccc4a4d8 :v101cd26b, #n4f2d51f2 :vc0d39ad1',
 			ExpressionAttributeNames: {
-				'#n51f2': 'bar',
-				'#na4d8': 'foo',
+				'#n4f2d51f2': 'bar',
+				'#nccc4a4d8': 'foo',
 			},
 			ExpressionAttributeValues: {
-				':v9ad1': new Set(['bar', 'baz']),
-				':vd26b': new Set([1, 2]),
+				':vc0d39ad1': new Set(['bar', 'baz']),
+				':v101cd26b': new Set([1, 2]),
 			},
 		};
 		expect(result).toStrictEqual(expected);
