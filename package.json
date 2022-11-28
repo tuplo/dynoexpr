@@ -36,6 +36,16 @@
 		]
 	},
 	"types": "dist/index.d.ts",
+	"scripts": {
+		"build": "tsx sh/build.ts",
+		"coverage": "tsx sh/coverage.ts",
+		"dev": "tsx sh/dev.ts",
+		"format": "prettier --write src sh",
+		"lint:ts": "tsc --noEmit",
+		"lint": "eslint --ext ts src",
+		"test:ci": "jest --ci",
+		"test": "jest --watch"
+	},
 	"dependencies": {},
 	"devDependencies": {
 		"@types/jest": "29.2.3",
@@ -54,18 +64,11 @@
 		"nyc": "15.1.0",
 		"prettier": "2.8.0",
 		"ts-jest": "29.0.3",
-		"typescript": "4.9.3"
+		"tsx": "3.12.1",
+		"typescript": "4.9.3",
+		"zx": "7.1.1"
 	},
 	"peerDependencies": {
 		"aws-sdk": "^2.2.0"
-	},
-	"scripts": {
-		"build": "bash sh/build.sh",
-		"dev": "bash sh/dev.sh",
-		"lint:ts": "tsc --noEmit",
-		"lint": "eslint --ext ts src",
-		"test:ci:coverage": "bash sh/coverage.sh",
-		"test:ci": "jest --ci",
-		"test": "jest --watch"
 	}
 }
