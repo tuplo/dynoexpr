@@ -139,9 +139,9 @@ describe('helpers for condition helpers', () => {
 			const result = buildConditionExpression({ Condition });
 
 			const expected = [
-				'not contains(#n2661,:va4d8)',
-				'not begins_with(#n578f,:va4d8)',
-				'not #n5f33 in (:va4d8)',
+				'not contains(#n69772661,:vccc4a4d8)',
+				'not begins_with(#n7531578f,:vccc4a4d8)',
+				'not #n408b5f33 in (:vccc4a4d8)',
 			]
 				.map((exp) => `(${exp})`)
 				.join(' AND ');
@@ -151,7 +151,7 @@ describe('helpers for condition helpers', () => {
 		it('builds not conditions (values)', () => {
 			const result = buildConditionAttributeValues(Condition);
 
-			const expected = { ':va4d8': 'foo' };
+			const expected = { ':vccc4a4d8': 'foo' };
 			expect(result).toStrictEqual(expected);
 		});
 	});
@@ -172,14 +172,14 @@ describe('helpers for condition helpers', () => {
 			const result = buildConditionExpression({ Condition });
 
 			const expected = [
-				'#n2661 = :va4d8',
-				'#n578f > :v849b',
-				'#n5f33 >= :v862c',
-				'#n91ad < :vbaf3',
-				'#nec32 <= :v122c',
-				'#ncce7 <> :v18d5',
-				'#n845d between :vb2dc and :v2543',
-				'#n5e91 in (:va4d8,:v51f2)',
+				'#n69772661 = :vccc4a4d8',
+				'#n7531578f > :v6f75849b',
+				'#n408b5f33 >= :vcc14862c',
+				'#n16e091ad < :vf2a7baf3',
+				'#ne841ec32 <= :v7542122c',
+				'#n1929cce7 <> :v74a318d5',
+				'#n3614845d between :v7eb1b2dc and :v4bea2543',
+				'#n3a695e91 in (:vccc4a4d8,:v4f2d51f2)',
 			]
 				.map((exp) => `(${exp})`)
 				.join(' AND ');
@@ -193,14 +193,14 @@ describe('helpers for condition helpers', () => {
 			});
 
 			const expected = [
-				'#n2661 = :va4d8',
-				'#n578f > :v849b',
-				'#n5f33 >= :v862c',
-				'#n91ad < :vbaf3',
-				'#nec32 <= :v122c',
-				'#ncce7 <> :v18d5',
-				'#n845d between :vb2dc and :v2543',
-				'#n5e91 in (:va4d8,:v51f2)',
+				'#n69772661 = :vccc4a4d8',
+				'#n7531578f > :v6f75849b',
+				'#n408b5f33 >= :vcc14862c',
+				'#n16e091ad < :vf2a7baf3',
+				'#ne841ec32 <= :v7542122c',
+				'#n1929cce7 <> :v74a318d5',
+				'#n3614845d between :v7eb1b2dc and :v4bea2543',
+				'#n3a695e91 in (:vccc4a4d8,:v4f2d51f2)',
 			]
 				.map((exp) => `(${exp})`)
 				.join(' OR ');
@@ -226,15 +226,15 @@ describe('helpers for condition helpers', () => {
 			});
 
 			const expected = [
-				'#n2661 = :va4d8',
-				'#n2661 > :v849b',
-				'#n2661 >= :v862c',
-				'#n2661 < :vbaf3',
-				'#n2661 <= :v122c',
-				'#n2661 <> :v18d5',
-				'#n2661 between :vb2dc and :v2543',
-				'#n2661 in (:va4d8,:v51f2)',
-				'#n578f = :v51f2',
+				'#n69772661 = :vccc4a4d8',
+				'#n69772661 > :v6f75849b',
+				'#n69772661 >= :vcc14862c',
+				'#n69772661 < :vf2a7baf3',
+				'#n69772661 <= :v7542122c',
+				'#n69772661 <> :v74a318d5',
+				'#n69772661 between :v7eb1b2dc and :v4bea2543',
+				'#n69772661 in (:vccc4a4d8,:v4f2d51f2)',
+				'#n7531578f = :v4f2d51f2',
 			]
 				.map((exp) => `(${exp})`)
 				.join(' OR ');
@@ -245,14 +245,14 @@ describe('helpers for condition helpers', () => {
 			const result = buildConditionAttributeNames(Condition);
 
 			const expected = {
-				'#n2661': 'a',
-				'#n578f': 'b',
-				'#n5f33': 'c',
-				'#n91ad': 'd',
-				'#nec32': 'e',
-				'#ncce7': 'f',
-				'#n845d': 'g',
-				'#n5e91': 'h',
+				'#n69772661': 'a',
+				'#n7531578f': 'b',
+				'#n408b5f33': 'c',
+				'#n16e091ad': 'd',
+				'#ne841ec32': 'e',
+				'#n1929cce7': 'f',
+				'#n3614845d': 'g',
+				'#n3a695e91': 'h',
 			};
 			expect(result).toStrictEqual(expected);
 		});
@@ -266,7 +266,7 @@ describe('helpers for condition helpers', () => {
 
 			const expected = {
 				'#a': 'a',
-				'#n578f': 'b',
+				'#n7531578f': 'b',
 			};
 			expect(result).toStrictEqual(expected);
 		});
@@ -275,15 +275,15 @@ describe('helpers for condition helpers', () => {
 			const result = buildConditionAttributeValues(Condition);
 
 			const expected = {
-				':va4d8': 'foo',
-				':v849b': 1,
-				':v862c': 2,
-				':vbaf3': 3,
-				':v122c': 4,
-				':v18d5': 5,
-				':vb2dc': 6,
-				':v2543': 7,
-				':v51f2': 'bar',
+				':v4bea2543': 7,
+				':v4f2d51f2': 'bar',
+				':v6f75849b': 1,
+				':v74a318d5': 5,
+				':v7542122c': 4,
+				':v7eb1b2dc': 6,
+				':vcc14862c': 2,
+				':vccc4a4d8': 'foo',
+				':vf2a7baf3': 3,
 			};
 			expect(result).toStrictEqual(expected);
 		});
@@ -297,7 +297,7 @@ describe('helpers for condition helpers', () => {
 
 			const expected = {
 				':a': 'bar',
-				':va4d8': 'foo',
+				':vccc4a4d8': 'foo',
 			};
 			expect(result).toStrictEqual(expected);
 		});
@@ -306,7 +306,7 @@ describe('helpers for condition helpers', () => {
 			const Condition2 = { b: ['foo', 'attribute_exists'] };
 			const result = buildConditionAttributeValues(Condition2);
 
-			const expected = { ':va4d8': 'foo' };
+			const expected = { ':vccc4a4d8': 'foo' };
 			expect(result).toStrictEqual(expected);
 		});
 	});
@@ -327,14 +327,14 @@ describe('helpers for condition helpers', () => {
 			const result = buildConditionExpression({ Condition });
 
 			const expected = [
-				'attribute_exists(#n2661)',
-				'attribute_not_exists(#n578f)',
-				'attribute_type(#n5f33,:v546e)',
-				'begins_with(#n91ad,:va4d8)',
-				'contains(#nec32,:va4d8)',
-				'size(#ncce7) > :ve820',
-				'attribute_exists(#n845d)',
-				'attribute_not_exists(#n5e91)',
+				'attribute_exists(#n69772661)',
+				'attribute_not_exists(#n7531578f)',
+				'attribute_type(#n408b5f33,:v1a47546e)',
+				'begins_with(#n16e091ad,:vccc4a4d8)',
+				'contains(#ne841ec32,:vccc4a4d8)',
+				'size(#n1929cce7) > :vd163e820',
+				'attribute_exists(#n3614845d)',
+				'attribute_not_exists(#n3a695e91)',
 			]
 				.map((exp) => `(${exp})`)
 				.join(' AND ');
@@ -345,14 +345,14 @@ describe('helpers for condition helpers', () => {
 			const result = buildConditionAttributeNames(Condition);
 
 			const expected = {
-				'#n2661': 'a',
-				'#n578f': 'b',
-				'#n5e91': 'h',
-				'#n5f33': 'c',
-				'#n845d': 'g',
-				'#n91ad': 'd',
-				'#nec32': 'e',
-				'#ncce7': 'f',
+				'#n69772661': 'a',
+				'#n7531578f': 'b',
+				'#n3a695e91': 'h',
+				'#n408b5f33': 'c',
+				'#n3614845d': 'g',
+				'#n16e091ad': 'd',
+				'#ne841ec32': 'e',
+				'#n1929cce7': 'f',
 			};
 			expect(result).toStrictEqual(expected);
 		});
@@ -361,9 +361,9 @@ describe('helpers for condition helpers', () => {
 			const result = buildConditionAttributeValues(Condition);
 
 			const expected = {
-				':v546e': 'S',
-				':va4d8': 'foo',
-				':ve820': 10,
+				':v1a47546e': 'S',
+				':vccc4a4d8': 'foo',
+				':vd163e820': 10,
 			};
 			expect(result).toStrictEqual(expected);
 		});
@@ -387,33 +387,33 @@ describe('helpers for condition helpers', () => {
 
 		const expected = {
 			Expression: [
-				'#n2661 = :vad1e',
-				'#n578f = :vd2e5',
-				'#n5f33 = :v0428',
-				'#n91ad = :v322b',
-				'#nec32 = :v9c1a',
-				'#ncce7 = :vd5d5',
-				'#n845d = :v4118',
+				'#n69772661 = :v349ead1e',
+				'#n7531578f = :v9248d2e5',
+				'#n408b5f33 = :v61b10428',
+				'#n16e091ad = :vf627322b',
+				'#ne841ec32 = :v49469c1a',
+				'#n1929cce7 = :v6cbed5d5',
+				'#n3614845d = :v07df4118',
 			]
 				.map((exp) => `(${exp})`)
 				.join(' AND '),
 			ExpressionAttributeNames: {
-				'#n2661': 'a',
-				'#n578f': 'b',
-				'#n5f33': 'c',
-				'#n91ad': 'd',
-				'#n845d': 'g',
-				'#ncce7': 'f',
-				'#nec32': 'e',
+				'#n69772661': 'a',
+				'#n7531578f': 'b',
+				'#n408b5f33': 'c',
+				'#n16e091ad': 'd',
+				'#n3614845d': 'g',
+				'#n1929cce7': 'f',
+				'#ne841ec32': 'e',
 			},
 			ExpressionAttributeValues: {
-				':v0428': 'inspector',
-				':v322b': 'sizeable',
-				':v4118': 'attribute_not_exists_here',
-				':v9c1a': 'contains sugar',
-				':vad1e': 'attribute_type_number',
-				':vd2e5': 'begins_without',
-				':vd5d5': 'attribute_exists_there',
+				':v07df4118': 'attribute_not_exists_here',
+				':v349ead1e': 'attribute_type_number',
+				':v49469c1a': 'contains sugar',
+				':v61b10428': 'inspector',
+				':v6cbed5d5': 'attribute_exists_there',
+				':v9248d2e5': 'begins_without',
+				':vf627322b': 'sizeable',
 			},
 		};
 		expect(result).toStrictEqual(expected);

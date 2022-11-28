@@ -18,20 +18,22 @@ describe('bug reports', () => {
 		const result = dynoexpr(args);
 
 		const expected = {
-			ConditionExpression: '(#n6258 = :vccc9) OR (#n6258 = :vf5c3)',
+			ConditionExpression:
+				'(#n44ec6258 = :va87bccc9) OR (#n44ec6258 = :v5ebbf5c3)',
 			ExpressionAttributeNames: {
-				'#n2461': 'GSI1_PK',
-				'#n6258': 'status',
-				'#n98d5': 'modified',
-				'#necf8': 'GSI2_PK',
+				'#n4b532461': 'GSI1_PK',
+				'#n44ec6258': 'status',
+				'#n4a4b98d5': 'modified',
+				'#nfbaeecf8': 'GSI2_PK',
 			},
 			ExpressionAttributeValues: {
-				':v4872': '2022-03-02T19:33:14.000Z',
-				':v6e2b': 'REQUEST#STATUS#open#DATE#2022-03-01T13:58:09.242z',
-				':vccc9': 'IN_PROGRESS',
-				':vf5c3': 'OPEN',
+				':vd8444872': '2022-03-02T19:33:14.000Z',
+				':v879a6e2b': 'REQUEST#STATUS#open#DATE#2022-03-01T13:58:09.242z',
+				':va87bccc9': 'IN_PROGRESS',
+				':v5ebbf5c3': 'OPEN',
 			},
-			UpdateExpression: 'SET #n98d5 = :v4872, #n2461 = :vf5c3, #necf8 = :v6e2b',
+			UpdateExpression:
+				'SET #n4a4b98d5 = :vd8444872, #n4b532461 = :v5ebbf5c3, #nfbaeecf8 = :v879a6e2b',
 		};
 		expect(result).toStrictEqual(expected);
 
@@ -44,9 +46,10 @@ describe('bug reports', () => {
 		});
 
 		const expected = {
-			UpdateExpression: 'SET #n15df = if_not_exists(#n15df, :v2772)',
-			ExpressionAttributeNames: { '#n15df': 'number' },
-			ExpressionAttributeValues: { ':v2772': '420' },
+			UpdateExpression:
+				'SET #ne68615df = if_not_exists(#ne68615df, :v24592772)',
+			ExpressionAttributeNames: { '#ne68615df': 'number' },
+			ExpressionAttributeValues: { ':v24592772': '420' },
 		};
 		expect(result).toStrictEqual(expected);
 	});
@@ -60,9 +63,10 @@ describe('bug reports', () => {
 		const actual = dynoexpr(params);
 
 		const expected = {
-			ExpressionAttributeNames: { '#n2661': 'a', '#n578f': 'b' },
-			ExpressionAttributeValues: { ':v2327': false, ':vcb09': true },
-			FilterExpression: '(#n2661 <> :vcb09) AND (#n578f <> :v2327)',
+			ExpressionAttributeNames: { '#n69772661': 'a', '#n7531578f': 'b' },
+			ExpressionAttributeValues: { ':v05902327': false, ':v7534cb09': true },
+			FilterExpression:
+				'(#n69772661 <> :v7534cb09) AND (#n7531578f <> :v05902327)',
 		};
 		expect(actual).toStrictEqual(expected);
 	});
@@ -75,12 +79,12 @@ describe('bug reports', () => {
 		const actual = dynoexpr(params);
 
 		const expected = {
-			ConditionExpression: '(attribute_exists(#nb602.#n7ebc))',
+			ConditionExpression: '(attribute_exists(#n7e86b602.#n95d67ebc))',
 			ExpressionAttributeNames: {
-				'#n7ebc': 'item',
-				'#nb602': 'parent',
+				'#n95d67ebc': 'item',
+				'#n7e86b602': 'parent',
 			},
-			UpdateExpression: 'REMOVE #nb602.#n7ebc',
+			UpdateExpression: 'REMOVE #n7e86b602.#n95d67ebc',
 		};
 		expect(actual).toStrictEqual(expected);
 	});
@@ -93,12 +97,12 @@ describe('bug reports', () => {
 		const actual = dynoexpr(params);
 
 		const expected = {
-			ConditionExpression: '(attribute_exists(#nb602.#n7ebc))',
+			ConditionExpression: '(attribute_exists(#n7e86b602.#n95d67ebc))',
 			ExpressionAttributeNames: {
-				'#n7ebc': 'item',
-				'#nb602': 'parent',
+				'#n95d67ebc': 'item',
+				'#n7e86b602': 'parent',
 			},
-			UpdateExpression: 'REMOVE #nb602.#n7ebc',
+			UpdateExpression: 'REMOVE #n7e86b602.#n95d67ebc',
 		};
 		expect(actual).toStrictEqual(expected);
 	});
@@ -110,9 +114,9 @@ describe('bug reports', () => {
 		const actual = dynoexpr(params);
 
 		const expected = {
-			UpdateExpression: 'SET #neb9c = list_append(:veb45, #neb9c)',
-			ExpressionAttributeNames: { '#neb9c': 'numbersArray' },
-			ExpressionAttributeValues: { ':veb45': [1, 2] },
+			UpdateExpression: 'SET #n596ceb9c = list_append(:v31e6eb45, #n596ceb9c)',
+			ExpressionAttributeNames: { '#n596ceb9c': 'numbersArray' },
+			ExpressionAttributeValues: { ':v31e6eb45': [1, 2] },
 		};
 		expect(actual).toStrictEqual(expected);
 	});
@@ -124,9 +128,9 @@ describe('bug reports', () => {
 		const actual = dynoexpr(params);
 
 		const expected = {
-			UpdateExpression: 'SET #neb9c = list_append(:vc5eb, #neb9c)',
-			ExpressionAttributeNames: { '#neb9c': 'numbersArray' },
-			ExpressionAttributeValues: { ':vc5eb': ['a', 'b'] },
+			UpdateExpression: 'SET #n596ceb9c = list_append(:v3578c5eb, #n596ceb9c)',
+			ExpressionAttributeNames: { '#n596ceb9c': 'numbersArray' },
+			ExpressionAttributeValues: { ':v3578c5eb': ['a', 'b'] },
 		};
 		expect(actual).toStrictEqual(expected);
 	});
