@@ -34,22 +34,22 @@ const params = dynoexpr({
 
 /*
 {
-  KeyConditionExpression: '(#n0c8f = :vaa3d)',
-  ConditionExpression: '(#n843d > :vf170)',
-  FilterExpression: '(#n9bfd = :v0c8f)',
-  ProjectionExpression: '#ndb8f,#n1a24',
+  KeyConditionExpression: '(#n75a60c8f = :v64c5aa3d)',
+  ExpressionAttributeValues: { 
+    ':v64c5aa3d': '567', 
+    ':va7bbf170': 4.5, 
+    ':v91380c8f': 'blue'
+  },
+  ConditionExpression: '(#n8793843d > :va7bbf170)',
+  FilterExpression: '(#n4bce9bfd = :v91380c8f)',
+  ProjectionExpression: '#nf337db8f,#n395c1a24',
   ExpressionAttributeNames: {
-    '#n0c8f': 'id',
-    '#n843d': 'rating',
-    '#n9bfd': 'color',
-    '#ndb8f': 'weight',
-    '#n1a24': 'size',
-  },
-  ExpressionAttributeValues: {
-    ':vaa3d': '567',
-    ':vf170': 4.5,
-    ':v0c8f': 'blue',
-  },
+    '#n75a60c8f': 'id',
+    '#n8793843d': 'rating',
+    '#n4bce9bfd': 'color',
+    '#nf337db8f': 'weight',
+    '#n395c1a24': 'size'
+  }
 }
 */
 ```
@@ -95,16 +95,14 @@ const params = dynoexpr({
 });
 
 /*
- {
-  ConditionExpression: '(attribute_not_exists(#n9bfd)) \
-    OR (#n9bfd = :va351) \
-    OR (#n9bfd = :v0c8f)',
-  ExpressionAttributeNames: {
-    '#n9bfd': 'color'
+{
+  ConditionExpression: '(attribute_not_exists(#n4bce9bfd)) OR (#n4bce9bfd = :vaeafa351) OR (#n4bce9bfd = :v91380c8f)',
+  ExpressionAttributeNames: { 
+    '#n4bce9bfd': 'color'
   },
   ExpressionAttributeValues: {
-    ':va351': 'yellow',
-    ':v0c8f': 'blue'
+    ':vaeafa351': 'yellow', 
+    ':v91380c8f': 'blue'
   }
 }
 */
@@ -128,25 +126,21 @@ const params = dynoexpr({
 
 /*
 {
-  ConditionExpression: '(attribute_exists(#nd286)) \
-    AND (attribute_not_exists(#n0ed7)) \
-    AND (attribute_type(#na4d6,:vec29)) \
-    AND (begins_with(#n9bfd,:vbe37)) \
-    AND (contains(#n536a,:v7bff)) \
-    AND (size(#n2786) < :v3b84)',
+  ConditionExpression: '(attribute_exists(#n3f51d286)) AND (attribute_not_exists(#n51fd0ed7)) AND (attribute_type(#n12a7a4d6,:v0824ec29)) AND (begins_with(#n4bce9bfd,:v372ebe37)) AND (contains(#n9ad2536a,:vb3b07bff)) AND (size(#n8fcb2786) < :v106a3b84)',
   ExpressionAttributeNames: {
-    '#nd286': 'docs',
-    '#n0ed7': 'brand',
-    '#na4d6': 'extra',
-    '#n9bfd': 'color',
-    '#n536a': 'address',
-    '#n2786': 'description'
+    '#n3f51d286': 'docs',
+    '#n51fd0ed7': 'brand',
+    '#n12a7a4d6': 'extra',
+    '#n4bce9bfd': 'color',
+    '#n9ad2536a': 'address',
+    '#n8fcb2786': 'description'
   },
   ExpressionAttributeValues: {
-    ':vec29': 'NULL',
-    ':vbe37': 'dark',
-    ':v7bff': 'Seattle',
-    ':v3b84': 20
+    ':v0824ec29': 'NULL',
+    ':v372ebe37': 'dark',
+    ':vb3b07bff': 'Seattle',
+    ':v106a3b84': 20
+    }
   }
 }
 */
@@ -162,16 +156,16 @@ const params = dynoexpr({
 
 /*
 {
-  ConditionExpression: '(#na3d5 < :vc6dd)',
-  UpdateExpression: 'SET #na3d5 = #na3d5 + :v3b84'
-  ExpressionAttributeNames: {
-    '#na3d5': 'Sum'
+  ConditionExpression: '(#n0a01a3d5 < :ve770c6dd)',
+  ExpressionAttributeNames: { 
+    '#n0a01a3d5': 'Sum' 
   },
-  ExpressionAttributeValues: {
-    ':vc6dd': 100,
-    ':v3b84': 20
+  ExpressionAttributeValues: { 
+    ':ve770c6dd': 100, 
+    ':v106a3b84': 20
   },
- }
+  UpdateExpression: 'SET #n0a01a3d5 = #n0a01a3d5 + :v106a3b84'
+}
 */
 ```
 
@@ -182,19 +176,19 @@ If a value is provided as a Set, it will be converted to `DocumentClient.DynamoD
 ```typescript
 const params = dynoexpr({
   Update: {
-    Color: new Set(['Orange', 'Purple']);
+    Color: new Set(['Orange', 'Purple'])
   }
 })
 
 /*
 {
-  UpdateExpression: 'SET #n7295 = :v0a80',
-  ExpressionAttributeNames: {
-    '#n7295': 'Color',
+  UpdateExpression: 'SET #ndc9f7295 = :v3add0a80',
+  ExpressionAttributeNames: { 
+    '#ndc9f7295': 'Color'
   },
   ExpressionAttributeValues: {
-    ':v0a80': docClient.createSet(['Orange', 'Purple']),
-  },
+    ':v3add0a80': Set { wrapperName: 'Set', values: [Array], type: 'String' }
+  }
 }
 */
 ```
@@ -204,19 +198,19 @@ const params = dynoexpr({
 ```typescript
 const params = dynoexpr({
   UpdateAdd: {
-    Color: ['Orange', 'Purple'];
+    Color: ['Orange', 'Purple']
   }
 })
 
 /*
 {
-  UpdateExpression: 'ADD #n7295 :v0a80',
-  ExpressionAttributeNames: {
-    '#n7295': 'Color',
+  UpdateExpression: 'ADD #ndc9f7295 :v3add0a80',
+  ExpressionAttributeNames: { 
+    '#ndc9f7295': 'Color'
   },
   ExpressionAttributeValues: {
-    ':v0a80': docClient.createSet(['Orange', 'Purple']),
-  },
+    ':v3add0a80': Set { wrapperName: 'Set', values: [Array], type: 'String' }
+  }
 }
 */
 ```
@@ -235,13 +229,13 @@ const params = dynoexpr({
 /*
 {
   ProjectionExpression: '#year',
-  FilterExpression: '(#n9bfd = :v0c8f)',
   ExpressionAttributeNames: {
     '#year': 'year',
-    '#n9bfd': 'color'
+    '#n4bce9bfd': 'color'
   },
+  FilterExpression: '(#n4bce9bfd = :v91380c8f)',
   ExpressionAttributeValues: {
-    ':v0c8f': 'blue'
+    ':v91380c8f': 'blue'
   }
 }
 */
@@ -266,12 +260,12 @@ const params = dynoexpr({
   TableName: 'Table',
   Key: { HashKey: 'key' },
   ReturnConsumedCapacity: 'TOTAL',
-  KeyConditionExpression: '(begins_with(#n9bfd,:vbe37))',
+  KeyConditionExpression: '(begins_with(#n4bce9bfd,:v372ebe37))',
   ExpressionAttributeNames: {
-    '#n9bfd': 'color'
+    '#n4bce9bfd': 'color'
   },
   ExpressionAttributeValues: {
-    ':vbe37': 'dark'
+    ':v372ebe37': 'dark'
   }
 }
 */
@@ -292,17 +286,17 @@ const params = dynoexpr({
 
 /*
 {
-  RequestItems: {
-    'Table-1': {
-      Keys: [{ foo: 'bar' }],
-      ProjectionExpression: `#n2661,#n578f`,
-      ExpressionAttributeNames: {
-        '#n2661': `a`,
-        '#n578f': `b`,
-      },
-    },
+  "RequestItems":{
+    "Table-1":{
+      "Keys": [{"foo":"bar"}],
+      "ProjectionExpression": "#n69772661,#n7531578f",
+      "ExpressionAttributeNames":{
+        "#n69772661": "a",
+        "#n7531578f": "b"
+      }
+    }
   },
-  ReturnConsumedCapacity: 'TOTAL',
+  "ReturnConsumedCapacity": "TOTAL"
 }
 */
 ```
@@ -323,20 +317,20 @@ const params = dynoexpr({
 
 /*
 {
-  TransactItems: [
-    {
-      Get: {
-        TableName: `Table-1`,
-        Key: { id: `foo` },
-        ProjectionExpression: `#n2661,#n578f`,
-        ExpressionAttributeNames: {
-          '#n2661': `a`,
-          '#n578f': `b`,
-        },
-      },
-    },
+  "TransactItems": [
+    { 
+      "Get": {
+        "TableName": "Table-1",
+        "Key": { "id": "foo" },
+        "ProjectionExpression": "#n69772661,#n7531578f",
+        "ExpressionAttributeNames": {
+          "#n69772661":"a",
+          "#n7531578f":"b"
+        }
+      }
+    }
   ],
-  ReturnConsumedCapacity: 'INDEXES',
+  "ReturnConsumedCapacity": "INDEXES"
 }
 */
 ```

@@ -61,7 +61,7 @@
 	},
 	"scripts": {
 		"build": "bash sh/build.sh",
-		"dev": "bash sh/watch.sh",
+		"dev": "bash sh/dev.sh",
 		"lint:ts": "tsc --noEmit",
 		"lint": "eslint --ext ts src",
 		"test:ci:coverage": "bash sh/coverage.sh",
