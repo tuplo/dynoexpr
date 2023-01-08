@@ -1,14 +1,14 @@
-import { DocumentClient } from 'aws-sdk/clients/dynamodb';
+import { DocumentClient } from "aws-sdk/clients/dynamodb";
 
-import type { DynoexprInput, DynamoDbValue, DynoexprOutput } from '../dynoexpr';
-import { getConditionExpression } from '../expressions/condition';
-import { getFilterExpression } from '../expressions/filter';
-import { getProjectionExpression } from '../expressions/projection';
-import { getUpdateExpression } from '../expressions/update';
-import { getUpdateOperationsExpression } from '../expressions/update-ops';
-import { getKeyConditionExpression } from '../expressions/key-condition';
+import type { DynoexprInput, DynamoDbValue, DynoexprOutput } from "../dynoexpr";
+import { getConditionExpression } from "../expressions/condition";
+import { getFilterExpression } from "../expressions/filter";
+import { getProjectionExpression } from "../expressions/projection";
+import { getUpdateExpression } from "../expressions/update";
+import { getUpdateOperationsExpression } from "../expressions/update-ops";
+import { getKeyConditionExpression } from "../expressions/key-condition";
 
-import { trimEmptyExpressionAttributes } from './helpers';
+import { trimEmptyExpressionAttributes } from "./helpers";
 
 export const createDynamoDbSet =
 	DocumentClient.prototype.createSet.bind(undefined);

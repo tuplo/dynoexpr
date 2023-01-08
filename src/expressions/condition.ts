@@ -1,9 +1,9 @@
-import type { ConditionInput, ConditionOutput } from '../dynoexpr';
+import type { ConditionInput, ConditionOutput } from "../dynoexpr";
 import {
 	buildConditionAttributeNames,
 	buildConditionAttributeValues,
 	buildConditionExpression,
-} from './helpers';
+} from "./helpers";
 
 type GetConditionExpressionFn = (params?: ConditionInput) => ConditionOutput;
 export const getConditionExpression: GetConditionExpressionFn = (

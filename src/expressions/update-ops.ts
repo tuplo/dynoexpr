@@ -1,5 +1,5 @@
-import type { UpdateInput, UpdateOutput } from '../dynoexpr';
-import { getUpdateExpression } from './update';
+import type { UpdateInput, UpdateOutput } from "../dynoexpr";
+import { getUpdateExpression } from "./update";
 
 type GetUpdateExpressionFn = (params?: UpdateInput) => UpdateOutput;
 
@@ -8,7 +8,7 @@ export const getUpdateSetExpression: GetUpdateExpressionFn = (params = {}) => {
 	return getUpdateExpression({
 		...restOfParams,
 		Update: UpdateSet,
-		UpdateAction: 'SET',
+		UpdateAction: "SET",
 	});
 };
 
@@ -19,7 +19,7 @@ export const getUpdateRemoveExpression: GetUpdateExpressionFn = (
 	return getUpdateExpression({
 		...restOfParams,
 		Update: UpdateRemove,
-		UpdateAction: 'REMOVE',
+		UpdateAction: "REMOVE",
 	});
 };
 
@@ -28,7 +28,7 @@ export const getUpdateAddExpression: GetUpdateExpressionFn = (params = {}) => {
 	return getUpdateExpression({
 		...restOfParams,
 		Update: UpdateAdd,
-		UpdateAction: 'ADD',
+		UpdateAction: "ADD",
 	});
 };
 
@@ -39,7 +39,7 @@ export const getUpdateDeleteExpression: GetUpdateExpressionFn = (
 	return getUpdateExpression({
 		...restOfParams,
 		Update: UpdateDelete,
-		UpdateAction: 'DELETE',
+		UpdateAction: "DELETE",
 	});
 };
 
@@ -54,7 +54,7 @@ export const getUpdateOperationsExpression: GetUpdateExpressionFn = (
 		getUpdateDeleteExpression,
 	].reduce((acc, getExpressionFn) => {
 		const expr = getExpressionFn(acc);
-		const { UpdateExpression = '' } = expr;
+		const { UpdateExpression = "" } = expr;
 		updateExpressions.push(UpdateExpression);
 		return expr;
 	}, params as UpdateOutput);
@@ -62,7 +62,7 @@ export const getUpdateOperationsExpression: GetUpdateExpressionFn = (
 	const aggUpdateExpression = updateExpressions
 		.filter(Boolean)
 		.filter((e, i, a) => a.indexOf(e) === i)
-		.join(' ');
+		.join(" ");
 	if (aggUpdateExpression) {
 		outputParams.UpdateExpression = aggUpdateExpression;
 	}

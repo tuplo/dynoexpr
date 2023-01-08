@@ -1,3 +1,3 @@
-import dynoexpr from '../index';
+import dynoexpr from "../index";
 
 module.exports = dynoexpr;

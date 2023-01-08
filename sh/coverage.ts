@@ -1,4 +1,4 @@
-import 'zx/globals';
+import "zx/globals";
 
 async function main() {
 	await $`rm -rf ./node_modules/.cache`;

@@ -1,4 +1,4 @@
-import type { DynoexprOutput } from '../dynoexpr';
+import type { DynoexprOutput } from "../dynoexpr";
 
 export function trimEmptyExpressionAttributes<
 	T extends DynoexprOutput = DynoexprOutput

@@ -1,9 +1,9 @@
-import type { KeyConditionInput, KeyConditionOutput } from '../dynoexpr';
+import type { KeyConditionInput, KeyConditionOutput } from "../dynoexpr";
 import {
 	buildConditionAttributeNames,
 	buildConditionAttributeValues,
 	buildConditionExpression,
-} from './helpers';
+} from "./helpers";
 
 type GetKeyConditionExpressionFn = (
 	params?: KeyConditionInput

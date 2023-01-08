@@ -3,14 +3,14 @@ import type {
 	BatchRequestInput,
 	TransactRequestInput,
 	DynoexprOutput,
-} from './dynoexpr';
+} from "./dynoexpr";
 
-import { getSingleTableExpressions } from './operations/single';
-import { isBatchRequest, getBatchExpressions } from './operations/batch';
+import { getSingleTableExpressions } from "./operations/single";
+import { isBatchRequest, getBatchExpressions } from "./operations/batch";
 import {
 	isTransactRequest,
 	getTransactExpressions,
-} from './operations/transact';
+} from "./operations/transact";
 
 type DynoexprParams = DynoexprInput | BatchRequestInput | TransactRequestInput;
 

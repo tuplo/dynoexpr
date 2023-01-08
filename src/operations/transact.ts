@@ -3,13 +3,13 @@ import type {
 	TransactRequestInput,
 	TransactRequestOutput,
 	TransactOperation,
-} from '../dynoexpr';
-import { getSingleTableExpressions } from './single';
+} from "../dynoexpr";
+import { getSingleTableExpressions } from "./single";
 
 export function isTransactRequest(
 	params: DynoexprInput | TransactRequestInput
 ): params is TransactRequestInput {
-	return 'TransactItems' in params;
+	return "TransactItems" in params;
 }
 
 export function getTransactExpressions<

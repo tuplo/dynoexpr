@@ -6,13 +6,13 @@ import type {
 	BatchRequestItemsInput,
 	BatchGetInput,
 	BatchWriteInput,
-} from '../dynoexpr';
-import { getSingleTableExpressions } from './single';
+} from "../dynoexpr";
+import { getSingleTableExpressions } from "./single";
 
 export function isBatchRequest(
 	params: DynoexprInput | BatchRequestInput
 ): params is BatchRequestInput {
-	return 'RequestItems' in params;
+	return "RequestItems" in params;
 }
 
 function isBatchGetRequest(
@@ -26,7 +26,7 @@ function isBatchWriteRequest(
 ): tableParams is BatchWriteInput {
 	if (!Array.isArray(tableParams)) return false;
 	const [firstTable] = tableParams;
-	return 'DeleteRequest' in firstTable || 'PutRequest' in firstTable;
+	return "DeleteRequest" in firstTable || "PutRequest" in firstTable;
 }
 
 export function getBatchExpressions<

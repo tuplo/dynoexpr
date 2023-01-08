@@ -2,18 +2,18 @@ import type {
 	DynoexprInputValue,
 	UpdateInput,
 	UpdateOutput,
-} from '../dynoexpr';
-import { getAttrName, getAttrValue } from '../utils';
+} from "../dynoexpr";
+import { getAttrName, getAttrValue } from "../utils";
 
 type ParseOperationValueFn = (expr: string, key: string) => number;
 export const parseOperationValue: ParseOperationValueFn = (expr, key) => {
-	const v = expr.replace(key, '').replace(/[+-]/, '');
+	const v = expr.replace(key, "").replace(/[+-]/, "");
 	return Number(v.trim());
 };
 
 type IsMathExpressionFn = (name: string, value: DynoexprInputValue) => boolean;
 export const isMathExpression: IsMathExpressionFn = (name, value) => {
-	if (typeof name !== 'string') return false;
+	if (typeof name !== "string") return false;
 
 	const rgLh = new RegExp(`^${name}\\s*[+-]\\s*\\d+$`);
 	const rgRh = new RegExp(`^\\d+\\s*[+-]\\s*${name}$`);
@@ -23,7 +23,7 @@ export const isMathExpression: IsMathExpressionFn = (name, value) => {
 
 function fromStrListToArray(strList: string): DynoexprInputValue[] {
 	const [, inner] = /^\[([^\]]+)\]$/.exec(strList) || [];
-	return inner.split(',').map((v) => JSON.parse(v));
+	return inner.split(",").map((v) => JSON.parse(v));
 }
 
 export function getListAppendExpressionAttributes(
@@ -62,7 +62,7 @@ export function getListAppendExpression(
 		.map((v) => v.trim())
 		.map((v) => (v === key ? attr : v));
 
-	return `${attr} = list_append(${vv.join(', ')})`;
+	return `${attr} = list_append(${vv.join(", ")})`;
 }
 
 type ExpressionAttributesMap = {
@@ -71,17 +71,17 @@ type ExpressionAttributesMap = {
 };
 type GetExpressionAttributesFn = (params: UpdateInput) => UpdateOutput;
 export const getExpressionAttributes: GetExpressionAttributesFn = (params) => {
-	const { Update = {}, UpdateAction = 'SET' } = params;
+	const { Update = {}, UpdateAction = "SET" } = params;
 
 	return Object.entries(Update).reduce((acc, [key, value]) => {
 		if (!acc.ExpressionAttributeNames) acc.ExpressionAttributeNames = {};
 		if (!acc.ExpressionAttributeValues) acc.ExpressionAttributeValues = {};
 
-		key.split('.').forEach((k) => {
+		key.split(".").forEach((k) => {
 			acc.ExpressionAttributeNames[getAttrName(k)] = k;
 		});
 
-		if (UpdateAction !== 'REMOVE') {
+		if (UpdateAction !== "REMOVE") {
 			let v: DynoexprInputValue | DynoexprInputValue[] = value;
 
 			if (isMathExpression(key, value)) {
@@ -114,13 +114,13 @@ type GetUpdateExpressionFn = (params?: UpdateInput) => UpdateOutput;
 export const getUpdateExpression: GetUpdateExpressionFn = (params = {}) => {
 	if (!params.Update) return params;
 
-	const { Update, UpdateAction = 'SET', ...restOfParams } = params;
+	const { Update, UpdateAction = "SET", ...restOfParams } = params;
 	const { ExpressionAttributeNames = {}, ExpressionAttributeValues = {} } =
 		getExpressionAttributes(params);
 
-	let entries = '';
+	let entries = "";
 	switch (UpdateAction) {
-		case 'SET':
+		case "SET":
 			entries = Object.entries(Update)
 				.map(([name, value]) => {
 					if (/^if_not_exists/.test(`${value}`)) {
@@ -150,10 +150,10 @@ export const getUpdateExpression: GetUpdateExpressionFn = (params = {}) => {
 
 					return `${getAttrName(name)} = ${getAttrValue(value)}`;
 				})
-				.join(', ');
+				.join(", ");
 			break;
-		case 'ADD':
-		case 'DELETE':
+		case "ADD":
+		case "DELETE":
 			entries = Object.entries(Update)
 				.map(
 					([name, value]) =>
@@ -164,12 +164,12 @@ export const getUpdateExpression: GetUpdateExpressionFn = (params = {}) => {
 				)
 				.map(([name, value]) => [getAttrName(name), getAttrValue(value)])
 				.map(([exprName, exprValue]) => `${exprName} ${exprValue}`)
-				.join(', ');
+				.join(", ");
 			break;
-		case 'REMOVE':
+		case "REMOVE":
 			entries = Object.entries(Update)
 				.map(([name]) => [getAttrName(name)])
-				.join(', ');
+				.join(", ");
 			break;
 		default:
 			break;
@@ -177,7 +177,7 @@ export const getUpdateExpression: GetUpdateExpressionFn = (params = {}) => {
 
 	const parameters: UpdateOutput = {
 		...restOfParams,
-		UpdateExpression: [UpdateAction, entries].join(' '),
+		UpdateExpression: [UpdateAction, entries].join(" "),
 		ExpressionAttributeNames,
 		ExpressionAttributeValues,
 	};

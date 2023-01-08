@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/indent */
-type LogicalOperatorType = string | 'AND' | 'OR';
+type LogicalOperatorType = string | "AND" | "OR";
 
 type DynoexprInputValue =
 	| string
@@ -44,7 +44,7 @@ type BatchRequestOutput = {
 };
 
 // transact operations
-type TransactOperation = 'Get' | 'ConditionCheck' | 'Put' | 'Delete' | 'Update';
+type TransactOperation = "Get" | "ConditionCheck" | "Put" | "Delete" | "Update";
 type TransactRequestItems = Partial<Record<TransactOperation, DynoexprInput>>;
 export type TransactRequestInput = {
 	TransactItems: TransactRequestItems[];
@@ -110,7 +110,7 @@ type ProjectionOutput = Partial<{
 
 // Update
 type Update = Record<string, DynoexprInputValue>;
-type UpdateAction = 'SET' | 'ADD' | 'DELETE' | 'REMOVE';
+type UpdateAction = "SET" | "ADD" | "DELETE" | "REMOVE";
 type UpdateInput = Partial<{
 	Update?: Update;
 	UpdateAction?: UpdateAction;

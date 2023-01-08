@@ -2,14 +2,14 @@ import type {
 	LogicalOperatorType,
 	DynoexprInputValue,
 	DynamoDbValue,
-} from '../dynoexpr';
-import { getAttrName, getAttrValue } from '../utils';
+} from "../dynoexpr";
+import { getAttrName, getAttrValue } from "../utils";
 
 type Value = string | boolean | number | null;
 export function convertValue(value: string): Value {
 	const v = value.trim();
-	if (v === 'null') return null;
-	if (/^true$|^false$/i.test(v)) return v === 'true';
+	if (v === "null") return null;
+	if (/^true$|^false$/i.test(v)) return v === "true";
 	if (/^[0-9.]+$/.test(v)) return Number(v);
 	return v;
 }
@@ -54,7 +54,7 @@ const REGEX_PARSE_IN = /^in\s*\(([^)]+)/i;
 type ParseInValueFn = (exp: string) => Value[];
 export const parseInValue: ParseInValueFn = (exp) => {
 	const [, list] = REGEX_PARSE_IN.exec(exp) || [];
-	return list.split(',').map(convertValue);
+	return list.split(",").map(convertValue);
 };
 
 const REGEX_SIZE = /^size\s*[<=>]+\s*(\d+)/i;
@@ -94,12 +94,12 @@ type BuildConditionExpressionFn = (
 ) => string;
 export const buildConditionExpression: BuildConditionExpressionFn = ({
 	Condition = {},
-	LogicalOperator = 'AND',
+	LogicalOperator = "AND",
 }) =>
 	flattenExpressions(Condition)
 		.map(([key, value]) => {
 			let expr: string;
-			if (typeof value === 'string') {
+			if (typeof value === "string") {
 				let strValue = value.trim();
 
 				const hasNotCondition = REGEX_NOT.test(strValue);
@@ -117,7 +117,7 @@ export const buildConditionExpression: BuildConditionExpressionFn = ({
 					expr = `${getAttrName(key)} ${exp}`;
 				} else if (REGEX_PARSE_IN.test(strValue)) {
 					const v = parseInValue(strValue);
-					expr = `${getAttrName(key)} in (${v.map(getAttrValue).join(',')})`;
+					expr = `${getAttrName(key)} in (${v.map(getAttrValue).join(",")})`;
 				} else if (REGEX_ATTRIBUTE_EXISTS.test(strValue)) {
 					expr = `attribute_exists(${getAttrName(key)})`;
 				} else if (REGEX_ATTRIBUTE_NOT_EXISTS.test(strValue)) {
@@ -140,7 +140,7 @@ export const buildConditionExpression: BuildConditionExpressionFn = ({
 				}
 
 				// adds NOT condition if it exists
-				expr = [hasNotCondition && 'not', expr].filter(Boolean).join(' ');
+				expr = [hasNotCondition && "not", expr].filter(Boolean).join(" ");
 			} else {
 				expr = `${getAttrName(key)} = ${getAttrValue(value)}`;
 			}
@@ -162,7 +162,7 @@ export const buildConditionAttributeNames: BuildConditionAttributeNamesFn = (
 	params = {}
 ) =>
 	Object.keys(condition).reduce((acc, key) => {
-		key.split('.').forEach((k) => {
+		key.split(".").forEach((k) => {
 			acc[getAttrName(k)] = k;
 		});
 		return acc;
@@ -181,7 +181,7 @@ export const buildConditionAttributeValues: BuildConditionAttributeValuesFn = (
 ) =>
 	flattenExpressions(condition).reduce((acc, [, value]) => {
 		let v: DynamoDbValue | undefined;
-		if (typeof value === 'string') {
+		if (typeof value === "string") {
 			let strValue = value.trim();
 
 			const hasNotCondition = REGEX_NOT.test(strValue);
@@ -213,7 +213,7 @@ export const buildConditionAttributeValues: BuildConditionAttributeValuesFn = (
 			v = value;
 		}
 
-		if (typeof v === 'undefined') {
+		if (typeof v === "undefined") {
 			return acc;
 		}
 
