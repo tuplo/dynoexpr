@@ -3,13 +3,14 @@
     "baseUrl": "./",
     "declaration": true,
     "esModuleInterop": true,
-    "lib": ["es2015", "es2017", "es2019"],
+    "lib": ["dom"],
     "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "./dist",
     "removeComments": true,
     "strict": true,
-    "target": "es6"
+    "target": "es6",
+    "types": ["vitest/globals"]
   },
   "include": ["src/**/*", "src/dynoexpr.d.ts"],
   "exclude": ["node_modules/**/*"]

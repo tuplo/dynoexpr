@@ -43,15 +43,15 @@
 		"format": "prettier --write src sh",
 		"lint:ts": "tsc --noEmit",
 		"lint": "eslint --ext ts src",
-		"test:ci": "jest --ci",
-		"test": "jest --watch"
+		"test:ci": "vitest run",
+		"test": "vitest --watch"
 	},
 	"dependencies": {},
 	"devDependencies": {
-		"@types/jest": "29.4.0",
 		"@types/node": "18.14.6",
 		"@typescript-eslint/eslint-plugin": "5.54.0",
 		"@typescript-eslint/parser": "5.54.0",
+		"@vitest/coverage-c8": "0.29.2",
 		"aws-sdk": "^2.1328.0",
 		"esbuild": "0.17.10",
 		"eslint": "8.35.0",
@@ -59,13 +59,11 @@
 		"eslint-config-airbnb-typescript": "17.0.0",
 		"eslint-config-prettier": "8.6.0",
 		"eslint-plugin-import": "2.27.5",
-		"eslint-plugin-jest": "27.2.1",
-		"jest": "29.4.3",
 		"nyc": "15.1.0",
 		"prettier": "2.8.4",
-		"ts-jest": "29.0.5",
 		"tsx": "3.12.3",
 		"typescript": "4.9.5",
+		"vitest": "0.29.2",
 		"zx": "7.2.0"
 	},
 	"peerDependencies": {

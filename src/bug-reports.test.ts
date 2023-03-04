@@ -1,10 +1,12 @@
+import { vi } from "vitest";
+
 import type { IFilterInput } from "src/dynoexpr.d";
 
 import dynoexpr from "./index";
 
 describe("bug reports", () => {
 	it("logical operator", () => {
-		const dateNowSpy = jest.spyOn(Date, "now").mockReturnValue(1646249594000);
+		const dateNowSpy = vi.spyOn(Date, "now").mockReturnValue(1646249594000);
 		const args = {
 			Update: {
 				modified: new Date(Date.now()).toJSON(),

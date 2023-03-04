@@ -5,7 +5,8 @@ async function main() {
 	await $`rm -rf coverage/`;
 	await $`rm -rf .nyc_output/`;
 
-	await $`NODE_ENV=test LOG_LEVEL=silent nyc yarn test:ci --coverage true --coverageReporters lcov`;
+	const flags = ["--coverage true"].flatMap((f) => f.split(" "));
+	await $`NODE_ENV=test LOG_LEVEL=silent nyc yarn test:ci ${flags}`;
 }
 
 main();

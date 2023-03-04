@@ -1,5 +1,0 @@
-{
-	"transform": {
-		"^.+\\.[jt]s$": "ts-jest"
-	}
-}

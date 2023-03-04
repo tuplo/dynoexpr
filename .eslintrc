@@ -4,30 +4,25 @@
     "airbnb-typescript/base",
     "prettier",
     "plugin:@typescript-eslint/recommended",
-    "plugin:import/typescript",
-    "plugin:jest/all"
+    "plugin:import/typescript"
   ],
   "parser": "@typescript-eslint/parser",
   "plugins": [
-    "@typescript-eslint",
-    "jest"
+    "@typescript-eslint"
   ],
   "parserOptions": {
     "ecmaVersion": 9,
     "project": "./tsconfig.json"
   },
   "env": {
-    "node": true,
-    "jest": true
+    "node": true
   },
   "rules": {
     "@typescript-eslint/comma-dangle": "off",
     "import/extensions": "off",
     "import/no-unresolved": "off",
     "import/prefer-default-export": "off",
-    "jest/no-deprecated-functions": "off",
-    "jest/no-hooks": "off",
-    "jest/prefer-expect-assertions": "off"
+    "import/no-extraneous-dependencies": "off"
   },
   "overrides": [
     {
