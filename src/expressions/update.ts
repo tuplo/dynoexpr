@@ -71,7 +71,7 @@ interface IExpressionAttributesMap {
 	ExpressionAttributeValues: { [key: string]: IDynoexprInputValue };
 }
 
-export function getExpressionAttributes(params: IUpdateInput): IUpdateOutput {
+export function getExpressionAttributes(params: IUpdateInput) {
 	const { Update = {}, UpdateAction = "SET" } = params;
 
 	return Object.entries(Update).reduce((acc, [key, value]) => {
@@ -111,7 +111,7 @@ export function getExpressionAttributes(params: IUpdateInput): IUpdateOutput {
 	}, params as IExpressionAttributesMap);
 }
 
-export function getUpdateExpression(params: IUpdateInput = {}): IUpdateOutput {
+export function getUpdateExpression(params: IUpdateInput = {}) {
 	if (!params.Update) return params;
 
 	const { Update, UpdateAction = "SET", ...restOfParams } = params;

@@ -43,7 +43,7 @@ export function getUpdateDeleteExpression(params?: IUpdateInput) {
 }
 
 export function getUpdateOperationsExpression(params: IUpdateInput = {}) {
-	const updateExpressions: string[] = [];
+	const updateExpressions: unknown[] = [];
 	const outputParams = [
 		getUpdateSetExpression,
 		getUpdateRemoveExpression,

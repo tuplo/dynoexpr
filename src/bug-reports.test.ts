@@ -62,8 +62,8 @@ describe("bug reports", () => {
 			a: "<> true",
 			b: "<> false",
 		};
-		const params: IFilterInput = { Filter };
-		const actual = dynoexpr(params);
+		const args = { Filter };
+		const actual = dynoexpr(args);
 
 		const expected = {
 			ExpressionAttributeNames: { "#n69772661": "a", "#n7531578f": "b" },

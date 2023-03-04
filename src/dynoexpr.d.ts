@@ -27,8 +27,22 @@ type IDynamoDbValue =
 	| null
 	| unknown;
 
+interface IExpressionAttributeNames {
+	[key: string]: string;
+}
+interface IExpressionAttributeValues {
+	[key: string]: IDynamoDbValue;
+}
+
+interface IExpressionAttributes {
+	ExpressionAttributeNames?: IExpressionAttributeNames;
+	ExpressionAttributeValues?: IExpressionAttributeValues;
+}
+
 // batch operations
-type IBatchGetInput = IProjectionInput & Record<string, unknown>;
+interface IBatchGetInput extends IProjectionInput {
+	[key: string]: unknown;
+}
 interface IBatchWriteInput {
 	DeleteRequest?: unknown;
 	PutRequest?: unknown;
@@ -66,56 +80,55 @@ interface ITransactRequestOutput {
 }
 
 // Condition
-type ICondition = Record<string, IDynoexprInputValue>;
-type IConditionInput = Partial<{
-	Condition: ICondition;
-	ConditionLogicalOperator: ILogicalOperatorType;
-	ExpressionAttributeNames: { [key: string]: string };
-	ExpressionAttributeValues: { [key: string]: IDynamoDbValue };
-}>;
-type IConditionOutput = Partial<{
-	ConditionExpression: string;
-	ExpressionAttributeNames: { [key: string]: string };
-	ExpressionAttributeValues: { [key: string]: IDynamoDbValue };
-}>;
+interface ICondition {
+	[key: string]: IDynoexprInputValue;
+}
+interface IConditionInput extends IExpressionAttributes {
+	Condition?: ICondition;
+	ConditionLogicalOperator?: ILogicalOperatorType;
+	[key: string]: unknown;
+}
+interface IConditionOutput extends IExpressionAttributes {
+	ConditionExpression?: string;
+	[key: string]: unknown;
+}
 
 // KeyCondition
-type IKeyCondition = Record<string, IDynoexprInputValue>;
-type IKeyConditionInput = Partial<{
-	KeyCondition: IKeyCondition;
-	KeyConditionLogicalOperator: ILogicalOperatorType;
-	ExpressionAttributeNames: Record<string, string>;
-	ExpressionAttributeValues: { [key: string]: IDynamoDbValue };
-}>;
-type IKeyConditionOutput = Partial<{
-	KeyConditionExpression: string;
-	ExpressionAttributeNames: Record<string, string>;
-	ExpressionAttributeValues: { [key: string]: IDynamoDbValue };
-}>;
+interface IKeyCondition {
+	[key: string]: IDynoexprInputValue;
+}
+interface IKeyConditionInput extends IExpressionAttributes {
+	KeyCondition?: IKeyCondition;
+	KeyConditionLogicalOperator?: ILogicalOperatorType;
+	[key: string]: unknown;
+}
+interface IKeyConditionOutput extends IExpressionAttributes {
+	KeyConditionExpression?: string;
+}
 
 // Filter
-type IFilter = Record<string, IDynoexprInputValue>;
-type IFilterInput = Partial<{
-	Filter: IFilter;
-	FilterLogicalOperator: ILogicalOperatorType;
-	ExpressionAttributeNames: { [key: string]: string };
-	ExpressionAttributeValues: { [key: string]: IDynamoDbValue };
-}>;
-type IFilterOutput = Partial<{
-	FilterExpression: string;
-	ExpressionAttributeNames: { [key: string]: string };
-	ExpressionAttributeValues: { [key: string]: IDynamoDbValue };
-}>;
+interface IFilter {
+	[key: string]: IDynoexprInputValue;
+}
+interface IFilterInput extends IExpressionAttributes {
+	Filter?: IFilter;
+	FilterLogicalOperator?: ILogicalOperatorType;
+	[key: string]: unknown;
+}
+interface IFilterOutput extends IExpressionAttributes {
+	FilterExpression?: string;
+}
 
 // Projection
 type IProjection = string[];
-type IProjectionInput = Partial<{
-	Projection: IProjection;
-	ExpressionAttributeNames: Record<string, string>;
-}>;
-interface IProjectionOutput {
+interface IProjectionInput {
+	Projection?: IProjection;
+	ExpressionAttributeNames?: IExpressionAttributeNames;
+	[key: string]: unknown;
+}
+interface IProjectionOutput extends IExpressionAttributes {
 	ProjectionExpression?: string;
-	ExpressionAttributeNames?: Record<string, string>;
+	ExpressionAttributeNames?: IExpressionAttributeNames;
 }
 
 // Update
@@ -123,34 +136,34 @@ interface IUpdate {
 	[key: string]: IDynoexprInputValue;
 }
 type IUpdateAction = "SET" | "ADD" | "DELETE" | "REMOVE";
-type IUpdateInput = Partial<{
-	Update: IUpdate;
-	UpdateAction: IUpdateAction;
-	UpdateRemove: IUpdate;
-	UpdateAdd: IUpdate;
-	UpdateSet: IUpdate;
-	UpdateDelete: IUpdate;
-	ExpressionAttributeNames: { [key: string]: string };
-	ExpressionAttributeValues: { [key: string]: IDynamoDbValue };
-}>;
-type IUpdateOutput = Partial<{
-	UpdateExpression: string;
-	ExpressionAttributeNames: { [key: string]: string };
-	ExpressionAttributeValues: { [key: string]: IDynamoDbValue };
-}>;
+interface IUpdateInput extends IExpressionAttributes {
+	Update?: IUpdate;
+	UpdateAction?: IUpdateAction;
+	UpdateRemove?: IUpdate;
+	UpdateAdd?: IUpdate;
+	UpdateSet?: IUpdate;
+	UpdateDelete?: IUpdate;
+	[key: string]: unknown;
+}
+interface IUpdateOutput extends IExpressionAttributes {
+	UpdateExpression?: string;
+	[key: string]: unknown;
+}
 
-export type IDynoexprInput = IConditionInput &
-	IFilterInput &
-	IKeyConditionInput &
-	IProjectionInput &
-	IUpdateInput & {
-		[key: string]: unknown;
-	};
+export interface IDynoexprInput
+	extends IConditionInput,
+		IFilterInput,
+		IKeyConditionInput,
+		IProjectionInput,
+		IUpdateInput {
+	[key: string]: unknown;
+}
 
-export type IDynoexprOutput = IConditionOutput &
-	IFilterOutput &
-	IKeyConditionOutput &
-	IProjectionOutput &
-	IUpdateOutput & {
-		[key: string]: unknown;
-	};
+export interface IDynoexprOutput
+	extends IConditionOutput,
+		IFilterOutput,
+		IKeyConditionOutput,
+		IProjectionOutput,
+		IUpdateOutput {
+	[key: string]: unknown;
+}
