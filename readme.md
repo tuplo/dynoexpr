@@ -12,8 +12,7 @@
   	<a href="https://codeclimate.com/github/tuplo/dynoexpr/test_coverage">
     <img src="https://api.codeclimate.com/v1/badges/3564497cf991d094e2eb/test_coverage" />
   	</a>
-  	<img src="https://github.com/tuplo/dynoexpr/workflows/build/badge.svg">
-	</p>
+  </p>
 
 </div>
 
@@ -171,13 +170,16 @@ const params = dynoexpr({
 
 ### Working with Sets
 
-If a value is provided as a Set, it will be converted to `DocumentClient.DynamoDbSet`.
+If a value is provided as a Set, it will be converted to `DocumentClient.DynamoDbSet`. But `dynoexpr` doesn't include `DocumentClient` so you need to provide it.
 
 ```typescript
+import { DocumentClient } from "aws-sdk/clients/dynamodb";
+
 const params = dynoexpr({
+  DocumentClient,
   Update: {
     Color: new Set(['Orange', 'Purple'])
-  }
+  },
 })
 
 /*
@@ -193,10 +195,13 @@ const params = dynoexpr({
 */
 ```
 
-### When using UpdateAdd or UpdateDelete, arrays are converted to DynamoDbSet
+#### When using UpdateAdd or UpdateDelete, arrays are converted to DynamoDbSet
 
 ```typescript
+import { DocumentClient } from "aws-sdk/clients/dynamodb";
+
 const params = dynoexpr({
+  DocumentClient,
   UpdateAdd: {
     Color: ['Orange', 'Purple']
   }
@@ -382,6 +387,8 @@ type DynamoDbValue =
   UpdateAdd: { [key: string]: DynamoDbValue },
   UpdateDelete: { [key: string]: DynamoDbValue },
   UpdateRemove: { [key: string]: DynamoDbValue },
+  
+  DocumentClient: AWS.DynamoDB.DocumentClient
 }
 ```
 

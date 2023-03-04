@@ -45,14 +45,13 @@
 		"test:ci": "vitest run",
 		"test": "vitest --watch"
 	},
-	"dependencies": {},
 	"devDependencies": {
 		"@types/node": "18.14.6",
 		"@typescript-eslint/eslint-plugin": "5.54.0",
 		"@typescript-eslint/parser": "5.54.0",
 		"@vitest/coverage-c8": "0.29.2",
-		"aws-sdk": "^2.1328.0",
-		"esbuild": "0.17.10",
+		"aws-sdk": "^2.2.0",
+		"esbuild": "0.17.11",
 		"eslint": "8.35.0",
 		"eslint-config-airbnb-base": "15.0.0",
 		"eslint-config-airbnb-typescript": "17.0.0",
@@ -64,8 +63,5 @@
 		"typescript": "4.9.5",
 		"vitest": "0.29.2",
 		"zx": "7.2.0"
-	},
-	"peerDependencies": {
-		"aws-sdk": "^2.2.0"
 	}
 }

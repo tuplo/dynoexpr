@@ -1,7 +1,9 @@
+import { DocumentClient as DocClientV2 } from "aws-sdk/clients/dynamodb";
+
 import type { IDynoexprInput, IDynoexprOutput } from "src/dynoexpr.d";
+import { AwsSdkDocumentClient } from "src/document-client";
 
 import {
-	createDynamoDbSet,
 	getSingleTableExpressions,
 	convertValuesToDynamoDbSet,
 } from "./single";
@@ -152,72 +154,29 @@ describe("single table operations", () => {
 		expect(actual).toStrictEqual(expected);
 	});
 
-	it("creates DynamoDBSet instances for strings", () => {
-		const params = ["hello", "world"];
-		const result = createDynamoDbSet(params);
-		expect(result.type).toBe("String");
-		expect(result.values).toHaveLength(params.length);
-		expect(result.values).toContain("hello");
-		expect(result.values).toContain("world");
-	});
+	describe("documentClient Sets", () => {
+		it("converts Sets to DynamoDbSet if present in ExpressionsAttributeValues", () => {
+			const values = {
+				a: 1,
+				b: "foo",
+				c: [1, 2, 3],
+				d: { foo: "bar" },
+				e: new Set([1, 2]),
+				f: new Set(["foo", "bar"]),
+			};
+			AwsSdkDocumentClient.setDocumentClient(DocClientV2);
+			const sdk = new AwsSdkDocumentClient();
+			const actual = convertValuesToDynamoDbSet(values);
 
-	it("creates DynamoDBSet instances for numbers", () => {
-		const params = [42, 1, 2];
-		const result = createDynamoDbSet(params);
-		expect(result.type).toBe("Number");
-		expect(result.values).toHaveLength(params.length);
-		expect(result.values).toContain(42);
-		expect(result.values).toContain(1);
-		expect(result.values).toContain(2);
-	});
-
-	it("creates DynamoDBSet instances for binary types", () => {
-		const params = [
-			Buffer.from([0x62, 0x75, 0x66, 0x66, 0x65, 0x72]),
-			Buffer.from([0x61, 0x62, 0x63]),
-		];
-		const result = createDynamoDbSet(params);
-		expect(result.type).toBe("Binary");
-		expect(result.values).toHaveLength(params.length);
-		expect(result.values).toContainEqual(params[0]);
-		expect(result.values).toContain(params[1]);
-	});
-
-	it("does not throw an error with mixed set types if validation is not explicitly enabled", () => {
-		const params = ["hello", 42];
-		const result = createDynamoDbSet(params);
-		expect(result.type).toBe("String");
-		expect(result.values).toHaveLength(params.length);
-		expect(result.values).toContain("hello");
-		expect(result.values).toContain(42);
-	});
-
-	it("throws an error with mixed set types if validation is enabled", () => {
-		const params = ["hello", 42];
-		const expression = () => createDynamoDbSet(params, { validate: true });
-		const expectedErrorMessage = "String Set contains Number value";
-		expect(expression).toThrow(expectedErrorMessage);
-	});
-
-	it("converts Sets to DynamoDbSet if present in ExpressionsAttributeValues", () => {
-		const values = {
-			a: 1,
-			b: "foo",
-			c: [1, 2, 3],
-			d: { foo: "bar" },
-			e: new Set([1, 2]),
-			f: new Set(["foo", "bar"]),
-		};
-		const result = convertValuesToDynamoDbSet(values);
-
-		const expected = {
-			a: 1,
-			b: "foo",
-			c: [1, 2, 3],
-			d: { foo: "bar" },
-			e: createDynamoDbSet([1, 2]),
-			f: createDynamoDbSet(["foo", "bar"]),
-		};
-		expect(result).toStrictEqual(expected);
+			const expected = {
+				a: 1,
+				b: "foo",
+				c: [1, 2, 3],
+				d: { foo: "bar" },
+				e: sdk.createSet([1, 2]),
+				f: sdk.createSet(["foo", "bar"]),
+			};
+			expect(actual).toStrictEqual(expected);
+		});
 	});
 });

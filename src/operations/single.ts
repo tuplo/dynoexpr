@@ -1,5 +1,4 @@
-import { DocumentClient } from "aws-sdk/clients/dynamodb";
-
+import { AwsSdkDocumentClient } from "src/document-client";
 import type {
 	IDynamoDbValue,
 	IDynoexprInput,
@@ -15,15 +14,13 @@ import { getUpdateOperationsExpression } from "../expressions/update-ops";
 
 import { trimEmptyExpressionAttributes } from "./helpers";
 
-export const createDynamoDbSet =
-	DocumentClient.prototype.createSet.bind(undefined);
-
 export function convertValuesToDynamoDbSet(
 	attributeValues: Record<string, unknown>
 ) {
 	return Object.entries(attributeValues).reduce((acc, [key, value]) => {
 		if (value instanceof Set) {
-			acc[key] = createDynamoDbSet(Array.from(value));
+			const sdk = new AwsSdkDocumentClient();
+			acc[key] = sdk.createSet(Array.from(value));
 		} else {
 			acc[key] = value as IDynamoDbValue;
 		}
