@@ -1,22 +1,26 @@
-import type { ConditionInput, ConditionOutput } from "../dynoexpr";
+import type { IConditionInput, IConditionOutput } from "src/dynoexpr.d";
+
 import {
 	buildConditionAttributeNames,
 	buildConditionAttributeValues,
 	buildConditionExpression,
 } from "./helpers";
 
-type GetConditionExpressionFn = (params?: ConditionInput) => ConditionOutput;
-export const getConditionExpression: GetConditionExpressionFn = (
-	params = {}
-) => {
-	if (!params.Condition) return params;
+export function getConditionExpression(params: IConditionInput = {}) {
+	if (!params.Condition) {
+		return params;
+	}
+
 	const { Condition, ConditionLogicalOperator, ...restOfParams } = params;
-	const paramsWithConditions: ConditionOutput = {
+
+	const ConditionExpression = buildConditionExpression({
+		Condition,
+		LogicalOperator: ConditionLogicalOperator,
+	});
+
+	const paramsWithConditions: IConditionOutput = {
 		...restOfParams,
-		ConditionExpression: buildConditionExpression({
-			Condition,
-			LogicalOperator: ConditionLogicalOperator,
-		}),
+		ConditionExpression,
 		ExpressionAttributeNames: buildConditionAttributeNames(Condition, params),
 		ExpressionAttributeValues: buildConditionAttributeValues(Condition, params),
 	};
@@ -33,4 +37,4 @@ export const getConditionExpression: GetConditionExpressionFn = (
 	}
 
 	return paramsWithConditions;
-};
+}

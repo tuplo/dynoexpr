@@ -1,4 +1,5 @@
-import type { ConditionInput } from "../dynoexpr";
+import type { IConditionInput } from "src/dynoexpr.d";
+
 import { getConditionExpression } from "./condition";
 
 describe("condition expression", () => {
@@ -14,7 +15,7 @@ describe("condition expression", () => {
 			g: "BETWEEN 6 AND 7",
 			h: "IN (foo, bar)",
 		};
-		const params: ConditionInput = { Condition };
+		const params: IConditionInput = { Condition };
 		const result = getConditionExpression(params);
 
 		const expected = {
@@ -67,7 +68,7 @@ describe("condition expression", () => {
 			e: "contains(foo)",
 			f: "size > 10",
 		};
-		const params: ConditionInput = { Condition };
+		const params: IConditionInput = { Condition };
 		const result = getConditionExpression(params);
 
 		const expected = {
@@ -104,7 +105,7 @@ describe("condition expression", () => {
 			b: "between 2 and 3",
 			c: "size > 4",
 		};
-		const params: ConditionInput = {
+		const params: IConditionInput = {
 			Condition,
 			ConditionLogicalOperator: "OR",
 		};
@@ -138,7 +139,7 @@ describe("condition expression", () => {
 			a: "attribute_exists",
 			b: "attribute_not_exists",
 		};
-		const params: ConditionInput = { Condition };
+		const params: IConditionInput = { Condition };
 		const result = getConditionExpression(params);
 
 		const expected = {
@@ -160,7 +161,7 @@ describe("condition expression", () => {
 		const Condition = {
 			key: ["attribute_not_exists", "foobar"],
 		};
-		const params: ConditionInput = {
+		const params: IConditionInput = {
 			Condition,
 			ConditionLogicalOperator: "OR",
 		};

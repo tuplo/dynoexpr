@@ -1,5 +1,7 @@
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
-import type { DynoexprOutput } from "./dynoexpr";
+
+import type { IDynoexprOutput } from "src/dynoexpr.d";
+
 import dynoexpr from ".";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -16,7 +18,7 @@ describe("high level API", () => {
 			UpdateSet: { color: "pink" },
 		});
 
-		assertType<DynoexprOutput, typeof params>();
+		assertType<IDynoexprOutput, typeof params>();
 		expect(params.TableName).toBe("Table");
 	});
 

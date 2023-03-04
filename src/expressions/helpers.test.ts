@@ -3,8 +3,6 @@ import {
 	buildConditionAttributeNames,
 	buildConditionAttributeValues,
 	buildConditionExpression,
-	ConditionAttributeNamesParams,
-	ConditionAttributeValuesParams,
 	parseAttributeTypeValue,
 	parseBeginsWithValue,
 	parseBetweenValue,
@@ -13,6 +11,10 @@ import {
 	parseInValue,
 	parseNotCondition,
 	parseSizeValue,
+} from "./helpers";
+import type {
+	IConditionAttributeNamesParams,
+	IConditionAttributeValuesParams,
 } from "./helpers";
 
 describe("helpers for condition helpers", () => {
@@ -259,7 +261,7 @@ describe("helpers for condition helpers", () => {
 
 		it("builds the ExpressionAttributeNameMap with an existing map", () => {
 			const Condition2 = { b: "foo" };
-			const params: ConditionAttributeNamesParams = {
+			const params: IConditionAttributeNamesParams = {
 				ExpressionAttributeNames: { "#a": "a" },
 			};
 			const result = buildConditionAttributeNames(Condition2, params);
@@ -290,7 +292,7 @@ describe("helpers for condition helpers", () => {
 
 		it("builds the ExpressionAttributesValueMap with an existing map", () => {
 			const Condition2 = { b: "foo" };
-			const params: ConditionAttributeValuesParams = {
+			const params: IConditionAttributeValuesParams = {
 				ExpressionAttributeValues: { ":a": "bar" },
 			};
 			const result = buildConditionAttributeValues(Condition2, params);

@@ -1,25 +1,28 @@
 import type {
-	DynoexprInput,
-	BatchRequestInput,
-	TransactRequestInput,
-	DynoexprOutput,
-} from "./dynoexpr";
+	IBatchRequestInput,
+	IDynoexprInput,
+	IDynoexprOutput,
+	ITransactRequestInput,
+} from "src/dynoexpr.d";
 
+import { getBatchExpressions, isBatchRequest } from "./operations/batch";
 import { getSingleTableExpressions } from "./operations/single";
-import { isBatchRequest, getBatchExpressions } from "./operations/batch";
 import {
-	isTransactRequest,
 	getTransactExpressions,
+	isTransactRequest,
 } from "./operations/transact";
 
-type DynoexprParams = DynoexprInput | BatchRequestInput | TransactRequestInput;
+type IDynoexprParams =
+	| IDynoexprInput
+	| IBatchRequestInput
+	| ITransactRequestInput;
 
-function dynoexpr<T = DynoexprOutput>(params: DynoexprParams): T {
+function dynoexpr<T = IDynoexprOutput>(params: IDynoexprParams): T {
 	if (isBatchRequest(params)) {
-		return getBatchExpressions(params) as DynoexprOutput as T;
+		return getBatchExpressions(params) as IDynoexprOutput as T;
 	}
 	if (isTransactRequest(params)) {
-		return getTransactExpressions(params) as DynoexprOutput as T;
+		return getTransactExpressions(params) as IDynoexprOutput as T;
 	}
 
 	return getSingleTableExpressions(params) as T;

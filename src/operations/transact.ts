@@ -1,27 +1,30 @@
 import type {
-	DynoexprInput,
-	TransactRequestInput,
-	TransactRequestOutput,
-	TransactOperation,
-} from "../dynoexpr";
+	IDynoexprInput,
+	ITransactOperation,
+	ITransactRequestInput,
+	ITransactRequestOutput,
+} from "src/dynoexpr.d";
+
 import { getSingleTableExpressions } from "./single";
 
 export function isTransactRequest(
-	params: DynoexprInput | TransactRequestInput
-): params is TransactRequestInput {
+	params: IDynoexprInput | ITransactRequestInput
+): params is ITransactRequestInput {
 	return "TransactItems" in params;
 }
 
 export function getTransactExpressions<
-	T extends TransactRequestOutput = TransactRequestOutput
->(params: TransactRequestInput): T {
+	T extends ITransactRequestOutput = ITransactRequestOutput
+>(params: ITransactRequestInput): T {
+	const TransactItems = params.TransactItems.map((tableItems) => {
+		const [key] = Object.keys(tableItems) as ITransactOperation[];
+		return {
+			[key]: getSingleTableExpressions(tableItems[key]),
+		};
+	});
+
 	return {
 		...params,
-		TransactItems: params.TransactItems.map((tableItems) => {
-			const [key] = Object.keys(tableItems) as TransactOperation[];
-			return {
-				[key]: getSingleTableExpressions(tableItems[key]),
-			};
-		}),
+		TransactItems,
 	} as T;
 }

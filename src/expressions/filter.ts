@@ -1,21 +1,34 @@
-import type { FilterInput, FilterOutput } from "../dynoexpr";
+import type { IFilterInput } from "src/dynoexpr.d";
+
 import {
 	buildConditionAttributeNames,
 	buildConditionAttributeValues,
 	buildConditionExpression,
 } from "./helpers";
 
-type GetFilterExpressionFn = (params?: FilterInput) => FilterOutput;
-export const getFilterExpression: GetFilterExpressionFn = (params = {}) => {
-	if (!params.Filter) return params;
+export function getFilterExpression(params: IFilterInput = {}) {
+	if (!params.Filter) {
+		return params;
+	}
+
 	const { Filter, FilterLogicalOperator, ...restOfParams } = params;
+
+	const FilterExpression = buildConditionExpression({
+		Condition: Filter,
+		LogicalOperator: FilterLogicalOperator,
+	});
+
+	const ExpressionAttributeNames = buildConditionAttributeNames(Filter, params);
+
+	const ExpressionAttributeValues = buildConditionAttributeValues(
+		Filter,
+		params
+	);
+
 	return {
 		...restOfParams,
-		FilterExpression: buildConditionExpression({
-			Condition: Filter,
-			LogicalOperator: FilterLogicalOperator,
-		}),
-		ExpressionAttributeNames: buildConditionAttributeNames(Filter, params),
-		ExpressionAttributeValues: buildConditionAttributeValues(Filter, params),
+		FilterExpression,
+		ExpressionAttributeNames,
+		ExpressionAttributeValues,
 	};
-};
+}

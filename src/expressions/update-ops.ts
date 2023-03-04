@@ -1,51 +1,48 @@
-import type { UpdateInput, UpdateOutput } from "../dynoexpr";
+import type { IUpdateInput, IUpdateOutput } from "src/dynoexpr.d";
+
 import { getUpdateExpression } from "./update";
 
-type GetUpdateExpressionFn = (params?: UpdateInput) => UpdateOutput;
+export function getUpdateSetExpression(params?: IUpdateInput) {
+	const { UpdateSet, ...restOfParams } = params || {};
 
-export const getUpdateSetExpression: GetUpdateExpressionFn = (params = {}) => {
-	const { UpdateSet, ...restOfParams } = params;
 	return getUpdateExpression({
 		...restOfParams,
 		Update: UpdateSet,
 		UpdateAction: "SET",
 	});
-};
+}
 
-export const getUpdateRemoveExpression: GetUpdateExpressionFn = (
-	params = {}
-) => {
-	const { UpdateRemove, ...restOfParams } = params;
+export function getUpdateRemoveExpression(params?: IUpdateInput) {
+	const { UpdateRemove, ...restOfParams } = params || {};
+
 	return getUpdateExpression({
 		...restOfParams,
 		Update: UpdateRemove,
 		UpdateAction: "REMOVE",
 	});
-};
+}
 
-export const getUpdateAddExpression: GetUpdateExpressionFn = (params = {}) => {
-	const { UpdateAdd, ...restOfParams } = params;
+export function getUpdateAddExpression(params?: IUpdateInput) {
+	const { UpdateAdd, ...restOfParams } = params || {};
+
 	return getUpdateExpression({
 		...restOfParams,
 		Update: UpdateAdd,
 		UpdateAction: "ADD",
 	});
-};
+}
 
-export const getUpdateDeleteExpression: GetUpdateExpressionFn = (
-	params = {}
-) => {
-	const { UpdateDelete, ...restOfParams } = params;
+export function getUpdateDeleteExpression(params?: IUpdateInput) {
+	const { UpdateDelete, ...restOfParams } = params || {};
+
 	return getUpdateExpression({
 		...restOfParams,
 		Update: UpdateDelete,
 		UpdateAction: "DELETE",
 	});
-};
+}
 
-export const getUpdateOperationsExpression: GetUpdateExpressionFn = (
-	params = {}
-) => {
+export function getUpdateOperationsExpression(params: IUpdateInput = {}) {
 	const updateExpressions: string[] = [];
 	const outputParams = [
 		getUpdateSetExpression,
@@ -57,7 +54,7 @@ export const getUpdateOperationsExpression: GetUpdateExpressionFn = (
 		const { UpdateExpression = "" } = expr;
 		updateExpressions.push(UpdateExpression);
 		return expr;
-	}, params as UpdateOutput);
+	}, params as IUpdateOutput);
 
 	const aggUpdateExpression = updateExpressions
 		.filter(Boolean)
@@ -68,4 +65,4 @@ export const getUpdateOperationsExpression: GetUpdateExpressionFn = (
 	}
 
 	return outputParams;
-};
+}

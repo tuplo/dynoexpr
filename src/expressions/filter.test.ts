@@ -1,4 +1,5 @@
-import type { FilterInput } from "../dynoexpr";
+import type { IFilterInput } from "src/dynoexpr.d";
+
 import { getFilterExpression } from "./filter";
 
 describe("filter expression", () => {
@@ -20,7 +21,7 @@ describe("filter expression", () => {
 			m: "BETWEEN you AND me",
 			n: "IN (foo, bar)",
 		};
-		const params: FilterInput = { Filter };
+		const params: IFilterInput = { Filter };
 		const result = getFilterExpression(params);
 
 		const expected = {
@@ -92,7 +93,7 @@ describe("filter expression", () => {
 			e: "contains(foo)",
 			f: "size > 10",
 		};
-		const params: FilterInput = { Filter };
+		const params: IFilterInput = { Filter };
 		const result = getFilterExpression(params);
 
 		const expected = {
@@ -129,7 +130,7 @@ describe("filter expression", () => {
 			b: "between 2 and 3",
 			c: "size > 4",
 		};
-		const params: FilterInput = { Filter };
+		const params: IFilterInput = { Filter };
 		const result = getFilterExpression(params);
 
 		const expected = {

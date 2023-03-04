@@ -1,4 +1,5 @@
-import type { KeyConditionInput } from "../dynoexpr";
+import type { IKeyConditionInput } from "src/dynoexpr.d";
+
 import { getKeyConditionExpression } from "./key-condition";
 
 describe("key condition expression", () => {
@@ -14,7 +15,7 @@ describe("key condition expression", () => {
 			g: "BETWEEN 6 AND 7",
 			h: "IN (foo, bar)",
 		};
-		const params: KeyConditionInput = { KeyCondition };
+		const params: IKeyConditionInput = { KeyCondition };
 		const result = getKeyConditionExpression(params);
 
 		const expected = {
@@ -67,7 +68,7 @@ describe("key condition expression", () => {
 			e: "contains(foo)",
 			f: "size > 10",
 		};
-		const params: KeyConditionInput = { KeyCondition };
+		const params: IKeyConditionInput = { KeyCondition };
 		const result = getKeyConditionExpression(params);
 
 		const expected = {
@@ -104,7 +105,7 @@ describe("key condition expression", () => {
 			b: "between 2 and 3",
 			c: "size > 4",
 		};
-		const params: KeyConditionInput = { KeyCondition };
+		const params: IKeyConditionInput = { KeyCondition };
 		const result = getKeyConditionExpression(params);
 
 		const expected = {

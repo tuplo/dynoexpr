@@ -1,5 +1,6 @@
+import type { IFilterInput } from "src/dynoexpr.d";
+
 import dynoexpr from "./index";
-import type { FilterInput } from "./dynoexpr.d";
 
 describe("bug reports", () => {
 	it("logical operator", () => {
@@ -59,7 +60,7 @@ describe("bug reports", () => {
 			a: "<> true",
 			b: "<> false",
 		};
-		const params: FilterInput = { Filter };
+		const params: IFilterInput = { Filter };
 		const actual = dynoexpr(params);
 
 		const expected = {

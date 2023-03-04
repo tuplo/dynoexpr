@@ -1,4 +1,5 @@
-import type { DynoexprInput, DynoexprOutput } from "../dynoexpr";
+import type { IDynoexprInput, IDynoexprOutput } from "src/dynoexpr.d";
+
 import {
 	createDynamoDbSet,
 	getSingleTableExpressions,
@@ -7,7 +8,7 @@ import {
 
 describe("single table operations", () => {
 	it("applies consecutive expression getters to a parameters object", () => {
-		const params: DynoexprInput = {
+		const params: IDynoexprInput = {
 			KeyCondition: { c: 5 },
 			Condition: { b: "> 10" },
 			Filter: { a: "foo" },
@@ -19,7 +20,7 @@ describe("single table operations", () => {
 		};
 		const result = getSingleTableExpressions(params);
 
-		const expected: DynoexprOutput = {
+		const expected: IDynoexprOutput = {
 			ConditionExpression: "(#n7531578f > :vd163e820)",
 			FilterExpression: "(#n69772661 = :vccc4a4d8)",
 			KeyConditionExpression: "(#n408b5f33 = :v74a318d5)",
@@ -47,7 +48,7 @@ describe("single table operations", () => {
 		expect(result).toStrictEqual(expected);
 	});
 
-	it.each<[string, DynoexprInput, DynoexprOutput]>([
+	it.each<[string, IDynoexprInput, IDynoexprOutput]>([
 		[
 			"UpdateRemove",
 			{ UpdateRemove: { a: "" } },
@@ -86,7 +87,7 @@ describe("single table operations", () => {
 	});
 
 	it("doesn't clash values for different expressions", () => {
-		const params: DynoexprInput = {
+		const params: IDynoexprInput = {
 			KeyCondition: { a: 5 },
 			Condition: { a: "> 10" },
 			Filter: { a: 2 },
@@ -95,7 +96,7 @@ describe("single table operations", () => {
 		};
 		const result = getSingleTableExpressions(params);
 
-		const expected: DynoexprOutput = {
+		const expected: IDynoexprOutput = {
 			FilterExpression: "(#n69772661 = :vcc14862c)",
 			KeyConditionExpression: "(#n69772661 = :v74a318d5)",
 			ProjectionExpression: "#n69772661,#n7531578f",
@@ -115,7 +116,7 @@ describe("single table operations", () => {
 	});
 
 	it("keeps existing Names/Values", () => {
-		const params: DynoexprInput = {
+		const params: IDynoexprInput = {
 			KeyCondition: { a: 5 },
 			Condition: { a: "> 10" },
 			Filter: { a: 2 },

@@ -1,34 +1,35 @@
 import type {
-	DynoexprInputValue,
-	UpdateInput,
-	UpdateOutput,
-} from "../dynoexpr";
+	IDynoexprInputValue,
+	IUpdateInput,
+	IUpdateOutput,
+} from "src/dynoexpr.d";
+
 import { getAttrName, getAttrValue } from "../utils";
 
-type ParseOperationValueFn = (expr: string, key: string) => number;
-export const parseOperationValue: ParseOperationValueFn = (expr, key) => {
+export function parseOperationValue(expr: string, key: string) {
 	const v = expr.replace(key, "").replace(/[+-]/, "");
 	return Number(v.trim());
-};
+}
 
-type IsMathExpressionFn = (name: string, value: DynoexprInputValue) => boolean;
-export const isMathExpression: IsMathExpressionFn = (name, value) => {
-	if (typeof name !== "string") return false;
+export function isMathExpression(name: string, value: IDynoexprInputValue) {
+	if (typeof name !== "string") {
+		return false;
+	}
 
 	const rgLh = new RegExp(`^${name}\\s*[+-]\\s*\\d+$`);
 	const rgRh = new RegExp(`^\\d+\\s*[+-]\\s*${name}$`);
 
 	return rgLh.test(`${value}`) || rgRh.test(`${value}`);
-};
+}
 
-function fromStrListToArray(strList: string): DynoexprInputValue[] {
+function fromStrListToArray(strList: string): IDynoexprInputValue[] {
 	const [, inner] = /^\[([^\]]+)\]$/.exec(strList) || [];
 	return inner.split(",").map((v) => JSON.parse(v));
 }
 
 export function getListAppendExpressionAttributes(
 	key: string,
-	value: DynoexprInputValue
+	value: IDynoexprInputValue
 ) {
 	const [, listAppendValues] = /list_append\((.+)\)/.exec(`${value}`) || [];
 	const rg = /(\[[^\]]+\])/g; // match [1, 2]
@@ -41,7 +42,7 @@ export function getListAppendExpressionAttributes(
 
 export function getListAppendExpression(
 	key: string,
-	value: DynoexprInputValue
+	value: IDynoexprInputValue
 ) {
 	const attr = getAttrName(key);
 	const [, listAppendValues] = /list_append\((.+)\)/.exec(`${value}`) || [];
@@ -65,12 +66,12 @@ export function getListAppendExpression(
 	return `${attr} = list_append(${vv.join(", ")})`;
 }
 
-type ExpressionAttributesMap = {
+interface IExpressionAttributesMap {
 	ExpressionAttributeNames: { [key: string]: string };
-	ExpressionAttributeValues: { [key: string]: DynoexprInputValue };
-};
-type GetExpressionAttributesFn = (params: UpdateInput) => UpdateOutput;
-export const getExpressionAttributes: GetExpressionAttributesFn = (params) => {
+	ExpressionAttributeValues: { [key: string]: IDynoexprInputValue };
+}
+
+export function getExpressionAttributes(params: IUpdateInput): IUpdateOutput {
 	const { Update = {}, UpdateAction = "SET" } = params;
 
 	return Object.entries(Update).reduce((acc, [key, value]) => {
@@ -82,7 +83,7 @@ export const getExpressionAttributes: GetExpressionAttributesFn = (params) => {
 		});
 
 		if (UpdateAction !== "REMOVE") {
-			let v: DynoexprInputValue | DynoexprInputValue[] = value;
+			let v: IDynoexprInputValue | IDynoexprInputValue[] = value;
 
 			if (isMathExpression(key, value)) {
 				v = parseOperationValue(value as string, key);
@@ -107,11 +108,10 @@ export const getExpressionAttributes: GetExpressionAttributesFn = (params) => {
 		}
 
 		return acc;
-	}, params as ExpressionAttributesMap);
-};
+	}, params as IExpressionAttributesMap);
+}
 
-type GetUpdateExpressionFn = (params?: UpdateInput) => UpdateOutput;
-export const getUpdateExpression: GetUpdateExpressionFn = (params = {}) => {
+export function getUpdateExpression(params: IUpdateInput = {}): IUpdateOutput {
 	if (!params.Update) return params;
 
 	const { Update, UpdateAction = "SET", ...restOfParams } = params;
@@ -175,7 +175,7 @@ export const getUpdateExpression: GetUpdateExpressionFn = (params = {}) => {
 			break;
 	}
 
-	const parameters: UpdateOutput = {
+	const parameters: IUpdateOutput = {
 		...restOfParams,
 		UpdateExpression: [UpdateAction, entries].join(" "),
 		ExpressionAttributeNames,
@@ -183,4 +183,4 @@ export const getUpdateExpression: GetUpdateExpressionFn = (params = {}) => {
 	};
 
 	return parameters;
-};
+}

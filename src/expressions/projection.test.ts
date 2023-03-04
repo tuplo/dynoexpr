@@ -1,9 +1,10 @@
-import type { ProjectionInput } from "../dynoexpr";
+import type { IProjectionInput } from "src/dynoexpr.d";
+
 import { getProjectionExpression } from "./projection";
 
 describe("projection expression", () => {
 	it("converts a ProjectionExpression to ExpressionAttributesMap", () => {
-		const params: ProjectionInput = {
+		const params: IProjectionInput = {
 			Projection: ["foo", "cast", "year", "baz"],
 		};
 		const result = getProjectionExpression(params);
@@ -21,7 +22,7 @@ describe("projection expression", () => {
 	});
 
 	it("adds new names to an existing ExpressionAttributesMap", () => {
-		const params: ProjectionInput = {
+		const params: IProjectionInput = {
 			Projection: ["foo", "cast", "year", "baz"],
 			ExpressionAttributeNames: {
 				"#quz": "quz",
@@ -43,7 +44,7 @@ describe("projection expression", () => {
 	});
 
 	it("maintains existing ProjectionExpression names", () => {
-		const params: ProjectionInput = {
+		const params: IProjectionInput = {
 			Projection: ["foo", "baz"],
 			ExpressionAttributeNames: {
 				"#foo": "foo",

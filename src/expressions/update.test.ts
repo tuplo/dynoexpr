@@ -1,9 +1,10 @@
-import type { UpdateInput } from "../dynoexpr";
+import type { IUpdateInput } from "src/dynoexpr.d";
+
 import {
 	getExpressionAttributes,
 	getUpdateExpression,
-	parseOperationValue,
 	isMathExpression,
+	parseOperationValue,
 } from "./update";
 
 describe("update expression", () => {
@@ -209,7 +210,7 @@ describe("update expression", () => {
 	);
 
 	it("updates numeric value math operations - SET", () => {
-		const params: UpdateInput = {
+		const params: IUpdateInput = {
 			Update: {
 				foo: "foo - 2",
 				bar: "2 - bar",
@@ -235,7 +236,7 @@ describe("update expression", () => {
 	});
 
 	it("updates expression with -/+ but it's not a math expression", () => {
-		const params: UpdateInput = {
+		const params: IUpdateInput = {
 			Update: {
 				foo: "10-20-001",
 				bar: "2020-06-01T19:53:52.457Z",
@@ -265,7 +266,7 @@ describe("update expression", () => {
 	});
 
 	it("adds a number - ADD", () => {
-		const params: UpdateInput = {
+		const params: IUpdateInput = {
 			UpdateAction: "ADD",
 			Update: {
 				foo: 5,
@@ -286,7 +287,7 @@ describe("update expression", () => {
 	});
 
 	it("adds elements to a set - SET", () => {
-		const params: UpdateInput = {
+		const params: IUpdateInput = {
 			UpdateAction: "ADD",
 			Update: {
 				foo: [1, 2],
@@ -309,7 +310,7 @@ describe("update expression", () => {
 	});
 
 	it("removes element from a set - DELETE", () => {
-		const params: UpdateInput = {
+		const params: IUpdateInput = {
 			UpdateAction: "DELETE",
 			Update: {
 				foo: [1, 2],

@@ -1,4 +1,4 @@
-import type { TransactRequestInput } from "../dynoexpr";
+import type { ITransactRequestInput } from "src/dynoexpr.d";
 
 import { getTransactExpressions } from "./transact";
 
@@ -25,7 +25,7 @@ describe("transact requests", () => {
 				},
 			],
 			ReturnConsumedCapacity: "INDEXES",
-		} as TransactRequestInput;
+		} as ITransactRequestInput;
 		const result = getTransactExpressions(params);
 
 		const expected = {

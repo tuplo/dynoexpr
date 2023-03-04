@@ -1,50 +1,58 @@
 /* eslint-disable no-param-reassign */
 import type {
-	DynoexprInput,
-	BatchRequestInput,
-	BatchRequestOutput,
-	BatchRequestItemsInput,
-	BatchGetInput,
-	BatchWriteInput,
-} from "../dynoexpr";
+	IDynoexprInput,
+	IBatchRequestInput,
+	IBatchRequestOutput,
+	IBatchRequestItemsInput,
+	IBatchGetInput,
+	IBatchWriteInput,
+} from "src/dynoexpr.d";
+
 import { getSingleTableExpressions } from "./single";
 
 export function isBatchRequest(
-	params: DynoexprInput | BatchRequestInput
-): params is BatchRequestInput {
+	params: IDynoexprInput | IBatchRequestInput
+): params is IBatchRequestInput {
 	return "RequestItems" in params;
 }
 
 function isBatchGetRequest(
-	tableParams: BatchGetInput | BatchWriteInput[]
-): tableParams is BatchGetInput {
+	tableParams: IBatchGetInput | IBatchWriteInput[]
+): tableParams is IBatchGetInput {
 	return !Array.isArray(tableParams);
 }
 
 function isBatchWriteRequest(
-	tableParams: BatchGetInput | BatchWriteInput[]
-): tableParams is BatchWriteInput {
-	if (!Array.isArray(tableParams)) return false;
+	tableParams: IBatchGetInput | IBatchWriteInput[]
+): tableParams is IBatchWriteInput[] {
+	if (!Array.isArray(tableParams)) {
+		return false;
+	}
+
 	const [firstTable] = tableParams;
 	return "DeleteRequest" in firstTable || "PutRequest" in firstTable;
 }
 
 export function getBatchExpressions<
-	T extends BatchRequestOutput = BatchRequestOutput
->(params: BatchRequestInput): T {
+	T extends IBatchRequestOutput = IBatchRequestOutput
+>(params: IBatchRequestInput): T {
+	const RequestItems = Object.entries(params.RequestItems).reduce(
+		(accParams, [tableName, tableParams]) => {
+			if (isBatchGetRequest(tableParams)) {
+				accParams[tableName] = getSingleTableExpressions(tableParams);
+			}
+
+			if (isBatchWriteRequest(tableParams)) {
+				accParams[tableName] = tableParams;
+			}
+
+			return accParams;
+		},
+		{} as IBatchRequestItemsInput
+	);
+
 	return {
 		...params,
-		RequestItems: Object.entries(params.RequestItems).reduce(
-			(accParams, [tableName, tableParams]) => {
-				if (isBatchGetRequest(tableParams)) {
-					accParams[tableName] = getSingleTableExpressions(tableParams);
-				}
-				if (isBatchWriteRequest(tableParams)) {
-					accParams[tableName] = tableParams;
-				}
-				return accParams;
-			},
-			{} as BatchRequestItemsInput
-		),
+		RequestItems,
 	} as T;
 }

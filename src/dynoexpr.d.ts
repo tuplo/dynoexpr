@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/indent */
-type LogicalOperatorType = string | "AND" | "OR";
+type ILogicalOperatorType = string | "AND" | "OR";
 
-type DynoexprInputValue =
+type IDynoexprInputValue =
 	| string
 	| string[]
 	| number
@@ -15,7 +15,7 @@ type DynoexprInputValue =
 	| null
 	| undefined;
 
-type DynamoDbValue =
+type IDynamoDbValue =
 	| string
 	| string[]
 	| number
@@ -28,115 +28,129 @@ type DynamoDbValue =
 	| unknown;
 
 // batch operations
-type BatchGetInput = ProjectionInput & Record<string, unknown>;
-type BatchWriteInput = {
+type IBatchGetInput = IProjectionInput & Record<string, unknown>;
+interface IBatchWriteInput {
 	DeleteRequest?: unknown;
 	PutRequest?: unknown;
-};
-type BatchRequestItemsInput = Record<string, BatchGetInput | BatchWriteInput[]>;
-export type BatchRequestInput = {
-	RequestItems: BatchRequestItemsInput;
+}
+interface IBatchRequestItemsInput {
+	[key: string]: IBatchGetInput | IBatchWriteInput[];
+}
+export interface IBatchRequestInput {
+	RequestItems: IBatchRequestItemsInput;
 	[key: string]: unknown;
-};
-type BatchRequestOutput = {
-	RequestItems: ProjectionOutput & Record<string, unknown>;
+}
+interface IBatchRequestOutput {
+	RequestItems: IProjectionOutput & Record<string, unknown>;
 	[key: string]: unknown;
-};
+}
 
 // transact operations
-type TransactOperation = "Get" | "ConditionCheck" | "Put" | "Delete" | "Update";
-type TransactRequestItems = Partial<Record<TransactOperation, DynoexprInput>>;
-export type TransactRequestInput = {
-	TransactItems: TransactRequestItems[];
+type ITransactOperation =
+	| "Get"
+	| "ConditionCheck"
+	| "Put"
+	| "Delete"
+	| "Update";
+
+type ITransactRequestItems = Partial<
+	Record<ITransactOperation, IDynoexprInput>
+>;
+export interface ITransactRequestInput {
+	TransactItems: ITransactRequestItems[];
 	[key: string]: unknown;
-};
-type TransactRequestOutput = {
-	TransactItems: TransactRequestItems[];
+}
+interface ITransactRequestOutput {
+	TransactItems: ITransactRequestItems[];
 	[key: string]: unknown;
-};
+}
 
 // Condition
-type Condition = Record<string, DynoexprInputValue>;
-type ConditionInput = Partial<{
-	Condition: Condition;
-	ConditionLogicalOperator: LogicalOperatorType;
+type ICondition = Record<string, IDynoexprInputValue>;
+type IConditionInput = Partial<{
+	Condition: ICondition;
+	ConditionLogicalOperator: ILogicalOperatorType;
 	ExpressionAttributeNames: { [key: string]: string };
-	ExpressionAttributeValues: { [key: string]: DynamoDbValue };
+	ExpressionAttributeValues: { [key: string]: IDynamoDbValue };
 }>;
-type ConditionOutput = Partial<{
+type IConditionOutput = Partial<{
 	ConditionExpression: string;
 	ExpressionAttributeNames: { [key: string]: string };
-	ExpressionAttributeValues: { [key: string]: DynamoDbValue };
+	ExpressionAttributeValues: { [key: string]: IDynamoDbValue };
 }>;
 
 // KeyCondition
-type KeyCondition = Record<string, DynoexprInputValue>;
-type KeyConditionInput = Partial<{
-	KeyCondition: KeyCondition;
-	KeyConditionLogicalOperator: LogicalOperatorType;
+type IKeyCondition = Record<string, IDynoexprInputValue>;
+type IKeyConditionInput = Partial<{
+	KeyCondition: IKeyCondition;
+	KeyConditionLogicalOperator: ILogicalOperatorType;
 	ExpressionAttributeNames: Record<string, string>;
-	ExpressionAttributeValues: { [key: string]: DynamoDbValue };
+	ExpressionAttributeValues: { [key: string]: IDynamoDbValue };
 }>;
-type KeyConditionOutput = Partial<{
+type IKeyConditionOutput = Partial<{
 	KeyConditionExpression: string;
 	ExpressionAttributeNames: Record<string, string>;
-	ExpressionAttributeValues: { [key: string]: DynamoDbValue };
+	ExpressionAttributeValues: { [key: string]: IDynamoDbValue };
 }>;
 
 // Filter
-type Filter = Record<string, DynoexprInputValue>;
-type FilterInput = Partial<{
-	Filter: Filter;
-	FilterLogicalOperator: LogicalOperatorType;
+type IFilter = Record<string, IDynoexprInputValue>;
+type IFilterInput = Partial<{
+	Filter: IFilter;
+	FilterLogicalOperator: ILogicalOperatorType;
 	ExpressionAttributeNames: { [key: string]: string };
-	ExpressionAttributeValues: { [key: string]: DynamoDbValue };
+	ExpressionAttributeValues: { [key: string]: IDynamoDbValue };
 }>;
-type FilterOutput = Partial<{
+type IFilterOutput = Partial<{
 	FilterExpression: string;
 	ExpressionAttributeNames: { [key: string]: string };
-	ExpressionAttributeValues: { [key: string]: DynamoDbValue };
+	ExpressionAttributeValues: { [key: string]: IDynamoDbValue };
 }>;
 
 // Projection
-type Projection = string[];
-type ProjectionInput = Partial<{
-	Projection: Projection;
+type IProjection = string[];
+type IProjectionInput = Partial<{
+	Projection: IProjection;
 	ExpressionAttributeNames: Record<string, string>;
 }>;
-type ProjectionOutput = Partial<{
-	ProjectionExpression: string;
-	ExpressionAttributeNames: Record<string, string>;
-}>;
+interface IProjectionOutput {
+	ProjectionExpression?: string;
+	ExpressionAttributeNames?: Record<string, string>;
+}
 
 // Update
-type Update = Record<string, DynoexprInputValue>;
-type UpdateAction = "SET" | "ADD" | "DELETE" | "REMOVE";
-type UpdateInput = Partial<{
-	Update?: Update;
-	UpdateAction?: UpdateAction;
-	UpdateRemove?: Update;
-	UpdateAdd?: Update;
-	UpdateSet?: Update;
-	UpdateDelete?: Update;
+interface IUpdate {
+	[key: string]: IDynoexprInputValue;
+}
+type IUpdateAction = "SET" | "ADD" | "DELETE" | "REMOVE";
+type IUpdateInput = Partial<{
+	Update: IUpdate;
+	UpdateAction: IUpdateAction;
+	UpdateRemove: IUpdate;
+	UpdateAdd: IUpdate;
+	UpdateSet: IUpdate;
+	UpdateDelete: IUpdate;
 	ExpressionAttributeNames: { [key: string]: string };
-	ExpressionAttributeValues: { [key: string]: DynamoDbValue };
+	ExpressionAttributeValues: { [key: string]: IDynamoDbValue };
 }>;
-type UpdateOutput = Partial<{
+type IUpdateOutput = Partial<{
 	UpdateExpression: string;
 	ExpressionAttributeNames: { [key: string]: string };
-	ExpressionAttributeValues: { [key: string]: DynamoDbValue };
+	ExpressionAttributeValues: { [key: string]: IDynamoDbValue };
 }>;
 
-export type DynoexprInput = ConditionInput &
-	FilterInput &
-	KeyConditionInput &
-	ProjectionInput &
-	UpdateInput &
-	Record<string, unknown>;
+export type IDynoexprInput = IConditionInput &
+	IFilterInput &
+	IKeyConditionInput &
+	IProjectionInput &
+	IUpdateInput & {
+		[key: string]: unknown;
+	};
 
-export type DynoexprOutput = ConditionOutput &
-	FilterOutput &
-	KeyConditionOutput &
-	ProjectionOutput &
-	UpdateOutput &
-	Record<string, unknown>;
+export type IDynoexprOutput = IConditionOutput &
+	IFilterOutput &
+	IKeyConditionOutput &
+	IProjectionOutput &
+	IUpdateOutput & {
+		[key: string]: unknown;
+	};

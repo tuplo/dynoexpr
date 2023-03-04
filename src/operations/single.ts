@@ -1,36 +1,39 @@
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
 
-import type { DynoexprInput, DynamoDbValue, DynoexprOutput } from "../dynoexpr";
+import type {
+	IDynamoDbValue,
+	IDynoexprInput,
+	IDynoexprOutput,
+} from "src/dynoexpr.d";
+
 import { getConditionExpression } from "../expressions/condition";
 import { getFilterExpression } from "../expressions/filter";
+import { getKeyConditionExpression } from "../expressions/key-condition";
 import { getProjectionExpression } from "../expressions/projection";
 import { getUpdateExpression } from "../expressions/update";
 import { getUpdateOperationsExpression } from "../expressions/update-ops";
-import { getKeyConditionExpression } from "../expressions/key-condition";
 
 import { trimEmptyExpressionAttributes } from "./helpers";
 
 export const createDynamoDbSet =
 	DocumentClient.prototype.createSet.bind(undefined);
 
-type ConvertValuesToDynamoDbSetFn = (
+export function convertValuesToDynamoDbSet(
 	attributeValues: Record<string, unknown>
-) => Record<string, DynamoDbValue>;
-export const convertValuesToDynamoDbSet: ConvertValuesToDynamoDbSetFn = (
-	attributeValues
-) =>
-	Object.entries(attributeValues).reduce((acc, [key, value]) => {
+) {
+	return Object.entries(attributeValues).reduce((acc, [key, value]) => {
 		if (value instanceof Set) {
 			acc[key] = createDynamoDbSet(Array.from(value));
 		} else {
-			acc[key] = value as DynamoDbValue;
+			acc[key] = value as IDynamoDbValue;
 		}
 		return acc;
-	}, {} as Record<string, DynamoDbValue>);
+	}, {} as Record<string, IDynamoDbValue>);
+}
 
 export function getSingleTableExpressions<
-	T extends DynoexprOutput = DynoexprOutput
->(params: DynoexprInput = {}): T {
+	T extends IDynoexprOutput = IDynoexprOutput
+>(params: IDynoexprInput = {}): T {
 	const expression = [
 		getKeyConditionExpression,
 		getConditionExpression,

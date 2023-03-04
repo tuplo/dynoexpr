@@ -1,4 +1,5 @@
-import type { UpdateInput } from "../dynoexpr";
+import type { IUpdateInput } from "src/dynoexpr.d";
+
 import {
 	getUpdateSetExpression,
 	getUpdateRemoveExpression,
@@ -9,7 +10,7 @@ import {
 
 describe("update operations - SET/REMOVE/ADD/DELETE", () => {
 	it("builds a SET update expression", () => {
-		const params: UpdateInput = {
+		const params: IUpdateInput = {
 			UpdateSet: {
 				foo: "foo - 2",
 				bar: "2 - bar",
@@ -47,7 +48,7 @@ describe("update operations - SET/REMOVE/ADD/DELETE", () => {
 	});
 
 	it("builds a REMOVE update expression", () => {
-		const params: UpdateInput = {
+		const params: IUpdateInput = {
 			UpdateRemove: {
 				foo: "bar",
 				baz: 2,
@@ -67,7 +68,7 @@ describe("update operations - SET/REMOVE/ADD/DELETE", () => {
 	});
 
 	it("builds an ADD update expression", () => {
-		const params: UpdateInput = {
+		const params: IUpdateInput = {
 			UpdateAdd: {
 				foo: "bar",
 				baz: 2,
@@ -100,7 +101,7 @@ describe("update operations - SET/REMOVE/ADD/DELETE", () => {
 	});
 
 	it("builds a DELETE update expression", () => {
-		const params: UpdateInput = {
+		const params: IUpdateInput = {
 			UpdateDelete: {
 				foo: "bar",
 				baz: 2,
@@ -133,7 +134,7 @@ describe("update operations - SET/REMOVE/ADD/DELETE", () => {
 	});
 
 	it("builds multiple update expressions", () => {
-		const params: UpdateInput = {
+		const params: IUpdateInput = {
 			UpdateSet: { ufoo: "ufoo - 2" },
 			UpdateRemove: { rfoo: "rbar" },
 			UpdateAdd: { afoo: "abar" },
