@@ -11,9 +11,8 @@ describe("update expression", () => {
 	it.each(["foo + 2", "foo - 2", "2 - foo", "2 + foo", "foo  +  2", "foo+2"])(
 		"parses the number on a math operation update: %s",
 		(expr) => {
-			const expected = 2;
-			const result = parseOperationValue(expr, "foo");
-			expect(result).toBe(expected);
+			const actual = parseOperationValue(expr, "foo");
+			expect(actual).toBe(2);
 		}
 	);
 
@@ -29,8 +28,8 @@ describe("update expression", () => {
 			quz: "if_not_exists(bazz)",
 			Price: "if_not_exists(:p)",
 		};
-		const params = { Update };
-		const result = getExpressionAttributes(params);
+		const args = { Update };
+		const actual = getExpressionAttributes(args);
 
 		const expected = {
 			Update,
@@ -57,28 +56,28 @@ describe("update expression", () => {
 				":vf7b0c4ab": "qiz",
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 
 	it("builds ExpressionAttributesMap with existing maps", () => {
 		const Update = { a: 1 };
-		const params = {
+		const args = {
 			Update,
 			ExpressionAttributeNames: { "#b": "b" },
 			ExpressionAttributeValues: { ":b": 2 },
 		};
-		const result = getExpressionAttributes(params);
+		const actual = getExpressionAttributes(args);
 
 		const expected = {
 			Update,
 			ExpressionAttributeNames: { "#b": "b", "#n69772661": "a" },
 			ExpressionAttributeValues: { ":b": 2, ":v6f75849b": 1 },
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 
 	it("updates attributes - SET", () => {
-		const params = {
+		const args = {
 			Update: {
 				foo: "bar",
 				baz: 2,
@@ -88,7 +87,7 @@ describe("update expression", () => {
 				"foo.baz": null,
 			},
 		};
-		const result = getUpdateExpression(params);
+		const actual = getUpdateExpression(args);
 
 		const expected = {
 			UpdateExpression:
@@ -108,15 +107,15 @@ describe("update expression", () => {
 				":v89dff0bd": null,
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 
 	describe("if_not_exists", () => {
 		it("update expression with if_not_exists", () => {
-			const params = {
+			const args = {
 				Update: { foo: "if_not_exists(bar)" },
 			};
-			const result = getUpdateExpression(params);
+			const actual = getUpdateExpression(args);
 
 			const expected = {
 				UpdateExpression:
@@ -124,16 +123,16 @@ describe("update expression", () => {
 				ExpressionAttributeNames: { "#nccc4a4d8": "foo" },
 				ExpressionAttributeValues: { ":v4f2d51f2": "bar" },
 			};
-			expect(result).toStrictEqual(expected);
+			expect(actual).toStrictEqual(expected);
 		});
 	});
 
 	describe("list_append", () => {
 		it("adds to the beginning of the list (numbers)", () => {
-			const params = {
+			const args = {
 				Update: { foo: "list_append([1, 2], foo)" },
 			};
-			const actual = getUpdateExpression(params);
+			const actual = getUpdateExpression(args);
 
 			const expected = {
 				UpdateExpression:
@@ -145,10 +144,10 @@ describe("update expression", () => {
 		});
 
 		it("adds to the end of the list (numbers)", () => {
-			const params = {
+			const args = {
 				Update: { foo: "list_append(foo, [1, 2])" },
 			};
-			const actual = getUpdateExpression(params);
+			const actual = getUpdateExpression(args);
 
 			const expected = {
 				UpdateExpression:
@@ -160,10 +159,10 @@ describe("update expression", () => {
 		});
 
 		it("adds to the beginning of the list (strings)", () => {
-			const params = {
+			const args = {
 				Update: { foo: 'list_append(["buu", 2], foo)' },
 			};
-			const actual = getUpdateExpression(params);
+			const actual = getUpdateExpression(args);
 
 			const expected = {
 				UpdateExpression:
@@ -175,10 +174,10 @@ describe("update expression", () => {
 		});
 
 		it("adds to the end of the list (string)", () => {
-			const params = {
+			const args = {
 				Update: { foo: 'list_append(foo, [1, "buu"])' },
 			};
-			const actual = getUpdateExpression(params);
+			const actual = getUpdateExpression(args);
 
 			const expected = {
 				UpdateExpression:
@@ -204,20 +203,20 @@ describe("update expression", () => {
 	])(
 		"identifies an expression as being a math expression",
 		(expr1, expr2, expected) => {
-			const result = isMathExpression(expr1, expr2);
-			expect(result).toStrictEqual(expected);
+			const actual = isMathExpression(expr1, expr2);
+			expect(actual).toStrictEqual(expected);
 		}
 	);
 
 	it("updates numeric value math operations - SET", () => {
-		const params: IUpdateInput = {
+		const args: IUpdateInput = {
 			Update: {
 				foo: "foo - 2",
 				bar: "2 - bar",
 				baz: "baz + 9",
 			},
 		};
-		const result = getUpdateExpression(params);
+		const actual = getUpdateExpression(args);
 
 		const expected = {
 			UpdateExpression:
@@ -232,11 +231,11 @@ describe("update expression", () => {
 				":vc7c6ad26": 9,
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 
 	it("updates expression with -/+ but it's not a math expression", () => {
-		const params: IUpdateInput = {
+		const args = {
 			Update: {
 				foo: "10-20-001",
 				bar: "2020-06-01T19:53:52.457Z",
@@ -244,7 +243,7 @@ describe("update expression", () => {
 				buz: "foo+bar@baz-buz.com",
 			},
 		};
-		const result = getUpdateExpression(params);
+		const actual = getUpdateExpression(args);
 
 		const expected = {
 			UpdateExpression:
@@ -262,17 +261,17 @@ describe("update expression", () => {
 				":vb73f14ee": "foo+bar@baz-buz.com",
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 
 	it("adds a number - ADD", () => {
-		const params: IUpdateInput = {
+		const args: IUpdateInput = {
 			UpdateAction: "ADD",
 			Update: {
 				foo: 5,
 			},
 		};
-		const result = getUpdateExpression(params);
+		const actual = getUpdateExpression(args);
 
 		const expected = {
 			UpdateExpression: "ADD #nccc4a4d8 :v74a318d5",
@@ -283,18 +282,19 @@ describe("update expression", () => {
 				":v74a318d5": 5,
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 
 	it("adds elements to a set - SET", () => {
-		const params: IUpdateInput = {
+		const args: IUpdateInput = {
 			UpdateAction: "ADD",
 			Update: {
 				foo: [1, 2],
 				bar: ["bar", "baz"],
 			},
 		};
-		const result = getUpdateExpression(params);
+		const actual = getUpdateExpression(args);
+
 		const expected = {
 			UpdateExpression: "ADD #nccc4a4d8 :v101cd26b, #n4f2d51f2 :vc0d39ad1",
 			ExpressionAttributeNames: {
@@ -306,18 +306,18 @@ describe("update expression", () => {
 				":v101cd26b": new Set([1, 2]),
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 
 	it("removes element from a set - DELETE", () => {
-		const params: IUpdateInput = {
+		const args: IUpdateInput = {
 			UpdateAction: "DELETE",
 			Update: {
 				foo: [1, 2],
 				bar: ["bar", "baz"],
 			},
 		};
-		const result = getUpdateExpression(params);
+		const actual = getUpdateExpression(args);
 
 		const expected = {
 			UpdateExpression: "DELETE #nccc4a4d8 :v101cd26b, #n4f2d51f2 :vc0d39ad1",
@@ -330,6 +330,6 @@ describe("update expression", () => {
 				":v101cd26b": new Set([1, 2]),
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 });

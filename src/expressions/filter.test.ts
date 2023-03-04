@@ -21,8 +21,8 @@ describe("filter expression", () => {
 			m: "BETWEEN you AND me",
 			n: "IN (foo, bar)",
 		};
-		const params: IFilterInput = { Filter };
-		const result = getFilterExpression(params);
+		const args: IFilterInput = { Filter };
+		const actual = getFilterExpression(args);
 
 		const expected = {
 			FilterExpression: [
@@ -81,7 +81,7 @@ describe("filter expression", () => {
 				":vf2a7baf3": 3,
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 
 	it("builds the FilterExpression and NameValueMaps - function", () => {
@@ -93,8 +93,8 @@ describe("filter expression", () => {
 			e: "contains(foo)",
 			f: "size > 10",
 		};
-		const params: IFilterInput = { Filter };
-		const result = getFilterExpression(params);
+		const args: IFilterInput = { Filter };
+		const actual = getFilterExpression(args);
 
 		const expected = {
 			FilterExpression: [
@@ -121,7 +121,7 @@ describe("filter expression", () => {
 				":vd163e820": 10,
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 
 	it("builds the FilterExpression and NameValueMaps - mixed operators", () => {
@@ -130,8 +130,8 @@ describe("filter expression", () => {
 			b: "between 2 and 3",
 			c: "size > 4",
 		};
-		const params: IFilterInput = { Filter };
-		const result = getFilterExpression(params);
+		const args: IFilterInput = { Filter };
+		const actual = getFilterExpression(args);
 
 		const expected = {
 			FilterExpression: [
@@ -153,6 +153,6 @@ describe("filter expression", () => {
 				":vf2a7baf3": 3,
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 });

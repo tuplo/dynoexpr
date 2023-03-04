@@ -8,7 +8,7 @@ import {
 
 describe("single table operations", () => {
 	it("applies consecutive expression getters to a parameters object", () => {
-		const params: IDynoexprInput = {
+		const args: IDynoexprInput = {
 			KeyCondition: { c: 5 },
 			Condition: { b: "> 10" },
 			Filter: { a: "foo" },
@@ -18,7 +18,7 @@ describe("single table operations", () => {
 			UpdateDelete: { f: 9 },
 			UpdateRemove: { g: "g" },
 		};
-		const result = getSingleTableExpressions(params);
+		const actual = getSingleTableExpressions(args);
 
 		const expected: IDynoexprOutput = {
 			ConditionExpression: "(#n7531578f > :vd163e820)",
@@ -45,7 +45,7 @@ describe("single table operations", () => {
 				":vd163e820": 10,
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 
 	it.each<[string, IDynoexprInput, IDynoexprOutput]>([
@@ -81,20 +81,20 @@ describe("single table operations", () => {
 				ProjectionExpression: "#n4f2d51f2",
 			},
 		],
-	])("doesn't include ExpressionAttributeValues: %s", (_, params, expected) => {
-		const result = getSingleTableExpressions(params);
-		expect(result).toStrictEqual(expected);
+	])("doesn't include ExpressionAttributeValues: %s", (_, args, expected) => {
+		const actual = getSingleTableExpressions(args);
+		expect(actual).toStrictEqual(expected);
 	});
 
 	it("doesn't clash values for different expressions", () => {
-		const params: IDynoexprInput = {
+		const args: IDynoexprInput = {
 			KeyCondition: { a: 5 },
 			Condition: { a: "> 10" },
 			Filter: { a: 2 },
 			Projection: ["a", "b"],
 			UpdateSet: { a: 2 },
 		};
-		const result = getSingleTableExpressions(params);
+		const actual = getSingleTableExpressions(args);
 
 		const expected: IDynoexprOutput = {
 			FilterExpression: "(#n69772661 = :vcc14862c)",
@@ -112,11 +112,11 @@ describe("single table operations", () => {
 				":vd163e820": 10,
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 
 	it("keeps existing Names/Values", () => {
-		const params: IDynoexprInput = {
+		const args: IDynoexprInput = {
 			KeyCondition: { a: 5 },
 			Condition: { a: "> 10" },
 			Filter: { a: 2 },
@@ -129,7 +129,7 @@ describe("single table operations", () => {
 				":foo": "bar",
 			},
 		};
-		const result = getSingleTableExpressions(params);
+		const actual = getSingleTableExpressions(args);
 
 		const expected = {
 			KeyConditionExpression: "(#n69772661 = :v74a318d5)",
@@ -149,7 +149,7 @@ describe("single table operations", () => {
 				":foo": "bar",
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 
 	it("creates DynamoDBSet instances for strings", () => {

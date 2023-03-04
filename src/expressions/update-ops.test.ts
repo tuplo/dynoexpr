@@ -1,16 +1,16 @@
 import type { IUpdateInput } from "src/dynoexpr.d";
 
 import {
-	getUpdateSetExpression,
-	getUpdateRemoveExpression,
 	getUpdateAddExpression,
 	getUpdateDeleteExpression,
 	getUpdateOperationsExpression,
+	getUpdateRemoveExpression,
+	getUpdateSetExpression,
 } from "./update-ops";
 
 describe("update operations - SET/REMOVE/ADD/DELETE", () => {
 	it("builds a SET update expression", () => {
-		const params: IUpdateInput = {
+		const args: IUpdateInput = {
 			UpdateSet: {
 				foo: "foo - 2",
 				bar: "2 - bar",
@@ -21,7 +21,7 @@ describe("update operations - SET/REMOVE/ADD/DELETE", () => {
 				biz: null,
 			},
 		};
-		const result = getUpdateSetExpression(params);
+		const actual = getUpdateSetExpression(args);
 
 		const expected = {
 			UpdateExpression:
@@ -44,17 +44,17 @@ describe("update operations - SET/REMOVE/ADD/DELETE", () => {
 				":v89dff0bd": null,
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 
 	it("builds a REMOVE update expression", () => {
-		const params: IUpdateInput = {
+		const args = {
 			UpdateRemove: {
 				foo: "bar",
 				baz: 2,
 			},
 		};
-		const result = getUpdateRemoveExpression(params);
+		const actual = getUpdateRemoveExpression(args);
 
 		const expected = {
 			UpdateExpression: "REMOVE #nccc4a4d8, #nc85f6e88",
@@ -64,11 +64,11 @@ describe("update operations - SET/REMOVE/ADD/DELETE", () => {
 			},
 			ExpressionAttributeValues: {},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 
 	it("builds an ADD update expression", () => {
-		const params: IUpdateInput = {
+		const args = {
 			UpdateAdd: {
 				foo: "bar",
 				baz: 2,
@@ -77,7 +77,7 @@ describe("update operations - SET/REMOVE/ADD/DELETE", () => {
 				boz: [{ qux: 2 }],
 			},
 		};
-		const result = getUpdateAddExpression(params);
+		const actual = getUpdateAddExpression(args);
 
 		const expected = {
 			UpdateExpression:
@@ -97,11 +97,11 @@ describe("update operations - SET/REMOVE/ADD/DELETE", () => {
 				":v5b66646d": new Set([1, 2, 3]),
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 
 	it("builds a DELETE update expression", () => {
-		const params: IUpdateInput = {
+		const args = {
 			UpdateDelete: {
 				foo: "bar",
 				baz: 2,
@@ -110,7 +110,7 @@ describe("update operations - SET/REMOVE/ADD/DELETE", () => {
 				boz: [{ qux: 2 }],
 			},
 		};
-		const result = getUpdateDeleteExpression(params);
+		const actual = getUpdateDeleteExpression(args);
 
 		const expected = {
 			UpdateExpression:
@@ -130,17 +130,17 @@ describe("update operations - SET/REMOVE/ADD/DELETE", () => {
 				":v5b66646d": new Set([1, 2, 3]),
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 
 	it("builds multiple update expressions", () => {
-		const params: IUpdateInput = {
+		const args = {
 			UpdateSet: { ufoo: "ufoo - 2" },
 			UpdateRemove: { rfoo: "rbar" },
 			UpdateAdd: { afoo: "abar" },
 			UpdateDelete: { dfoo: "dbar" },
 		};
-		const result = getUpdateOperationsExpression(params);
+		const actual = getUpdateOperationsExpression(args);
 
 		const expected = {
 			UpdateExpression:
@@ -157,6 +157,6 @@ describe("update operations - SET/REMOVE/ADD/DELETE", () => {
 				":vefe145cc": "dbar",
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 });

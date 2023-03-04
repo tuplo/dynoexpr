@@ -4,10 +4,10 @@ import { getProjectionExpression } from "./projection";
 
 describe("projection expression", () => {
 	it("converts a ProjectionExpression to ExpressionAttributesMap", () => {
-		const params: IProjectionInput = {
+		const args: IProjectionInput = {
 			Projection: ["foo", "cast", "year", "baz"],
 		};
-		const result = getProjectionExpression(params);
+		const actual = getProjectionExpression(args);
 
 		const expected = {
 			ProjectionExpression: "#nccc4a4d8,#nf625c464,#n12f117d8,#nc85f6e88",
@@ -18,17 +18,17 @@ describe("projection expression", () => {
 				"#nf625c464": "cast",
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 
 	it("adds new names to an existing ExpressionAttributesMap", () => {
-		const params: IProjectionInput = {
+		const args: IProjectionInput = {
 			Projection: ["foo", "cast", "year", "baz"],
 			ExpressionAttributeNames: {
 				"#quz": "quz",
 			},
 		};
-		const result = getProjectionExpression(params);
+		const actual = getProjectionExpression(args);
 
 		const expected = {
 			ProjectionExpression: "#nccc4a4d8,#nf625c464,#n12f117d8,#nc85f6e88",
@@ -40,17 +40,17 @@ describe("projection expression", () => {
 				"#nf625c464": "cast",
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 
 	it("maintains existing ProjectionExpression names", () => {
-		const params: IProjectionInput = {
+		const args: IProjectionInput = {
 			Projection: ["foo", "baz"],
 			ExpressionAttributeNames: {
 				"#foo": "foo",
 			},
 		};
-		const result = getProjectionExpression(params);
+		const actual = getProjectionExpression(args);
 
 		const expected = {
 			ProjectionExpression: "#nccc4a4d8,#nc85f6e88",
@@ -60,6 +60,6 @@ describe("projection expression", () => {
 				"#nc85f6e88": "baz",
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 });

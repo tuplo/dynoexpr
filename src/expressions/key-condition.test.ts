@@ -15,8 +15,8 @@ describe("key condition expression", () => {
 			g: "BETWEEN 6 AND 7",
 			h: "IN (foo, bar)",
 		};
-		const params: IKeyConditionInput = { KeyCondition };
-		const result = getKeyConditionExpression(params);
+		const args: IKeyConditionInput = { KeyCondition };
+		const actual = getKeyConditionExpression(args);
 
 		const expected = {
 			KeyConditionExpression: [
@@ -56,7 +56,7 @@ describe("key condition expression", () => {
 				":vf2a7baf3": 3,
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 
 	it("builds the ConditionExpression and NameValueMaps - function", () => {
@@ -68,8 +68,8 @@ describe("key condition expression", () => {
 			e: "contains(foo)",
 			f: "size > 10",
 		};
-		const params: IKeyConditionInput = { KeyCondition };
-		const result = getKeyConditionExpression(params);
+		const args: IKeyConditionInput = { KeyCondition };
+		const actual = getKeyConditionExpression(args);
 
 		const expected = {
 			KeyConditionExpression: [
@@ -96,7 +96,7 @@ describe("key condition expression", () => {
 				":vd163e820": 10,
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 
 	it("builds the ConditionExpression and NameValueMaps - mixed operators", () => {
@@ -105,8 +105,8 @@ describe("key condition expression", () => {
 			b: "between 2 and 3",
 			c: "size > 4",
 		};
-		const params: IKeyConditionInput = { KeyCondition };
-		const result = getKeyConditionExpression(params);
+		const args: IKeyConditionInput = { KeyCondition };
+		const actual = getKeyConditionExpression(args);
 
 		const expected = {
 			KeyConditionExpression: [
@@ -128,6 +128,6 @@ describe("key condition expression", () => {
 				":v7542122c": 4,
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 });

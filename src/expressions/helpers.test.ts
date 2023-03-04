@@ -37,10 +37,8 @@ describe("helpers for condition helpers", () => {
 		it.each(["> 5", ">5", ">  5", ">=5", ">= 5", ">=  5"])(
 			"comparison v: %s",
 			(expr) => {
-				const result = parseComparisonValue(expr);
-
-				const expected = 5;
-				expect(result).toBe(expected);
+				const actual = parseComparisonValue(expr);
+				expect(actual).toBe(5);
 			}
 		);
 
@@ -50,10 +48,8 @@ describe("helpers for condition helpers", () => {
 			"attribute_type  (foo)",
 			"attribute_type( foo )",
 		])("attribute_type(v): %s", (expr) => {
-			const result = parseAttributeTypeValue(expr);
-
-			const expected = "foo";
-			expect(result).toBe(expected);
+			const actual = parseAttributeTypeValue(expr);
+			expect(actual).toBe("foo");
 		});
 
 		it.each([
@@ -64,19 +60,15 @@ describe("helpers for condition helpers", () => {
 			"begins_with foo",
 			"begins_with  foo",
 		])("begins_with(v): %s", (expr) => {
-			const result = parseBeginsWithValue(expr);
-
-			const expected = "foo";
-			expect(result).toBe(expected);
+			const actual = parseBeginsWithValue(expr);
+			expect(actual).toBe("foo");
 		});
 
 		it.each(["between 1 and 2", "between  1  and   2"])(
 			"between v1 and v2",
 			(expr) => {
-				const result = parseBetweenValue(expr);
-
-				const expected = [1, 2];
-				expect(result).toStrictEqual(expected);
+				const actual = parseBetweenValue(expr);
+				expect(actual).toStrictEqual([1, 2]);
 			}
 		);
 
@@ -87,10 +79,8 @@ describe("helpers for condition helpers", () => {
 			"contains( foo )",
 			"CONTAINS(foo)",
 		])("contains(v): %s", (expr) => {
-			const result = parseContainsValue(expr);
-
-			const expected = "foo";
-			expect(result).toBe(expected);
+			const actual = parseContainsValue(expr);
+			expect(actual).toBe("foo");
 		});
 
 		it.each([
@@ -102,8 +92,8 @@ describe("helpers for condition helpers", () => {
 			["in(foo, bar, baz)", ["foo", "bar", "baz"]],
 			["in(foo,  bar,  baz)", ["foo", "bar", "baz"]],
 		])("in(v1,v2,v3): %s", (expr, expected) => {
-			const result = parseInValue(expr);
-			expect(result).toStrictEqual(expected);
+			const actual = parseInValue(expr);
+			expect(actual).toStrictEqual(expected);
 		});
 
 		it.each([
@@ -114,10 +104,8 @@ describe("helpers for condition helpers", () => {
 			"SIZE>10",
 			"size  >  10",
 		])("size [op] v: %s", (expr) => {
-			const result = parseSizeValue(expr);
-
-			const expected = 10;
-			expect(result).toBe(expected);
+			const actual = parseSizeValue(expr);
+			expect(actual).toBe(10);
 		});
 
 		it.each([
@@ -125,8 +113,8 @@ describe("helpers for condition helpers", () => {
 			["not begins_with(foo)", "begins_with(foo)"],
 			["not begins_with(1)", "begins_with(1)"],
 		])("parse not conditions: %s", (expr, expected) => {
-			const result = parseNotCondition(expr);
-			expect(result).toBe(expected);
+			const actual = parseNotCondition(expr);
+			expect(actual).toBe(expected);
 		});
 	});
 
@@ -138,7 +126,7 @@ describe("helpers for condition helpers", () => {
 		};
 
 		it("builds not conditions (expression)", () => {
-			const result = buildConditionExpression({ Condition });
+			const actual = buildConditionExpression({ Condition });
 
 			const expected = [
 				"not contains(#n69772661,:vccc4a4d8)",
@@ -147,7 +135,7 @@ describe("helpers for condition helpers", () => {
 			]
 				.map((exp) => `(${exp})`)
 				.join(" AND ");
-			expect(result).toStrictEqual(expected);
+			expect(actual).toStrictEqual(expected);
 		});
 
 		it("builds not conditions (values)", () => {
@@ -171,7 +159,7 @@ describe("helpers for condition helpers", () => {
 		};
 
 		it("builds a condition expression", () => {
-			const result = buildConditionExpression({ Condition });
+			const actual = buildConditionExpression({ Condition });
 
 			const expected = [
 				"#n69772661 = :vccc4a4d8",
@@ -185,11 +173,11 @@ describe("helpers for condition helpers", () => {
 			]
 				.map((exp) => `(${exp})`)
 				.join(" AND ");
-			expect(result).toStrictEqual(expected);
+			expect(actual).toStrictEqual(expected);
 		});
 
 		it("builds a condition expression with a specific logical operator", () => {
-			const result = buildConditionExpression({
+			const actual = buildConditionExpression({
 				Condition,
 				LogicalOperator: "OR",
 			});
@@ -206,11 +194,11 @@ describe("helpers for condition helpers", () => {
 			]
 				.map((exp) => `(${exp})`)
 				.join(" OR ");
-			expect(result).toStrictEqual(expected);
+			expect(actual).toStrictEqual(expected);
 		});
 
 		it("builds a condition expression with a list of expressions for the same field", () => {
-			const result = buildConditionExpression({
+			const actual = buildConditionExpression({
 				Condition: {
 					a: [
 						"foo",
@@ -240,11 +228,11 @@ describe("helpers for condition helpers", () => {
 			]
 				.map((exp) => `(${exp})`)
 				.join(" OR ");
-			expect(result).toStrictEqual(expected);
+			expect(actual).toStrictEqual(expected);
 		});
 
 		it("builds the ExpressionAttributeNameMap", () => {
-			const result = buildConditionAttributeNames(Condition);
+			const actual = buildConditionAttributeNames(Condition);
 
 			const expected = {
 				"#n69772661": "a",
@@ -256,7 +244,7 @@ describe("helpers for condition helpers", () => {
 				"#n3614845d": "g",
 				"#n3a695e91": "h",
 			};
-			expect(result).toStrictEqual(expected);
+			expect(actual).toStrictEqual(expected);
 		});
 
 		it("builds the ExpressionAttributeNameMap with an existing map", () => {
@@ -264,17 +252,17 @@ describe("helpers for condition helpers", () => {
 			const params: IConditionAttributeNamesParams = {
 				ExpressionAttributeNames: { "#a": "a" },
 			};
-			const result = buildConditionAttributeNames(Condition2, params);
+			const actual = buildConditionAttributeNames(Condition2, params);
 
 			const expected = {
 				"#a": "a",
 				"#n7531578f": "b",
 			};
-			expect(result).toStrictEqual(expected);
+			expect(actual).toStrictEqual(expected);
 		});
 
 		it("builds the ExpressionAttributesValueMap", () => {
-			const result = buildConditionAttributeValues(Condition);
+			const actual = buildConditionAttributeValues(Condition);
 
 			const expected = {
 				":v4bea2543": 7,
@@ -287,21 +275,21 @@ describe("helpers for condition helpers", () => {
 				":vccc4a4d8": "foo",
 				":vf2a7baf3": 3,
 			};
-			expect(result).toStrictEqual(expected);
+			expect(actual).toStrictEqual(expected);
 		});
 
 		it("builds the ExpressionAttributesValueMap with an existing map", () => {
 			const Condition2 = { b: "foo" };
-			const params: IConditionAttributeValuesParams = {
+			const args: IConditionAttributeValuesParams = {
 				ExpressionAttributeValues: { ":a": "bar" },
 			};
-			const result = buildConditionAttributeValues(Condition2, params);
+			const actual = buildConditionAttributeValues(Condition2, args);
 
 			const expected = {
 				":a": "bar",
 				":vccc4a4d8": "foo",
 			};
-			expect(result).toStrictEqual(expected);
+			expect(actual).toStrictEqual(expected);
 		});
 
 		it("builds the ExpressionAttributesValueMap with multiple expressions for the same field", () => {
@@ -326,7 +314,7 @@ describe("helpers for condition helpers", () => {
 		};
 
 		it("builds a condition expression", () => {
-			const result = buildConditionExpression({ Condition });
+			const actual = buildConditionExpression({ Condition });
 
 			const expected = [
 				"attribute_exists(#n69772661)",
@@ -340,11 +328,11 @@ describe("helpers for condition helpers", () => {
 			]
 				.map((exp) => `(${exp})`)
 				.join(" AND ");
-			expect(result).toStrictEqual(expected);
+			expect(actual).toStrictEqual(expected);
 		});
 
 		it("builds the ExpressionAttributeNameMap", () => {
-			const result = buildConditionAttributeNames(Condition);
+			const actual = buildConditionAttributeNames(Condition);
 
 			const expected = {
 				"#n69772661": "a",
@@ -356,18 +344,18 @@ describe("helpers for condition helpers", () => {
 				"#ne841ec32": "e",
 				"#n1929cce7": "f",
 			};
-			expect(result).toStrictEqual(expected);
+			expect(actual).toStrictEqual(expected);
 		});
 
 		it("builds the ExpressionAttributesValueMap", () => {
-			const result = buildConditionAttributeValues(Condition);
+			const actual = buildConditionAttributeValues(Condition);
 
 			const expected = {
 				":v1a47546e": "S",
 				":vccc4a4d8": "foo",
 				":vd163e820": 10,
 			};
-			expect(result).toStrictEqual(expected);
+			expect(actual).toStrictEqual(expected);
 		});
 	});
 
@@ -381,7 +369,7 @@ describe("helpers for condition helpers", () => {
 			f: "attribute_exists_there",
 			g: "attribute_not_exists_here",
 		};
-		const result = {
+		const actual = {
 			Expression: buildConditionExpression({ Condition }),
 			ExpressionAttributeNames: buildConditionAttributeNames(Condition),
 			ExpressionAttributeValues: buildConditionAttributeValues(Condition),
@@ -418,6 +406,6 @@ describe("helpers for condition helpers", () => {
 				":vf627322b": "sizeable",
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 });

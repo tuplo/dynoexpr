@@ -2,7 +2,7 @@ import { getBatchExpressions } from "./batch";
 
 describe("batch requests", () => {
 	it("accepts batch operations: batchGet", () => {
-		const params = {
+		const args = {
 			RequestItems: {
 				"Table-1": {
 					Keys: [{ foo: "bar" }],
@@ -17,7 +17,7 @@ describe("batch requests", () => {
 				},
 			},
 		};
-		const result = getBatchExpressions(params);
+		const actual = getBatchExpressions(args);
 
 		const expected = {
 			RequestItems: {
@@ -42,11 +42,11 @@ describe("batch requests", () => {
 				},
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 
 	it("accepts batch operations: batchWrite", () => {
-		const params = {
+		const args = {
 			RequestItems: {
 				"Table-1": [{ DeleteRequest: { Key: { foo: "bar" } } }],
 				"Table-2": [{ PutRequest: { Key: { foo: "bar" } } }],
@@ -64,8 +64,8 @@ describe("batch requests", () => {
 				],
 			},
 		};
-		const result = getBatchExpressions(params);
+		const actual = getBatchExpressions(args);
 
-		expect(result).toStrictEqual(params);
+		expect(actual).toStrictEqual(args);
 	});
 });

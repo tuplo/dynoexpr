@@ -1,7 +1,5 @@
 import { vi } from "vitest";
 
-import type { IFilterInput } from "src/dynoexpr.d";
-
 import dynoexpr from "./index";
 
 describe("bug reports", () => {
@@ -18,7 +16,7 @@ describe("bug reports", () => {
 			},
 			ConditionLogicalOperator: "OR",
 		};
-		const result = dynoexpr(args);
+		const actual = dynoexpr(args);
 
 		const expected = {
 			ConditionExpression:
@@ -38,15 +36,16 @@ describe("bug reports", () => {
 			UpdateExpression:
 				"SET #n4a4b98d5 = :vd8444872, #n4b532461 = :v5ebbf5c3, #nfbaeecf8 = :v879a6e2b",
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 
 		dateNowSpy.mockRestore();
 	});
 
 	it("supports if_not_exists on update expressions", () => {
-		const result = dynoexpr({
+		const args = {
 			Update: { number: "if_not_exists(420)" },
-		});
+		};
+		const actual = dynoexpr(args);
 
 		const expected = {
 			UpdateExpression:
@@ -54,7 +53,7 @@ describe("bug reports", () => {
 			ExpressionAttributeNames: { "#ne68615df": "number" },
 			ExpressionAttributeValues: { ":v24592772": "420" },
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 
 	it("allows boolean values", () => {
@@ -75,11 +74,11 @@ describe("bug reports", () => {
 	});
 
 	it("empty ExpressionAttributeValues on UpdateRemove with Condition", () => {
-		const params = {
+		const args = {
 			UpdateRemove: { "parent.item": 1 },
 			Condition: { "parent.item": "attribute_exists" },
 		};
-		const actual = dynoexpr(params);
+		const actual = dynoexpr(args);
 
 		const expected = {
 			ConditionExpression: "(attribute_exists(#n7e86b602.#n95d67ebc))",
@@ -93,11 +92,11 @@ describe("bug reports", () => {
 	});
 
 	it("pass undefined to UpdateRemove", () => {
-		const params = {
+		const args = {
 			UpdateRemove: { "parent.item": undefined },
 			Condition: { "parent.item": "attribute_exists" },
 		};
-		const actual = dynoexpr(params);
+		const actual = dynoexpr(args);
 
 		const expected = {
 			ConditionExpression: "(attribute_exists(#n7e86b602.#n95d67ebc))",
@@ -111,10 +110,10 @@ describe("bug reports", () => {
 	});
 
 	it("handles list_append", () => {
-		const params = {
+		const args = {
 			Update: { numbersArray: "list_append([1, 2], numbersArray)" },
 		};
-		const actual = dynoexpr(params);
+		const actual = dynoexpr(args);
 
 		const expected = {
 			UpdateExpression: "SET #n596ceb9c = list_append(:v31e6eb45, #n596ceb9c)",
@@ -125,10 +124,10 @@ describe("bug reports", () => {
 	});
 
 	it("handles list_append with strings", () => {
-		const params = {
+		const args = {
 			Update: { numbersArray: 'list_append(["a", "b"], numbersArray)' },
 		};
-		const actual = dynoexpr(params);
+		const actual = dynoexpr(args);
 
 		const expected = {
 			UpdateExpression: "SET #n596ceb9c = list_append(:v3578c5eb, #n596ceb9c)",

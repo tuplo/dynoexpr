@@ -4,7 +4,7 @@ import { getTransactExpressions } from "./transact";
 
 describe("transact requests", () => {
 	it("accepts transact operations - transactGet", () => {
-		const params = {
+		const args = {
 			TransactItems: [
 				{
 					Get: {
@@ -26,7 +26,7 @@ describe("transact requests", () => {
 			],
 			ReturnConsumedCapacity: "INDEXES",
 		} as ITransactRequestInput;
-		const result = getTransactExpressions(params);
+		const actual = getTransactExpressions(args);
 
 		const expected = {
 			TransactItems: [
@@ -58,11 +58,11 @@ describe("transact requests", () => {
 			],
 			ReturnConsumedCapacity: "INDEXES",
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 
 	it("accepts transact operations - transactWrite", () => {
-		const params = {
+		const args = {
 			TransactItems: [
 				{
 					ConditionCheck: {
@@ -91,7 +91,7 @@ describe("transact requests", () => {
 			],
 			ReturnConsumedCapacity: "INDEXES",
 		};
-		const result = getTransactExpressions(params);
+		const actual = getTransactExpressions(args);
 
 		const expected = {
 			ReturnConsumedCapacity: "INDEXES",
@@ -146,6 +146,6 @@ describe("transact requests", () => {
 				},
 			],
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 });

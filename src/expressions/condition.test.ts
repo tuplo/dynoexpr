@@ -15,8 +15,8 @@ describe("condition expression", () => {
 			g: "BETWEEN 6 AND 7",
 			h: "IN (foo, bar)",
 		};
-		const params: IConditionInput = { Condition };
-		const result = getConditionExpression(params);
+		const args: IConditionInput = { Condition };
+		const actual = getConditionExpression(args);
 
 		const expected = {
 			ConditionExpression: [
@@ -56,7 +56,7 @@ describe("condition expression", () => {
 				":v7534cb09": true,
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 
 	it("builds the ConditionExpression and NameValueMaps - function", () => {
@@ -68,8 +68,8 @@ describe("condition expression", () => {
 			e: "contains(foo)",
 			f: "size > 10",
 		};
-		const params: IConditionInput = { Condition };
-		const result = getConditionExpression(params);
+		const args: IConditionInput = { Condition };
+		const actual = getConditionExpression(args);
 
 		const expected = {
 			ConditionExpression: [
@@ -96,7 +96,7 @@ describe("condition expression", () => {
 				":vd163e820": 10,
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 
 	it("builds the ConditionExpression and NameValueMaps - mixed operators", () => {
@@ -105,11 +105,11 @@ describe("condition expression", () => {
 			b: "between 2 and 3",
 			c: "size > 4",
 		};
-		const params: IConditionInput = {
+		const args: IConditionInput = {
 			Condition,
 			ConditionLogicalOperator: "OR",
 		};
-		const result = getConditionExpression(params);
+		const actual = getConditionExpression(args);
 
 		const expected = {
 			ConditionExpression: [
@@ -131,7 +131,7 @@ describe("condition expression", () => {
 				":v7542122c": 4,
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 
 	it("builds the ConditionExpression and NameValueMaps - avoid erroring values map", () => {
@@ -139,8 +139,8 @@ describe("condition expression", () => {
 			a: "attribute_exists",
 			b: "attribute_not_exists",
 		};
-		const params: IConditionInput = { Condition };
-		const result = getConditionExpression(params);
+		const args: IConditionInput = { Condition };
+		const actual = getConditionExpression(args);
 
 		const expected = {
 			ConditionExpression: [
@@ -154,18 +154,18 @@ describe("condition expression", () => {
 				"#n7531578f": "b",
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 
 	it("builds a ConditionalExpression with multiple expressions on the same field", () => {
 		const Condition = {
 			key: ["attribute_not_exists", "foobar"],
 		};
-		const params: IConditionInput = {
+		const args: IConditionInput = {
 			Condition,
 			ConditionLogicalOperator: "OR",
 		};
-		const result = getConditionExpression(params);
+		const actual = getConditionExpression(args);
 
 		const expected = {
 			ConditionExpression:
@@ -177,6 +177,6 @@ describe("condition expression", () => {
 				":v4312c63f": "foobar",
 			},
 		};
-		expect(result).toStrictEqual(expected);
+		expect(actual).toStrictEqual(expected);
 	});
 });
