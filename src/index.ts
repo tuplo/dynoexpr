@@ -1,10 +1,3 @@
-import type {
-	IBatchRequestInput,
-	IDynoexprInput,
-	IDynoexprOutput,
-	ITransactRequestInput,
-} from "src/dynoexpr.d";
-
 import { getBatchExpressions, isBatchRequest } from "./operations/batch";
 import { getSingleTableExpressions } from "./operations/single";
 import {
@@ -12,6 +5,7 @@ import {
 	isTransactRequest,
 } from "./operations/transact";
 import { AwsSdkDocumentClient } from "./document-client";
+import { IBatchRequestInput, IDynoexprInput, IDynoexprOutput, ITransactRequestInput } from "./dynoexpr";
 
 interface IDynoexprArgs
 	extends IDynoexprInput,
