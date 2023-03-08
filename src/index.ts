@@ -13,11 +13,18 @@ import {
 } from "./operations/transact";
 import { AwsSdkDocumentClient } from "./document-client";
 
-interface IDynoexprArgs
-	extends IDynoexprInput,
-		IBatchRequestInput,
-		ITransactRequestInput {
-	DocumentClient: unknown;
+export type {
+	IBatchRequestInput,
+	IDynoexprInput,
+	IDynoexprOutput,
+	ITransactRequestInput,
+};
+
+export interface IDynoexprArgs
+	extends Partial<IDynoexprInput>,
+		Partial<IBatchRequestInput>,
+		Partial<ITransactRequestInput> {
+	DocumentClient?: unknown;
 }
 
 function cleanOutput<T>(output: unknown) {
@@ -28,7 +35,7 @@ function cleanOutput<T>(output: unknown) {
 	return restOfOutput as T;
 }
 
-function dynoexpr<T = IDynoexprOutput>(args: Partial<IDynoexprArgs>): T {
+function dynoexpr<T = IDynoexprOutput>(args: IDynoexprArgs): T {
 	if (args.DocumentClient) {
 		AwsSdkDocumentClient.setDocumentClient(args.DocumentClient);
 	}
