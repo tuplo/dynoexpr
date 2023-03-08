@@ -3,7 +3,7 @@ import type {
 	IDynoexprInput,
 	IDynoexprOutput,
 	ITransactRequestInput,
-} from "src/dynoexpr.d";
+} from "./dynoexpr.d";
 
 import { getBatchExpressions, isBatchRequest } from "./operations/batch";
 import { getSingleTableExpressions } from "./operations/single";
