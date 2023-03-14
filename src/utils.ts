@@ -5,7 +5,7 @@ export function toString(data: unknown) {
 		return `Set(${JSON.stringify(Array.from(data))}))`;
 	}
 
-	return typeof data === "object" ? JSON.stringify(data) : `${data}`;
+	return typeof data === "object" ? JSON.stringify(data) : `${data}:${typeof data}`;
 }
 
 export function md5(data: unknown) {

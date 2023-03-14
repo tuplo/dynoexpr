@@ -23,21 +23,21 @@ describe("batch requests", () => {
 			RequestItems: {
 				"Table-1": {
 					Keys: [{ foo: "bar" }],
-					ProjectionExpression: "#n69772661,#n7531578f",
+					ProjectionExpression: "#na0f0d7ff,#ne4645342",
 					ExpressionAttributeNames: {
-						"#n69772661": "a",
-						"#n7531578f": "b",
+						"#na0f0d7ff": "a",
+						"#ne4645342": "b",
 					},
 				},
 				"Table-2": {
 					Keys: [{ foo: "bar" }],
-					ProjectionExpression: "#nccc4a4d8,#nf625c464,#n12f117d8,#nc85f6e88",
+					ProjectionExpression: "#n5f0025bb,#n66d7cb7d,#n645820bf,#n82504b33",
 					ExpressionAttributeNames: {
 						"#quz": "quz",
-						"#nccc4a4d8": "foo",
-						"#nf625c464": "cast",
-						"#n12f117d8": "year",
-						"#nc85f6e88": "baz",
+						"#n5f0025bb": "foo",
+						"#n66d7cb7d": "cast",
+						"#n645820bf": "year",
+						"#n82504b33": "baz",
 					},
 				},
 			},

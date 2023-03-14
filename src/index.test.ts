@@ -19,22 +19,22 @@ describe("high level API", () => {
 		});
 
 		const expected = {
-			ConditionExpression: "(#n8793843d > :va7bbf170)",
+			ConditionExpression: "(#n0f1c2905 > :vc95fafc8)",
 			ExpressionAttributeNames: {
-				"#n395c1a24": "size",
-				"#n4bce9bfd": "color",
-				"#n75a60c8f": "id",
-				"#n8793843d": "rating",
-				"#nf337db8f": "weight",
+				"#n0367c420": "size",
+				"#n2d334799": "color",
+				"#nca40fdf5": "id",
+				"#n0f1c2905": "rating",
+				"#neb86488e": "weight",
 			},
 			ExpressionAttributeValues: {
-				":v64c5aa3d": "567",
-				":v91380c8f": "blue",
-				":va7bbf170": 4.5,
+				":v8dcca6b2": "567",
+				":v792aabee": "blue",
+				":vc95fafc8": 4.5,
 			},
-			FilterExpression: "(#n4bce9bfd = :v91380c8f)",
-			KeyConditionExpression: "(#n75a60c8f = :v64c5aa3d)",
-			ProjectionExpression: "#nf337db8f,#n395c1a24",
+			FilterExpression: "(#n2d334799 = :v792aabee)",
+			KeyConditionExpression: "(#nca40fdf5 = :v8dcca6b2)",
+			ProjectionExpression: "#neb86488e,#n0367c420",
 		};
 		expect(actual).toStrictEqual(expected);
 	});
@@ -78,11 +78,11 @@ describe("high level API", () => {
 		});
 
 		const expected = {
-			ExpressionAttributeNames: { "#n4bce9bfd": "color" },
+			ExpressionAttributeNames: { "#n2d334799": "color" },
 			ExpressionAttributeValues: {
 				":ve325d039": docClient.createSet(["blue", "yellow"]),
 			},
-			UpdateExpression: "SET #n4bce9bfd = :ve325d039",
+			UpdateExpression: "SET #n2d334799 = :ve325d039",
 		};
 		expect(actual).toStrictEqual(expected);
 	});

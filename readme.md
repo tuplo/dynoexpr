@@ -33,21 +33,21 @@ const params = dynoexpr({
 
 /*
 {
-  KeyConditionExpression: '(#n75a60c8f = :v64c5aa3d)',
-  ExpressionAttributeValues: { 
-    ':v64c5aa3d': '567', 
-    ':va7bbf170': 4.5, 
-    ':v91380c8f': 'blue'
+  KeyConditionExpression: '(#nca40fdf5 = :v8dcca6b2)',
+  ExpressionAttributeValues: {
+    ':v8dcca6b2': '567',
+    ':vc95fafc8': 4.5,
+    ':v792aabee': 'blue'
   },
-  ConditionExpression: '(#n8793843d > :va7bbf170)',
-  FilterExpression: '(#n4bce9bfd = :v91380c8f)',
-  ProjectionExpression: '#nf337db8f,#n395c1a24',
+  ConditionExpression: '(#n0f1c2905 > :vc95fafc8)',
+  FilterExpression: '(#n2d334799 = :v792aabee)',
+  ProjectionExpression: '#neb86488e,#n0367c420',
   ExpressionAttributeNames: {
-    '#n75a60c8f': 'id',
-    '#n8793843d': 'rating',
-    '#n4bce9bfd': 'color',
-    '#nf337db8f': 'weight',
-    '#n395c1a24': 'size'
+    '#nca40fdf5': 'id',
+    '#n0f1c2905': 'rating',
+    '#n2d334799': 'color',
+    '#neb86488e': 'weight',
+    '#n0367c420': 'size'
   }
 }
 */
@@ -95,13 +95,13 @@ const params = dynoexpr({
 
 /*
 {
-  ConditionExpression: '(attribute_not_exists(#n4bce9bfd)) OR (#n4bce9bfd = :vaeafa351) OR (#n4bce9bfd = :v91380c8f)',
-  ExpressionAttributeNames: { 
-    '#n4bce9bfd': 'color'
+  ConditionExpression: '(attribute_not_exists(#n2d334799)) OR (#n2d334799 = :v0d81c8cd) OR (#n2d334799 = :v792aabee)',
+  ExpressionAttributeNames: {
+    '#n2d334799': 'color'
   },
   ExpressionAttributeValues: {
-    ':vaeafa351': 'yellow', 
-    ':v91380c8f': 'blue'
+    ':v0d81c8cd': 'yellow',
+    ':v792aabee': 'blue'
   }
 }
 */
@@ -125,21 +125,20 @@ const params = dynoexpr({
 
 /*
 {
-  ConditionExpression: '(attribute_exists(#n3f51d286)) AND (attribute_not_exists(#n51fd0ed7)) AND (attribute_type(#n12a7a4d6,:v0824ec29)) AND (begins_with(#n4bce9bfd,:v372ebe37)) AND (contains(#n9ad2536a,:vb3b07bff)) AND (size(#n8fcb2786) < :v106a3b84)',
+  ConditionExpression: '(attribute_exists(#nd0a55266)) AND (attribute_not_exists(#n4e5f8507)) AND (attribute_type(#n4a177797,:v64b0a475)) AND (begins_with(#n2d334799,:v1fdc3f67)) AND (contains(#n3af77f77,:v26425a2a)) AND (size(#nb6c8f268) < :vde9019e3)',
   ExpressionAttributeNames: {
-    '#n3f51d286': 'docs',
-    '#n51fd0ed7': 'brand',
-    '#n12a7a4d6': 'extra',
-    '#n4bce9bfd': 'color',
-    '#n9ad2536a': 'address',
-    '#n8fcb2786': 'description'
+    '#nd0a55266': 'docs',
+    '#n4e5f8507': 'brand',
+    '#n4a177797': 'extra',
+    '#n2d334799': 'color',
+    '#n3af77f77': 'address',
+    '#nb6c8f268': 'description'
   },
   ExpressionAttributeValues: {
-    ':v0824ec29': 'NULL',
-    ':v372ebe37': 'dark',
-    ':vb3b07bff': 'Seattle',
-    ':v106a3b84': 20
-    }
+    ':v64b0a475': 'NULL',
+    ':v1fdc3f67': 'dark',
+    ':v26425a2a': 'Seattle',
+    ':vde9019e3': 20
   }
 }
 */
@@ -155,15 +154,15 @@ const params = dynoexpr({
 
 /*
 {
-  ConditionExpression: '(#n0a01a3d5 < :ve770c6dd)',
-  ExpressionAttributeNames: { 
-    '#n0a01a3d5': 'Sum' 
+  ConditionExpression: '(#n5af617ef < :va88c83b0)',
+  ExpressionAttributeNames: {
+    '#n5af617ef': 'Sum'
   },
-  ExpressionAttributeValues: { 
-    ':ve770c6dd': 100, 
-    ':v106a3b84': 20
+  ExpressionAttributeValues: {
+    ':va88c83b0': 100,
+    ':vde9019e3': 20
   },
-  UpdateExpression: 'SET #n0a01a3d5 = #n0a01a3d5 + :v106a3b84'
+  UpdateExpression: 'SET #n5af617ef = #n5af617ef + :vde9019e3'
 }
 */
 ```
@@ -184,9 +183,9 @@ const params = dynoexpr({
 
 /*
 {
-  UpdateExpression: 'SET #ndc9f7295 = :v3add0a80',
-  ExpressionAttributeNames: { 
-    '#ndc9f7295': 'Color'
+  UpdateExpression: 'SET #n8979552b = :v3add0a80',
+  ExpressionAttributeNames: {
+    '#n8979552b': 'Color'
   },
   ExpressionAttributeValues: {
     ':v3add0a80': Set { wrapperName: 'Set', values: [Array], type: 'String' }
@@ -236,11 +235,11 @@ const params = dynoexpr({
   ProjectionExpression: '#year',
   ExpressionAttributeNames: {
     '#year': 'year',
-    '#n4bce9bfd': 'color'
+    '#n2d334799': 'color'
   },
-  FilterExpression: '(#n4bce9bfd = :v91380c8f)',
+  FilterExpression: '(#n2d334799 = :v792aabee)',
   ExpressionAttributeValues: {
-    ':v91380c8f': 'blue'
+    ':v792aabee': 'blue'
   }
 }
 */
@@ -265,12 +264,12 @@ const params = dynoexpr({
   TableName: 'Table',
   Key: { HashKey: 'key' },
   ReturnConsumedCapacity: 'TOTAL',
-  KeyConditionExpression: '(begins_with(#n4bce9bfd,:v372ebe37))',
+  KeyConditionExpression: '(begins_with(#n2d334799,:v1fdc3f67))',
   ExpressionAttributeNames: {
-    '#n4bce9bfd': 'color'
+    '#n2d334799': 'color'
   },
   ExpressionAttributeValues: {
-    ':v372ebe37': 'dark'
+    ':v1fdc3f67': 'dark'
   }
 }
 */
@@ -294,10 +293,10 @@ const params = dynoexpr({
   "RequestItems":{
     "Table-1":{
       "Keys": [{"foo":"bar"}],
-      "ProjectionExpression": "#n69772661,#n7531578f",
+      "ProjectionExpression": "#na0f0d7ff,#ne4645342",
       "ExpressionAttributeNames":{
-        "#n69772661": "a",
-        "#n7531578f": "b"
+        "#na0f0d7ff": "a",
+        "#ne4645342": "b"
       }
     }
   },
@@ -327,10 +326,10 @@ const params = dynoexpr({
       "Get": {
         "TableName": "Table-1",
         "Key": { "id": "foo" },
-        "ProjectionExpression": "#n69772661,#n7531578f",
+        "ProjectionExpression": "#na0f0d7ff,#ne4645342",
         "ExpressionAttributeNames": {
-          "#n69772661":"a",
-          "#n7531578f":"b"
+          "#na0f0d7ff":"a",
+          "#ne4645342":"b"
         }
       }
     }
