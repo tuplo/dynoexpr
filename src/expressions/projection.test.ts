@@ -10,12 +10,12 @@ describe("projection expression", () => {
 		const actual = getProjectionExpression(args);
 
 		const expected = {
-			ProjectionExpression: "#nccc4a4d8,#nf625c464,#n12f117d8,#nc85f6e88",
+			ProjectionExpression: "#n5f0025bb,#n66d7cb7d,#n645820bf,#n82504b33",
 			ExpressionAttributeNames: {
-				"#n12f117d8": "year",
-				"#nc85f6e88": "baz",
-				"#nccc4a4d8": "foo",
-				"#nf625c464": "cast",
+				"#n645820bf": "year",
+				"#n82504b33": "baz",
+				"#n5f0025bb": "foo",
+				"#n66d7cb7d": "cast",
 			},
 		};
 		expect(actual).toStrictEqual(expected);
@@ -31,13 +31,13 @@ describe("projection expression", () => {
 		const actual = getProjectionExpression(args);
 
 		const expected = {
-			ProjectionExpression: "#nccc4a4d8,#nf625c464,#n12f117d8,#nc85f6e88",
+			ProjectionExpression: "#n5f0025bb,#n66d7cb7d,#n645820bf,#n82504b33",
 			ExpressionAttributeNames: {
 				"#quz": "quz",
-				"#n12f117d8": "year",
-				"#nc85f6e88": "baz",
-				"#nccc4a4d8": "foo",
-				"#nf625c464": "cast",
+				"#n645820bf": "year",
+				"#n82504b33": "baz",
+				"#n5f0025bb": "foo",
+				"#n66d7cb7d": "cast",
 			},
 		};
 		expect(actual).toStrictEqual(expected);
@@ -53,11 +53,11 @@ describe("projection expression", () => {
 		const actual = getProjectionExpression(args);
 
 		const expected = {
-			ProjectionExpression: "#nccc4a4d8,#nc85f6e88",
+			ProjectionExpression: "#n5f0025bb,#n82504b33",
 			ExpressionAttributeNames: {
 				"#foo": "foo",
-				"#nccc4a4d8": "foo",
-				"#nc85f6e88": "baz",
+				"#n5f0025bb": "foo",
+				"#n82504b33": "baz",
 			},
 		};
 		expect(actual).toStrictEqual(expected);

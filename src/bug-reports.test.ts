@@ -20,21 +20,21 @@ describe("bug reports", () => {
 
 		const expected = {
 			ConditionExpression:
-				"(#n44ec6258 = :va87bccc9) OR (#n44ec6258 = :v5ebbf5c3)",
+				"(#nfc6b756c = :v84e520b4) OR (#nfc6b756c = :ve0304017)",
 			ExpressionAttributeNames: {
-				"#n4b532461": "GSI1_PK",
-				"#n44ec6258": "status",
-				"#n4a4b98d5": "modified",
-				"#nfbaeecf8": "GSI2_PK",
+				"#n3974b0c4": "GSI1_PK",
+				"#nfc6b756c": "status",
+				"#n93dbb70d": "modified",
+				"#n87f01ccc": "GSI2_PK",
 			},
 			ExpressionAttributeValues: {
-				":vd8444872": "2022-03-02T19:33:14.000Z",
-				":v879a6e2b": "REQUEST#STATUS#open#DATE#2022-03-01T13:58:09.242z",
-				":va87bccc9": "IN_PROGRESS",
-				":v5ebbf5c3": "OPEN",
+				":vb60424a8": "2022-03-02T19:33:14.000Z",
+				":v985d200a": "REQUEST#STATUS#open#DATE#2022-03-01T13:58:09.242z",
+				":v84e520b4": "IN_PROGRESS",
+				":ve0304017": "OPEN",
 			},
 			UpdateExpression:
-				"SET #n4a4b98d5 = :vd8444872, #n4b532461 = :v5ebbf5c3, #nfbaeecf8 = :v879a6e2b",
+				"SET #n93dbb70d = :vb60424a8, #n3974b0c4 = :ve0304017, #n87f01ccc = :v985d200a",
 		};
 		expect(actual).toStrictEqual(expected);
 
@@ -49,9 +49,9 @@ describe("bug reports", () => {
 
 		const expected = {
 			UpdateExpression:
-				"SET #ne68615df = if_not_exists(#ne68615df, :v24592772)",
-			ExpressionAttributeNames: { "#ne68615df": "number" },
-			ExpressionAttributeValues: { ":v24592772": "420" },
+				"SET #nc66bcf16 = if_not_exists(#nc66bcf16, :v70d78b9d)",
+			ExpressionAttributeNames: { "#nc66bcf16": "number" },
+			ExpressionAttributeValues: { ":v70d78b9d": "420" },
 		};
 		expect(actual).toStrictEqual(expected);
 	});
@@ -65,10 +65,10 @@ describe("bug reports", () => {
 		const actual = dynoexpr(args);
 
 		const expected = {
-			ExpressionAttributeNames: { "#n69772661": "a", "#n7531578f": "b" },
-			ExpressionAttributeValues: { ":v05902327": false, ":v7534cb09": true },
+			ExpressionAttributeNames: { "#na0f0d7ff": "a", "#ne4645342": "b" },
+			ExpressionAttributeValues: { ":v976fa742": false, ":vc86ac629": true },
 			FilterExpression:
-				"(#n69772661 <> :v7534cb09) AND (#n7531578f <> :v05902327)",
+				"(#na0f0d7ff <> :vc86ac629) AND (#ne4645342 <> :v976fa742)",
 		};
 		expect(actual).toStrictEqual(expected);
 	});
@@ -81,12 +81,12 @@ describe("bug reports", () => {
 		const actual = dynoexpr(args);
 
 		const expected = {
-			ConditionExpression: "(attribute_exists(#n7e86b602.#n95d67ebc))",
+			ConditionExpression: "(attribute_exists(#ndae5997d.#ncc96b5ad))",
 			ExpressionAttributeNames: {
-				"#n95d67ebc": "item",
-				"#n7e86b602": "parent",
+				"#ncc96b5ad": "item",
+				"#ndae5997d": "parent",
 			},
-			UpdateExpression: "REMOVE #n7e86b602.#n95d67ebc",
+			UpdateExpression: "REMOVE #ndae5997d.#ncc96b5ad",
 		};
 		expect(actual).toStrictEqual(expected);
 	});
@@ -99,12 +99,12 @@ describe("bug reports", () => {
 		const actual = dynoexpr(args);
 
 		const expected = {
-			ConditionExpression: "(attribute_exists(#n7e86b602.#n95d67ebc))",
+			ConditionExpression: "(attribute_exists(#ndae5997d.#ncc96b5ad))",
 			ExpressionAttributeNames: {
-				"#n95d67ebc": "item",
-				"#n7e86b602": "parent",
+				"#ncc96b5ad": "item",
+				"#ndae5997d": "parent",
 			},
-			UpdateExpression: "REMOVE #n7e86b602.#n95d67ebc",
+			UpdateExpression: "REMOVE #ndae5997d.#ncc96b5ad",
 		};
 		expect(actual).toStrictEqual(expected);
 	});
@@ -116,8 +116,8 @@ describe("bug reports", () => {
 		const actual = dynoexpr(args);
 
 		const expected = {
-			UpdateExpression: "SET #n596ceb9c = list_append(:v31e6eb45, #n596ceb9c)",
-			ExpressionAttributeNames: { "#n596ceb9c": "numbersArray" },
+			UpdateExpression: "SET #ne0c11d8d = list_append(:v31e6eb45, #ne0c11d8d)",
+			ExpressionAttributeNames: { "#ne0c11d8d": "numbersArray" },
 			ExpressionAttributeValues: { ":v31e6eb45": [1, 2] },
 		};
 		expect(actual).toStrictEqual(expected);
@@ -130,8 +130,8 @@ describe("bug reports", () => {
 		const actual = dynoexpr(args);
 
 		const expected = {
-			UpdateExpression: "SET #n596ceb9c = list_append(:v3578c5eb, #n596ceb9c)",
-			ExpressionAttributeNames: { "#n596ceb9c": "numbersArray" },
+			UpdateExpression: "SET #ne0c11d8d = list_append(:v3578c5eb, #ne0c11d8d)",
+			ExpressionAttributeNames: { "#ne0c11d8d": "numbersArray" },
 			ExpressionAttributeValues: { ":v3578c5eb": ["a", "b"] },
 		};
 		expect(actual).toStrictEqual(expected);

@@ -25,19 +25,19 @@ describe("update operations - SET/REMOVE/ADD/DELETE", () => {
 
 		const expected = {
 			UpdateExpression:
-				"SET #nccc4a4d8 = #nccc4a4d8 - :vcc14862c, #n4f2d51f2 = :vcc14862c - #n4f2d51f2, #nc85f6e88 = #nc85f6e88 + :vc7c6ad26, #nf4d57aa0 = :v761dc2b7, #n842166e7 = :v81f92362, #n56cceeac = :v50ed5650, #n498f746d = :v89dff0bd",
+				"SET #n5f0025bb = #n5f0025bb - :vaeeabc63, #n22f4f0ae = :vaeeabc63 - #n22f4f0ae, #n82504b33 = #n82504b33 + :vf489a8ba, #ne4642e6a = :v761dc2b7, #nadc27efb = :v81f92362, #n5fae6dd3 = :v50ed5650, #n025c5f64 = :v89dff0bd",
 			ExpressionAttributeNames: {
-				"#nccc4a4d8": "foo",
-				"#n4f2d51f2": "bar",
-				"#nc85f6e88": "baz",
-				"#n498f746d": "biz",
-				"#nf4d57aa0": "bez",
-				"#n842166e7": "buz",
-				"#n56cceeac": "boz",
+				"#n5f0025bb": "foo",
+				"#n22f4f0ae": "bar",
+				"#n82504b33": "baz",
+				"#n025c5f64": "biz",
+				"#ne4642e6a": "bez",
+				"#nadc27efb": "buz",
+				"#n5fae6dd3": "boz",
 			},
 			ExpressionAttributeValues: {
-				":vcc14862c": 2,
-				":vc7c6ad26": 9,
+				":vaeeabc63": 2,
+				":vf489a8ba": 9,
 				":v81f92362": { biz: 3 },
 				":v50ed5650": [{ qux: 2 }],
 				":v761dc2b7": [1, 2, 3],
@@ -57,10 +57,10 @@ describe("update operations - SET/REMOVE/ADD/DELETE", () => {
 		const actual = getUpdateRemoveExpression(args);
 
 		const expected = {
-			UpdateExpression: "REMOVE #nccc4a4d8, #nc85f6e88",
+			UpdateExpression: "REMOVE #n5f0025bb, #n82504b33",
 			ExpressionAttributeNames: {
-				"#nccc4a4d8": "foo",
-				"#nc85f6e88": "baz",
+				"#n5f0025bb": "foo",
+				"#n82504b33": "baz",
 			},
 			ExpressionAttributeValues: {},
 		};
@@ -81,17 +81,17 @@ describe("update operations - SET/REMOVE/ADD/DELETE", () => {
 
 		const expected = {
 			UpdateExpression:
-				"ADD #nccc4a4d8 :v4f2d51f2, #nc85f6e88 :vcc14862c, #nf4d57aa0 :v5b66646d, #n842166e7 :v81f92362, #n56cceeac :v533877e7",
+				"ADD #n5f0025bb :v22f4f0ae, #n82504b33 :vaeeabc63, #ne4642e6a :v5b66646d, #nadc27efb :v81f92362, #n5fae6dd3 :v533877e7",
 			ExpressionAttributeNames: {
-				"#nccc4a4d8": "foo",
-				"#nc85f6e88": "baz",
-				"#n842166e7": "buz",
-				"#nf4d57aa0": "bez",
-				"#n56cceeac": "boz",
+				"#n5f0025bb": "foo",
+				"#n82504b33": "baz",
+				"#nadc27efb": "buz",
+				"#ne4642e6a": "bez",
+				"#n5fae6dd3": "boz",
 			},
 			ExpressionAttributeValues: {
-				":v4f2d51f2": "bar",
-				":vcc14862c": 2,
+				":v22f4f0ae": "bar",
+				":vaeeabc63": 2,
 				":v81f92362": { biz: 3 },
 				":v533877e7": new Set([{ qux: 2 }]),
 				":v5b66646d": new Set([1, 2, 3]),
@@ -114,18 +114,18 @@ describe("update operations - SET/REMOVE/ADD/DELETE", () => {
 
 		const expected = {
 			UpdateExpression:
-				"DELETE #nccc4a4d8 :v4f2d51f2, #nc85f6e88 :vcc14862c, #nf4d57aa0 :v5b66646d, #n842166e7 :v81f92362, #n56cceeac :v533877e7",
+				"DELETE #n5f0025bb :v22f4f0ae, #n82504b33 :vaeeabc63, #ne4642e6a :v5b66646d, #nadc27efb :v81f92362, #n5fae6dd3 :v533877e7",
 			ExpressionAttributeNames: {
-				"#n842166e7": "buz",
-				"#nc85f6e88": "baz",
-				"#nf4d57aa0": "bez",
-				"#nccc4a4d8": "foo",
-				"#n56cceeac": "boz",
+				"#nadc27efb": "buz",
+				"#n82504b33": "baz",
+				"#ne4642e6a": "bez",
+				"#n5f0025bb": "foo",
+				"#n5fae6dd3": "boz",
 			},
 			ExpressionAttributeValues: {
 				":v81f92362": { biz: 3 },
-				":v4f2d51f2": "bar",
-				":vcc14862c": 2,
+				":v22f4f0ae": "bar",
+				":vaeeabc63": 2,
 				":v533877e7": new Set([{ qux: 2 }]),
 				":v5b66646d": new Set([1, 2, 3]),
 			},
@@ -144,17 +144,17 @@ describe("update operations - SET/REMOVE/ADD/DELETE", () => {
 
 		const expected = {
 			UpdateExpression:
-				"SET #n1ec3ff12 = #n1ec3ff12 - :vcc14862c REMOVE #nd22a978b ADD #ndcbab01c :v85f1e948 DELETE #n063fd358 :vefe145cc",
+				"SET #n30eb7c82 = #n30eb7c82 - :vaeeabc63 REMOVE #na6e432d1 ADD #n7cb54de8 :vca09015b DELETE #nca5c700c :v9b57e285",
 			ExpressionAttributeNames: {
-				"#n063fd358": "dfoo",
-				"#n1ec3ff12": "ufoo",
-				"#nd22a978b": "rfoo",
-				"#ndcbab01c": "afoo",
+				"#nca5c700c": "dfoo",
+				"#n30eb7c82": "ufoo",
+				"#na6e432d1": "rfoo",
+				"#n7cb54de8": "afoo",
 			},
 			ExpressionAttributeValues: {
-				":v85f1e948": "abar",
-				":vcc14862c": 2,
-				":vefe145cc": "dbar",
+				":vca09015b": "abar",
+				":vaeeabc63": 2,
+				":v9b57e285": "dbar",
 			},
 		};
 		expect(actual).toStrictEqual(expected);
