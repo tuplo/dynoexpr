@@ -6,7 +6,7 @@ async function main() {
 
 	const flags = ["--bundle", "--platform=node"];
 
-	await $`esbuild src/index.ts --outfile=dist/index.cjs ${flags}`;
+	await $`esbuild src/cjs/index.cjs --outfile=dist/index.cjs ${flags}`;
 	await $`esbuild src/index.ts --format=esm --outfile=dist/index.mjs ${flags}`;
 
 	await $`cp src/dynoexpr.d.ts dist/dynoexpr.d.ts`;
