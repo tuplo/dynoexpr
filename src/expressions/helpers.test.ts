@@ -278,6 +278,18 @@ describe("helpers for condition helpers", () => {
 			expect(actual).toStrictEqual(expected);
 		});
 
+		it("builds the attribute names map with composite keys", () => {
+			const Condition2 = { 'object."key.with-chars".value': "> 2" };
+			const actual = buildConditionAttributeNames(Condition2);
+
+			const expected = {
+				"#n10d6f4c5": "value",
+				"#nbb017076": "object",
+				"#n0327a04a": "key.with-chars",
+			};
+			expect(actual).toStrictEqual(expected);
+		});
+
 		it("builds the ExpressionAttributesValueMap with an existing map", () => {
 			const Condition2 = { b: "foo" };
 			const args: IConditionAttributeValuesParams = {

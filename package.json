@@ -46,22 +46,22 @@
 		"test": "vitest --watch"
 	},
 	"devDependencies": {
-		"@types/node": "18.15.5",
-		"@typescript-eslint/eslint-plugin": "5.56.0",
-		"@typescript-eslint/parser": "5.56.0",
-		"@vitest/coverage-c8": "0.29.7",
-		"aws-sdk": "^2.1340.0",
-		"esbuild": "0.17.12",
-		"eslint": "8.36.0",
+		"@types/node": "18.15.11",
+		"@typescript-eslint/eslint-plugin": "5.57.0",
+		"@typescript-eslint/parser": "5.57.0",
+		"@vitest/coverage-c8": "0.29.8",
+		"aws-sdk": "^2.1346.0",
+		"esbuild": "0.17.14",
+		"eslint": "8.37.0",
 		"eslint-config-airbnb-base": "15.0.0",
 		"eslint-config-airbnb-typescript": "17.0.0",
 		"eslint-config-prettier": "8.8.0",
 		"eslint-plugin-import": "2.27.5",
 		"nyc": "15.1.0",
-		"prettier": "2.8.6",
+		"prettier": "2.8.7",
 		"tsx": "3.12.6",
 		"typescript": "5.0.2",
-		"vitest": "0.29.7",
+		"vitest": "0.29.8",
 		"zx": "7.2.1"
 	}
 }

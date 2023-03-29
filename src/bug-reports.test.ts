@@ -136,4 +136,54 @@ describe("bug reports", () => {
 		};
 		expect(actual).toStrictEqual(expected);
 	});
+
+	it("handles composite keys on updates with math operations", () => {
+		const args = {
+			Update: {
+				"foo.bar.baz": "foo.bar.baz + 1",
+			},
+		};
+		const actual = dynoexpr(args);
+
+		const expected = {
+			ExpressionAttributeNames: {
+				"#n22f4f0ae": "bar",
+				"#n5f0025bb": "foo",
+				"#n82504b33": "baz",
+			},
+			ExpressionAttributeValues: {
+				":vc823bd86": 1,
+			},
+			UpdateExpression:
+				"SET #n5f0025bb.#n22f4f0ae.#n82504b33 = #n5f0025bb.#n22f4f0ae.#n82504b33 + :vc823bd86",
+		};
+		expect(actual).toStrictEqual(expected);
+	});
+
+	it("escape dynamic keys in objects", () => {
+		const dynamicKey = "key.with-chars";
+		const args = {
+			Update: {
+				[`object."${dynamicKey}".value`]: `object."${dynamicKey}".value + 1`,
+			},
+			Condition: { [`object."${dynamicKey}".value`]: "> 2" },
+		};
+		const actual = dynoexpr(args);
+
+		const expected = {
+			ConditionExpression: "(#nbb017076.#n0327a04a.#n10d6f4c5 > :vaeeabc63)",
+			ExpressionAttributeNames: {
+				"#nbb017076": "object",
+				"#n0327a04a": "key.with-chars",
+				"#n10d6f4c5": "value",
+			},
+			ExpressionAttributeValues: {
+				":vaeeabc63": 2,
+				":vc823bd86": 1,
+			},
+			UpdateExpression:
+				"SET #nbb017076.#n0327a04a.#n10d6f4c5 = #nbb017076.#n0327a04a.#n10d6f4c5 + :vc823bd86",
+		};
+		expect(actual).toStrictEqual(expected);
+	});
 });

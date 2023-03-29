@@ -4,7 +4,12 @@ import type {
 	ILogicalOperatorType,
 } from "src/dynoexpr.d";
 
-import { getAttrName, getAttrValue } from "../utils";
+import {
+	getAttrName,
+	getAttrValue,
+	getSingleAttrName,
+	splitByDot,
+} from "../utils";
 
 type IValue = string | boolean | number | null;
 export function convertValue(value: string): IValue {
@@ -152,8 +157,8 @@ export function buildConditionAttributeNames(
 	params: IConditionAttributeNamesParams = {}
 ) {
 	return Object.keys(condition).reduce((acc, key) => {
-		key.split(".").forEach((k) => {
-			acc[getAttrName(k)] = k;
+		splitByDot(key).forEach((k) => {
+			acc[getSingleAttrName(k)] = k;
 		});
 		return acc;
 	}, params.ExpressionAttributeNames || ({} as { [key: string]: string }));

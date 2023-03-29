@@ -76,6 +76,40 @@ describe("update expression", () => {
 		expect(actual).toStrictEqual(expected);
 	});
 
+	it("builds ExpressionAttributesMap with composite keys", () => {
+		const args = {
+			Update: {
+				'object."key.with-chars".value': 'object."key.with-chars".value + 1',
+			},
+			ConditionExpression: "(#nbb017076.#n0327a04a.#n10d6f4c5 > :vaeeabc63)",
+			ExpressionAttributeNames: {
+				"#nbb017076": "object",
+				"#n0327a04a": "key.with-chars",
+				"#n10d6f4c5": "value",
+			},
+			ExpressionAttributeValues: { ":vaeeabc63": 2 },
+		};
+
+		const actual = getExpressionAttributes(args);
+
+		const expected = {
+			ConditionExpression: "(#nbb017076.#n0327a04a.#n10d6f4c5 > :vaeeabc63)",
+			ExpressionAttributeNames: {
+				"#n0327a04a": "key.with-chars",
+				"#n10d6f4c5": "value",
+				"#nbb017076": "object",
+			},
+			ExpressionAttributeValues: {
+				":vaeeabc63": 2,
+				":vc823bd86": 1,
+			},
+			Update: {
+				'object."key.with-chars".value': 'object."key.with-chars".value + 1',
+			},
+		};
+		expect(actual).toStrictEqual(expected);
+	});
+
 	it("updates attributes - SET", () => {
 		const args = {
 			Update: {
@@ -329,6 +363,48 @@ describe("update expression", () => {
 				":vc0d39ad1": new Set(["bar", "baz"]),
 				":v101cd26b": new Set([1, 2]),
 			},
+		};
+		expect(actual).toStrictEqual(expected);
+	});
+
+	it("gets update expression with composite keys and math", () => {
+		const args = { Update: { "foo.bar.baz": "foo.bar.baz + 1" } };
+		const actual = getUpdateExpression(args);
+
+		const expected = {
+			ExpressionAttributeNames: {
+				"#n22f4f0ae": "bar",
+				"#n5f0025bb": "foo",
+				"#n82504b33": "baz",
+			},
+			ExpressionAttributeValues: {
+				":vc823bd86": 1,
+			},
+			UpdateExpression:
+				"SET #n5f0025bb.#n22f4f0ae.#n82504b33 = #n5f0025bb.#n22f4f0ae.#n82504b33 + :vc823bd86",
+		};
+		expect(actual).toStrictEqual(expected);
+	});
+
+	it("gets update expression with composite keys (escaped)", () => {
+		const args = {
+			Update: {
+				'object."key.with-chars".value': 'object."key.with-chars".value + 1',
+			},
+		};
+		const actual = getUpdateExpression(args);
+
+		const expected = {
+			ExpressionAttributeNames: {
+				"#n0327a04a": "key.with-chars",
+				"#n10d6f4c5": "value",
+				"#nbb017076": "object",
+			},
+			ExpressionAttributeValues: {
+				":vc823bd86": 1,
+			},
+			UpdateExpression:
+				"SET #nbb017076.#n0327a04a.#n10d6f4c5 = #nbb017076.#n0327a04a.#n10d6f4c5 + :vc823bd86",
 		};
 		expect(actual).toStrictEqual(expected);
 	});

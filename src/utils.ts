@@ -18,13 +18,24 @@ function md5hash(data: unknown) {
 	return md5(data).slice(24);
 }
 
+export function unquote(input: string) {
+	return input.replace(/^"/, "").replace(/"$/, "");
+}
+
+export function splitByDot(input: string) {
+	const parts = input.match(/"[^"]+"|[^.]+/g) ?? [];
+
+	return parts.map(unquote);
+}
+
+export function getSingleAttrName(attr: string) {
+	return `#n${md5hash(attr)}`;
+}
+
 export function getAttrName(attribute: string) {
 	if (/^#/.test(attribute)) return attribute;
 
-	return attribute
-		.split(".")
-		.map((attr) => `#n${md5hash(attr)}`)
-		.join(".");
+	return splitByDot(attribute).map(getSingleAttrName).join(".");
 }
 
 export function getAttrValue(value: unknown) {
@@ -33,4 +44,14 @@ export function getAttrValue(value: unknown) {
 	}
 
 	return `:v${md5hash(value)}`;
+}
+
+export function splitByOperator(operator: string, input: string) {
+	const rg = new RegExp(` [${operator}] `, "g");
+
+	return input
+		.split(rg)
+		.filter((m) => m !== operator)
+		.map((m) => m.trim())
+		.map(unquote);
 }

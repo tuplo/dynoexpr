@@ -4,7 +4,13 @@ import type {
 	IUpdateOutput,
 } from "src/dynoexpr.d";
 
-import { getAttrName, getAttrValue } from "../utils";
+import {
+	getAttrName,
+	getAttrValue,
+	getSingleAttrName,
+	splitByDot,
+	splitByOperator,
+} from "../utils";
 
 export function parseOperationValue(expr: string, key: string) {
 	const v = expr.replace(key, "").replace(/[+-]/, "");
@@ -78,8 +84,8 @@ export function getExpressionAttributes(params: IUpdateInput) {
 		if (!acc.ExpressionAttributeNames) acc.ExpressionAttributeNames = {};
 		if (!acc.ExpressionAttributeValues) acc.ExpressionAttributeValues = {};
 
-		key.split(".").forEach((k) => {
-			acc.ExpressionAttributeNames[getAttrName(k)] = k;
+		splitByDot(key).forEach((k) => {
+			acc.ExpressionAttributeNames[getSingleAttrName(k)] = k;
 		});
 
 		if (UpdateAction !== "REMOVE") {
@@ -134,16 +140,24 @@ export function getUpdateExpression(params: IUpdateInput = {}) {
 					}
 
 					if (isMathExpression(name, value)) {
-						const [, operator] = /([+-])/.exec(value as string) || [];
-						const expr = (value as string)
-							.split(/[+-]/)
+						const [, operator] = /(\s-|-\s|[+])/.exec(value as string) || [];
+						const val = value?.toString() || "unknown";
+						const operands = [];
+						if (/\+/.test(val)) {
+							operands.push(...splitByOperator("+", val));
+						} else if (/-/.test(val)) {
+							operands.push(...splitByOperator("-", val));
+						}
+
+						const expr = operands
 							.map((operand: string) => operand.trim())
 							.map((operand: string) => {
 								if (operand === name) return getAttrName(name);
 								const v = parseOperationValue(operand, name);
+
 								return getAttrValue(v);
 							})
-							.join(` ${operator} `);
+							.join(` ${operator?.trim()} `);
 
 						return `${getAttrName(name)} = ${expr}`;
 					}

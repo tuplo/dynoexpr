@@ -245,6 +245,45 @@ const params = dynoexpr({
 */
 ```
 
+### Using object paths on expressions
+
+You can provide a path to an attribute on a deep object, each node will be escaped.
+
+```typescript
+const params = dynoexpr({
+  Update: {
+    'foo.bar.baz': 'foo.bar.baz + 1'
+  }
+});
+
+/*
+{
+  ExpressionAttributeNames: {
+    "#n22f4f0ae": "bar",
+    "#n5f0025bb": "foo",
+    "#n82504b33": "baz",
+  },
+  ExpressionAttributeValues: {
+    ":vc823bd86": 1,
+  },
+  UpdateExpression:
+    "SET #n5f0025bb.#n22f4f0ae.#n82504b33 = #n5f0025bb.#n22f4f0ae.#n82504b33 + :vc823bd86",
+}
+*/
+
+```
+
+If one of the nodes needs to escape some of its characters, use double quotes around it, like this:
+
+```typescript
+const params = dynoexpr({
+  Update: {
+    'foo."bar-cuz".baz': 'foo."bar-cuz".baz + 1'
+  }
+});
+```
+
+
 ### Parsing atomic requests, only expressions will be replaced
 
 You can pass the whole request parameters to `dynoexpr` - only the expression builders will be replaced.
