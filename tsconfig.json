@@ -9,9 +9,8 @@
     "outDir": "./dist",
     "removeComments": true,
     "strict": true,
-    "target": "es6",
     "types": ["vitest/globals"]
   },
-  "include": ["src/**/*", "src/dynoexpr.d.ts"],
+  "include": ["src/**/*", "src/dynoexpr.d.ts", "sh"],
   "exclude": ["node_modules/**/*"]
 }

@@ -40,7 +40,7 @@ export function getListAppendExpressionAttributes(
 	const [, listAppendValues] = /list_append\((.+)\)/.exec(`${value}`) || [];
 	const rg = /(\[[^\]]+\])/g; // match [1, 2]
 
-	return [...listAppendValues.matchAll(rg)]
+	return Array.from(listAppendValues.matchAll(rg))
 		.map((m) => m[0])
 		.filter((v) => v !== key)
 		.flatMap((list) => fromStrListToArray(list));
@@ -54,7 +54,7 @@ export function getListAppendExpression(
 	const [, listAppendValues] = /list_append\((.+)\)/.exec(`${value}`) || [];
 
 	const rg = /(\[[^\]]+\])/g;
-	const lists = [...listAppendValues.matchAll(rg)].map((m) => m[0]);
+	const lists = Array.from(listAppendValues.matchAll(rg)).map((m) => m[0]);
 	const attrValues: Record<string, string> = {};
 
 	// replace only lists with attrValues
