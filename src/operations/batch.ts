@@ -34,7 +34,7 @@ function isBatchWriteRequest(
 }
 
 export function getBatchExpressions<
-	T extends IBatchRequestOutput = IBatchRequestOutput
+	T extends IBatchRequestOutput = IBatchRequestOutput,
 >(params: IBatchRequestInput): T {
 	const RequestItems = Object.entries(params.RequestItems).reduce(
 		(accParams, [tableName, tableParams]) => {

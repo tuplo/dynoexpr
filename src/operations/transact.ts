@@ -14,7 +14,7 @@ export function isTransactRequest(
 }
 
 export function getTransactExpressions<
-	T extends ITransactRequestOutput = ITransactRequestOutput
+	T extends ITransactRequestOutput = ITransactRequestOutput,
 >(params: ITransactRequestInput): T {
 	const TransactItems = params.TransactItems.map((tableItems) => {
 		const [key] = Object.keys(tableItems) as ITransactOperation[];

@@ -17,19 +17,22 @@ import { trimEmptyExpressionAttributes } from "./helpers";
 export function convertValuesToDynamoDbSet(
 	attributeValues: Record<string, unknown>
 ) {
-	return Object.entries(attributeValues).reduce((acc, [key, value]) => {
-		if (value instanceof Set) {
-			const sdk = new AwsSdkDocumentClient();
-			acc[key] = sdk.createSet(Array.from(value));
-		} else {
-			acc[key] = value as IDynamoDbValue;
-		}
-		return acc;
-	}, {} as Record<string, IDynamoDbValue>);
+	return Object.entries(attributeValues).reduce(
+		(acc, [key, value]) => {
+			if (value instanceof Set) {
+				const sdk = new AwsSdkDocumentClient();
+				acc[key] = sdk.createSet(Array.from(value));
+			} else {
+				acc[key] = value as IDynamoDbValue;
+			}
+			return acc;
+		},
+		{} as Record<string, IDynamoDbValue>
+	);
 }
 
 export function getSingleTableExpressions<
-	T extends IDynoexprOutput = IDynoexprOutput
+	T extends IDynoexprOutput = IDynoexprOutput,
 >(params: IDynoexprInput = {}): T {
 	const expression = [
 		getKeyConditionExpression,

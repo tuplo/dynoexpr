@@ -1,7 +1,7 @@
 import type { IDynoexprOutput } from "../dynoexpr";
 
 export function trimEmptyExpressionAttributes<
-	T extends IDynoexprOutput = IDynoexprOutput
+	T extends IDynoexprOutput = IDynoexprOutput,
 >(expression: T): T {
 	const trimmed = { ...expression };
 	const { ExpressionAttributeNames, ExpressionAttributeValues } = expression;
