@@ -8,7 +8,7 @@ async function main() {
 	await $`rm -rf .nyc_output/`;
 
 	const flags = ["--coverage true"].flatMap((f) => f.split(" "));
-	await $`NODE_ENV=test LOG_LEVEL=silent nyc yarn test:ci ${flags}`;
+	await $`NODE_ENV=test LOG_LEVEL=silent nyc npm run test:ci ${flags}`;
 }
 
 main();
