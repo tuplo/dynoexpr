@@ -49,26 +49,27 @@
 		"lint:ts": "tsc --noEmit",
 		"lint": "eslint --ext ts src",
 		"test:ci": "vitest run",
-		"test": "vitest --watch"
+		"test": "vitest --watch",
+		"upgrade": "npm-check-updates -u -x eslint && npm install"
 	},
 	"devDependencies": {
 		"@tuplo/shell": "1.2.2",
-		"@types/node": "20.11.16",
-		"@typescript-eslint/eslint-plugin": "6.21.0",
-		"@typescript-eslint/parser": "6.21.0",
-		"@vitest/coverage-v8": "1.2.2",
-		"aws-sdk": "^2.1552.0",
-		"esbuild": "0.20.0",
+		"@types/node": "20.14.2",
+		"@typescript-eslint/eslint-plugin": "7.13.0",
+		"@typescript-eslint/parser": "7.13.0",
+		"@vitest/coverage-v8": "1.6.0",
+		"aws-sdk": "^2.1641.0",
+		"esbuild": "0.21.5",
 		"eslint": "8.56.0",
 		"eslint-config-airbnb-base": "15.0.0",
-		"eslint-config-airbnb-typescript": "17.1.0",
+		"eslint-config-airbnb-typescript": "18.0.0",
 		"eslint-config-prettier": "9.1.0",
 		"eslint-plugin-import": "2.29.1",
-		"npm-check-updates": "16.14.14",
-		"nyc": "15.1.0",
-		"prettier": "3.2.5",
-		"tsx": "4.7.0",
-		"typescript": "5.3.3",
-		"vitest": "1.2.2"
+		"npm-check-updates": "16.14.20",
+		"nyc": "17.0.0",
+		"prettier": "3.3.2",
+		"tsx": "4.15.4",
+		"typescript": "5.4.5",
+		"vitest": "1.6.0"
 	}
 }

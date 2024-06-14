@@ -8,6 +8,7 @@
     "moduleResolution": "node",
     "outDir": "./dist",
     "removeComments": true,
+    "skipLibCheck": true,
     "strict": true,
     "types": ["vitest/globals"]
   },
